@@ -10,6 +10,7 @@ export const SITE_COPY = {
 		blog: '博客',
 		about: '关于',
 		officialSite: '进入官网',
+		telegram: '加入 Telegram',
 	},
 	en: {
 		title: 'Ainnc Blog',
@@ -19,6 +20,7 @@ export const SITE_COPY = {
 		blog: 'Blog',
 		about: 'About',
 		officialSite: 'Official Site',
+		telegram: 'Join Telegram',
 	},
 } as const;
 

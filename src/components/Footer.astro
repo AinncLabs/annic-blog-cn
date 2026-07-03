@@ -1,14 +1,16 @@
 ---
-import { isEnglishPath } from '../i18n';
+import { isEnglishPath, SITE_COPY } from '../i18n';
 
 const today = new Date();
 const isEnglish = isEnglishPath(Astro.url.pathname);
+const copy = isEnglish ? SITE_COPY.en : SITE_COPY.zh;
 ---
 
 <footer>
 	<div>
 		<strong>Ainnc 麦芽营销</strong>
 		<span>{isEnglish ? 'Accounts, files, tasks, and usage management' : '账号、文件、任务和用量管理'}</span>
+		<a href="https://t.me/qccbot2026" target="_blank" rel="noopener noreferrer">{copy.telegram}</a>
 	</div>
 	<p>&copy; {today.getFullYear()} Ainnc. All rights reserved.</p>
 </footer>
@@ -30,6 +32,14 @@ const isEnglish = isEnglishPath(Astro.url.pathname);
 	}
 	footer strong {
 		color: var(--text);
+	}
+	footer a {
+		color: var(--accent-dark);
+		font-weight: 800;
+		text-decoration: none;
+	}
+	footer a:hover {
+		color: var(--accent);
 	}
 	footer p {
 		margin: 0.75rem 0 0;
