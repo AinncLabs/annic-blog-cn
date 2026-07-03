@@ -13,24 +13,84 @@ const upcomingPosts = [
 	{
 		category: 'Operations Playbook',
 		title: 'Why Spreadsheets Break After 50 Social Accounts',
-		description: 'The hidden cost of tracking logins, content assets, and account ownership in sheets.',
+		description: 'The hidden cost of tracking accounts, logins, and content in sheets, plus what a living account record should contain.',
+		readTime: '6 min read',
+		date: 'Jul 7, 2026',
+	},
+	{
+		category: 'Operations Playbook',
+		title: 'What a Real Social Media Operations Platform Should Look Like',
+		description: 'How teams move from scattered tools to one shared operating layer for accounts, assets, tasks, and data.',
+		readTime: '6 min read',
+		date: 'Jul 10, 2026',
+	},
+	{
+		category: 'Operations Playbook',
+		title: 'How MCN Agencies Prove Value to Clients With Data',
+		description: 'Turning execution records into review-ready reports is one of the most underrated renewal tools for agency teams.',
+		readTime: '6 min read',
+		date: 'Jul 14, 2026',
 	},
 	{
 		category: 'Product Capabilities',
-		title: 'Cloud Phones vs. Browsers for Account Safety',
-		description: 'Why device-level isolation matters more than many teams expect.',
+		title: 'Cloud Phones vs. Browsers: Which Is Safer for Accounts?',
+		description: 'Browser fingerprinting and cloud-phone isolation solve different problems. The right choice depends on account scale.',
+		readTime: '5 min read',
+		date: 'Jul 17, 2026',
+	},
+	{
+		category: 'Product Capabilities',
+		title: 'Static, Dynamic, and Mobile IPs: How to Choose a Proxy',
+		description: 'There is no single best proxy type. The right setup depends on account volume, market coverage, and risk tolerance.',
+		readTime: '5 min read',
+		date: 'Jul 21, 2026',
+	},
+	{
+		category: 'Product Capabilities',
+		title: 'From Content Creation to Publishing: One Workflow Instead of Five Tools',
+		description: 'A practical look at how one content asset moves from idea to publication across four platforms with less handoff friction.',
+		readTime: '6 min read',
+		date: 'Jul 24, 2026',
+	},
+	{
+		category: 'Platform Guides',
+		title: 'How to Avoid Common Risk-Control Issues in Bulk TikTok Operations',
+		description: 'Account safety comes down to believable independence, natural operating rhythm, and a baseline of content originality.',
+		readTime: '6 min read',
+		date: 'Jul 28, 2026',
 	},
 	{
 		category: 'Global Growth',
 		title: 'Building Scalable Social Operations for Global Brands',
-		description: 'Where brands tend to struggle when entering new markets with localized social operations.',
+		description: 'The common localization traps brands face when entering new markets, and the four layers scalable operations require.',
+		readTime: '6 min read',
+		date: 'Jul 31, 2026',
+	},
+	{
+		category: 'Global Growth',
+		title: 'How Deep Should Localization Go for Global Social Media?',
+		description: 'Translation helps audiences understand you. Localization makes them want to keep watching. Those are different jobs.',
+		readTime: '6 min read',
+		date: 'Aug 4, 2026',
 	},
 ];
+const categoryOrder = [
+	'Operations Playbook',
+	'Platform Guides',
+	'Product Capabilities',
+	'Global Growth',
+	'Tutorials',
+	'Operations',
+	'Product Updates',
+];
+const allCategoryLabels = new Set([
+	...posts.map((post) => getPostMeta(post, 'en').category),
+	...upcomingPosts.map((post) => post.category),
+]);
 const categories = [
 	'All Articles',
-	...Array.from(
-		new Set([...posts.map((post) => getPostMeta(post, 'en').category), ...upcomingPosts.map((post) => post.category)]),
-	),
+	...categoryOrder.filter((category) => allCategoryLabels.has(category)),
+	...Array.from(allCategoryLabels).filter((category) => !categoryOrder.includes(category)),
 ];
 ---
 
@@ -66,11 +126,12 @@ const categories = [
 							<div class="post-body">
 								<div class="post-meta">
 									<span>{post.category}</span>
-									<span>Coming Soon</span>
+									<span>{post.readTime}</span>
+									<span>{post.date}</span>
 								</div>
 								<h2>{post.title}</h2>
 								<p>{post.description}</p>
-								<span class="draft-label">Draft</span>
+								<span class="draft-label">Scheduled</span>
 							</div>
 						</article>
 					))
@@ -148,6 +209,10 @@ const categories = [
 		background: rgba(255, 255, 255, 0.72);
 	}
 
+	.draft-card .post-meta span:first-child {
+		color: var(--accent-dark);
+	}
+
 	.draft-card h2 {
 		font-size: 1.15rem;
 	}
@@ -155,9 +220,9 @@ const categories = [
 	.draft-label {
 		width: fit-content;
 		border-radius: 999px;
-		background: #eef2f7;
+		background: rgba(0, 201, 170, 12%);
 		padding: 0.25rem 0.65rem;
-		color: var(--subtle);
+		color: var(--accent-dark);
 		font-size: 0.82rem;
 		font-weight: 800;
 	}

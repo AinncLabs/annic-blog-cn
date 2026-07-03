@@ -12,23 +12,74 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const upcomingPosts = [
 	{
 		category: '运营方法论',
-		title: '为什么表格在超过 50 个账号后就会失控',
-		description: '用表格追踪账号、登录信息和内容素材的隐藏成本。',
+		title: '为什么表格在超过50个账号后就会失控',
+		description: '用表格追踪账号、登录信息和内容的隐藏成本，以及账号真正需要的“活记录”是什么样。',
+		readTime: '6分钟阅读',
+		date: '2026年7月7日',
+	},
+	{
+		category: '运营方法论',
+		title: '真正的社媒运营平台应该是什么样子',
+		description: '从一堆零散工具，走向账号、素材、任务、数据共用同一套记录的统一运营底座。',
+		readTime: '6分钟阅读',
+		date: '2026年7月10日',
+	},
+	{
+		category: '运营方法论',
+		title: 'MCN代运营机构如何用数据向客户证明价值',
+		description: '签单容易续约难，把执行记录变成可视化的复盘材料，是代运营行业最被低估的续约武器。',
+		readTime: '6分钟阅读',
+		date: '2026年7月14日',
 	},
 	{
 		category: '产品能力解读',
 		title: '云手机与浏览器，哪个更适合账号安全',
-		description: '为什么设备级隔离比大多数团队想的更重要。',
+		description: '浏览器指纹伪装和云手机独立环境是两种完全不同的隔离逻辑，该怎么选取决于账号规模。',
+		readTime: '5分钟阅读',
+		date: '2026年7月17日',
+	},
+	{
+		category: '产品能力解读',
+		title: '静态IP、动态IP、移动IP：代理该怎么选',
+		description: '代理选型没有唯一正确答案，只有和账号规模、地域策略是否匹配。',
+		readTime: '5分钟阅读',
+		date: '2026年7月21日',
+	},
+	{
+		category: '产品能力解读',
+		title: '从内容生产到发布：一个工作流取代五个工具',
+		description: '梳理一条内容从创意到跨四个平台发布的真实路径，减少环节之间的人工交接摩擦。',
+		readTime: '6分钟阅读',
+		date: '2026年7月24日',
+	},
+	{
+		category: '平台专题',
+		title: 'TikTok账号批量运营，如何避开常见风控雷区',
+		description: '账号安全的核心逻辑很朴素：真实的独立性、自然的操作节奏、基本的内容原创度。',
+		readTime: '6分钟阅读',
+		date: '2026年7月28日',
 	},
 	{
 		category: '出海观察',
 		title: '为全球品牌搭建可规模化的社媒运营体系',
-		description: '品牌进入新市场时，最容易在本地化社媒运营上踩的坑。',
+		description: '品牌进入新市场时，最容易在本地化社媒运营上踩的坑，以及规模化真正需要的四层能力。',
+		readTime: '6分钟阅读',
+		date: '2026年7月31日',
+	},
+	{
+		category: '出海观察',
+		title: '出海社媒运营，本地化到底该做到多细',
+		description: '翻译解决的是“听得懂”，本地化解决的是“愿意看下去”，这是两个完全不同的问题。',
+		readTime: '6分钟阅读',
+		date: '2026年8月4日',
 	},
 ];
+const categoryOrder = ['运营方法论', '平台专题', '产品能力解读', '出海观察', '操作教程', '运营实践', '产品更新'];
+const allCategoryLabels = new Set([...posts.map((post) => post.data.category), ...upcomingPosts.map((post) => post.category)]);
 const categories = [
 	'全部文章',
-	...Array.from(new Set([...posts.map((post) => post.data.category), ...upcomingPosts.map((post) => post.category)])),
+	...categoryOrder.filter((category) => allCategoryLabels.has(category)),
+	...Array.from(allCategoryLabels).filter((category) => !categoryOrder.includes(category)),
 ];
 ---
 
@@ -64,11 +115,12 @@ const categories = [
 							<div class="post-body">
 								<div class="post-meta">
 									<span>{post.category}</span>
-									<span>即将发布</span>
+									<span>{post.readTime}</span>
+									<span>{post.date}</span>
 								</div>
 								<h2>{post.title}</h2>
 								<p>{post.description}</p>
-								<span class="draft-label">草稿</span>
+								<span class="draft-label">排期中</span>
 							</div>
 						</article>
 					))
@@ -146,6 +198,10 @@ const categories = [
 		background: rgba(255, 255, 255, 0.72);
 	}
 
+	.draft-card .post-meta span:first-child {
+		color: var(--accent-dark);
+	}
+
 	.draft-card h2 {
 		font-size: 1.15rem;
 	}
@@ -153,9 +209,9 @@ const categories = [
 	.draft-label {
 		width: fit-content;
 		border-radius: 999px;
-		background: #eef2f7;
+		background: rgba(0, 201, 170, 12%);
 		padding: 0.25rem 0.65rem;
-		color: var(--subtle);
+		color: var(--accent-dark);
 		font-size: 0.82rem;
 		font-weight: 800;
 	}
