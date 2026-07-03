@@ -12,12 +12,12 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
 const latestPosts = posts.filter((post) => post.id !== featuredPost?.id).slice(0, 3);
 const topics = [
-	'Account importing and grouping',
-	'Proxy IP and device binding',
-	'Asset upload and reuse',
-	'Bulk publishing tasks',
-	'Login and account warming',
-	'Usage limits and task review',
+	'All Articles',
+	'Operations Playbooks',
+	'Platform Guides',
+	'Product Capabilities',
+	'Global Growth',
+	'Task Reviews',
 ];
 ---
 
@@ -31,11 +31,11 @@ const topics = [
 		<main>
 			<section class="hero">
 				<div class="hero-copy">
-					<span class="eyebrow">Product Blog</span>
-					<h1>Ainnc</h1>
+					<span class="eyebrow">From the Ainnc Team</span>
+					<h1>Practical Methods for Scaling Social Account Operations</h1>
 					<p>
-						Product updates and operations playbooks for social accounts, proxy IPs, task assets,
-						bulk publishing, and execution review.
+						For agencies, MCNs, and global brand teams managing hundreds or thousands of
+						accounts across TikTok, Instagram, Reddit, and X.
 					</p>
 					<div class="hero-actions">
 						<a href="/en/blog/" class="primary">Read Articles</a>
@@ -53,9 +53,9 @@ const topics = [
 				<div class="hero-panel panel">
 					<h2>Content Framework</h2>
 					<ul>
-						<li><strong>Product Updates</strong><span>New features, releases, and entry points</span></li>
-						<li><strong>Tutorials</strong><span>Accounts, proxies, files, and task setup</span></li>
-						<li><strong>Operations</strong><span>Publishing, warming, and failure review</span></li>
+						<li><strong>Operations Playbooks</strong><span>Scaling accounts, team workflows, and delivery stability</span></li>
+						<li><strong>Platform Guides</strong><span>Execution differences across TikTok, Instagram, Reddit, and X</span></li>
+						<li><strong>Product Capabilities</strong><span>Accounts, proxies, files, tasks, and usage management</span></li>
 					</ul>
 				</div>
 			</section>
@@ -91,7 +91,7 @@ const topics = [
 			<section class="topics panel">
 				<div>
 					<span class="eyebrow">Editorial Plan</span>
-					<h2>Topics to Expand Next</h2>
+					<h2>Topics We Will Keep Expanding</h2>
 				</div>
 				<ul>
 					{topics.map((topic) => <li>{topic}</li>)}

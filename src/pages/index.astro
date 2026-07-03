@@ -12,12 +12,12 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
 const latestPosts = posts.filter((post) => post.id !== featuredPost?.id).slice(0, 3);
 const topics = [
-	'账号导入与分组',
-	'代理 IP 与设备绑定',
-	'素材上传与复用',
-	'批量发布任务',
-	'登录与养号流程',
-	'用量额度与任务复盘',
+	'全部文章',
+	'运营方法论',
+	'平台专题',
+	'产品能力解读',
+	'出海观察',
+	'任务复盘',
 ];
 ---
 
@@ -31,11 +31,11 @@ const topics = [
 		<main>
 			<section class="hero">
 				<div class="hero-copy">
-					<span class="eyebrow">产品博客</span>
-					<h1>Ainnc 麦芽营销</h1>
+					<span class="eyebrow">麦芽营销团队出品</span>
+					<h1>规模化运营社媒账号的实战方法</h1>
 					<p>
-						围绕社媒账号、代理 IP、任务素材、批量发布和执行结果复盘，沉淀 Ainnc
-						麦芽营销的产品更新与运营实践。
+						写给需要在 TikTok、Instagram、Reddit 和 X
+						上管理成百上千个账号的代运营机构、MCN 和出海品牌团队。
 					</p>
 					<div class="hero-actions">
 						<a href="/blog/" class="primary">查看文章</a>
@@ -53,9 +53,9 @@ const topics = [
 				<div class="hero-panel panel">
 					<h2>内容框架</h2>
 					<ul>
-						<li><strong>产品更新</strong><span>新功能、版本变化、使用入口</span></li>
-						<li><strong>操作教程</strong><span>账号、代理、文件和任务配置</span></li>
-						<li><strong>运营实践</strong><span>批量发布、养号、失败复盘</span></li>
+						<li><strong>运营方法论</strong><span>规模化账号运营、团队协作和交付稳定性</span></li>
+						<li><strong>平台专题</strong><span>TikTok、Instagram、Reddit、X 的执行差异</span></li>
+						<li><strong>产品能力解读</strong><span>账号、代理、文件、任务和用量管理</span></li>
 					</ul>
 				</div>
 			</section>
@@ -91,7 +91,7 @@ const topics = [
 			<section class="topics panel">
 				<div>
 					<span class="eyebrow">栏目规划</span>
-					<h2>后续可以围绕这些主题写</h2>
+					<h2>围绕这些主题持续更新</h2>
 				</div>
 				<ul>
 					{topics.map((topic) => <li>{topic}</li>)}

@@ -98,6 +98,52 @@ const EN_POSTS = {
 			},
 		],
 	},
+	'scaling-social-account-operations': {
+		title: 'Practical Methods for Scaling Social Account Operations',
+		description:
+			'For agencies, MCNs, and global brands managing hundreds or thousands of accounts across TikTok, Instagram, Reddit, and X.',
+		category: 'Operations Playbook',
+		tags: ['Scale', 'Social Accounts', 'Agencies', 'MCN', 'Global Brands'],
+		sections: [
+			{
+				paragraphs: [
+					'If you run a social media agency, MCN, or global brand team, the hard part is rarely publishing one post. The hard part is keeping hundreds or thousands of accounts logged in, healthy, traceable, and publishing consistently across TikTok, Instagram, Reddit, and X.',
+					'When a team manages only a small number of accounts, spreadsheets, reminders, and spare devices can work for a while. Once the account pool reaches 50, 100, or more, the old workflow starts to break: logins get messy, devices and IPs overlap, assets are hard to find, tasks are missed, and abnormal accounts are discovered too late.',
+				],
+			},
+			{
+				heading: 'Where Operations Start to Break',
+				paragraphs: [
+					'Many teams begin with spreadsheets for usernames, passwords, platforms, and client ownership.',
+					'They use multiple phones or browser environments to separate accounts, manually purchase and rotate proxy IPs, store creative assets in local folders, and track progress through chat messages or shared sheets.',
+					'This can work for 10 accounts. At 50 accounts, maintaining the system itself becomes a job. At 100 or more, it becomes a risk to account safety, delivery stability, and team collaboration.',
+				],
+			},
+			{
+				heading: 'What a Real Operations System Needs',
+				paragraphs: [
+					'Each account needs an isolated operating environment so one account does not easily affect the rest of the pool.',
+					'Proxy IPs should be centrally managed and assigned to accounts, devices, and tasks instead of being copied from another tool by hand.',
+					'Assets should live in a shared file library so videos, images, copy, and task parameters can be reused.',
+					'Repetitive actions such as login, warming, publishing, and status checks should become batch tasks that can be tracked from one dashboard.',
+				],
+			},
+			{
+				heading: 'Predictability Matters More Than Time Savings',
+				paragraphs: [
+					'Automation is often described as a time-saving story. For agencies, MCNs, and global teams, the larger value is predictability.',
+					'Clients are not only paying someone to post content. They are paying for stable execution: active accounts, scheduled publishing, timely issue detection, and a team that can keep delivering as the account count grows.',
+				],
+			},
+			{
+				heading: 'How Ainnc Fits In',
+				paragraphs: [
+					'Ainnc brings social accounts, cloud environments, proxy IPs, content assets, bulk publishing, and execution results into one workflow.',
+					'Teams can import and group accounts, bind devices, configure proxies, upload assets, and use the task center to run login, warming, and publishing workflows across TikTok, Instagram, Reddit, X, and other platforms.',
+				],
+			},
+		],
+	},
 } as const;
 
 export function isEnglishPath(pathname: string) {
