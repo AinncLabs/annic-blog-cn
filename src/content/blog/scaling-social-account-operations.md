@@ -5,7 +5,7 @@ pubDate: 2026-07-03
 category: "运营方法论"
 tags: ["规模化运营", "社媒账号", "代运营机构", "MCN", "出海品牌"]
 featured: true
-heroImage: "../../assets/blog-placeholder-4.jpg"
+heroImage: "../../assets/blog-scaling-social-account-operations.webp"
 ---
 
 如果你运营一家社媒代运营机构、MCN 或出海品牌团队，你应该很清楚，真正困难的工作从来不是“发一条内容”。困难的是让成百上千个账号在 TikTok、Instagram、Reddit 和 X 上持续保持登录、健康、可追踪，并且能按计划稳定产出内容。

@@ -5,7 +5,7 @@ pubDate: 2026-07-03
 category: "产品更新"
 tags: ["Ainnc", "产品介绍", "博客"]
 featured: false
-heroImage: "../../assets/blog-placeholder-1.jpg"
+heroImage: "../../assets/blog-ainnc-start.webp"
 ---
 
 欢迎来到 Ainnc 麦芽营销博客。
