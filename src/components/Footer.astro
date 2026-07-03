@@ -3,13 +3,32 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} Ainnc 麦芽营销. All rights reserved.
+	<div>
+		<strong>Ainnc 麦芽营销</strong>
+		<span>账号、文件、任务和用量管理</span>
+	</div>
+	<p>&copy; {today.getFullYear()} Ainnc. All rights reserved.</p>
 </footer>
 <style>
 	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
-		text-align: center;
+		width: min(1120px, calc(100% - 2rem));
+		margin: 0 auto;
+		padding: 2rem 0 3rem;
+		border-top: 1px solid var(--line);
+		color: var(--muted);
+		font-size: 0.95rem;
+	}
+	footer div {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		align-items: center;
+		justify-content: space-between;
+	}
+	footer strong {
+		color: var(--text);
+	}
+	footer p {
+		margin: 0.75rem 0 0;
 	}
 </style>

@@ -2,6 +2,9 @@
 title: "Ainnc 麦芽营销博客正式上线"
 description: "这里会分享 Ainnc 麦芽营销的产品更新、社媒账号运营、素材管理和批量任务发布实践。"
 pubDate: 2026-07-03
+category: "产品更新"
+tags: ["Ainnc", "产品介绍", "博客"]
+featured: true
 heroImage: "../../assets/blog-placeholder-1.jpg"
 ---
 

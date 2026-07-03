@@ -1,8 +1,24 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import PostCard from '../components/PostCard.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
+const latestPosts = posts.filter((post) => post.id !== featuredPost?.id).slice(0, 3);
+const topics = [
+	'账号导入与分组',
+	'代理 IP 与设备绑定',
+	'素材上传与复用',
+	'批量发布任务',
+	'登录与养号流程',
+	'用量额度与任务复盘',
+];
 ---
 
 <!doctype html>
@@ -13,24 +29,190 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>Ainnc 麦芽营销博客</h1>
-			<p>
-				这里会持续分享 Ainnc 麦芽营销的产品更新、社媒账号运营经验、素材管理方法和批量任务发布实践。
-			</p>
-			<p>
-				如果你正在管理 TikTok、Instagram、Reddit、X 等平台账号，并希望更稳定地完成登录、发布、养号和任务追踪，这里会是 Ainnc 面向中文用户的主要更新入口。
-			</p>
-			<p>接下来我们会重点更新：</p>
-			<ul>
-				<li>Ainnc 麦芽营销的新功能和产品更新</li>
-				<li>社媒账号、代理 IP、设备绑定和分组管理教程</li>
-				<li>图片、视频、文档等任务素材的上传与复用方法</li>
-				<li>批量发布、登录、养号等任务的配置和复盘经验</li>
-			</ul>
-			<p>
-				先从 <a href="/blog/">博客文章</a> 开始阅读。
-			</p>
+			<section class="hero">
+				<div class="hero-copy">
+					<span class="eyebrow">产品博客</span>
+					<h1>Ainnc 麦芽营销博客</h1>
+					<p>
+						围绕社媒账号、代理 IP、任务素材、批量发布和执行结果复盘，沉淀 Ainnc
+						麦芽营销的产品更新与运营实践。
+					</p>
+					<div class="hero-actions">
+						<a href="/blog/" class="primary">查看文章</a>
+						<a href="/about/" class="secondary">了解 Ainnc</a>
+					</div>
+				</div>
+				<div class="hero-panel panel">
+					<h2>内容框架</h2>
+					<ul>
+						<li><strong>产品更新</strong><span>新功能、版本变化、使用入口</span></li>
+						<li><strong>操作教程</strong><span>账号、代理、文件和任务配置</span></li>
+						<li><strong>运营实践</strong><span>批量发布、养号、失败复盘</span></li>
+					</ul>
+				</div>
+			</section>
+
+			{
+				featuredPost && (
+					<section class="featured-section">
+						<div class="section-header">
+							<div>
+								<span class="eyebrow">推荐阅读</span>
+								<h2>先从这篇开始</h2>
+							</div>
+							<p>给新读者快速建立对 Ainnc 产品能力和博客内容方向的理解。</p>
+						</div>
+						<PostCard post={featuredPost} featured />
+					</section>
+				)
+			}
+
+			<section>
+				<div class="section-header">
+					<div>
+						<span class="eyebrow">最新文章</span>
+						<h2>持续更新的运营指南</h2>
+					</div>
+					<a href="/blog/">全部文章</a>
+				</div>
+				<div class="post-grid">
+					{latestPosts.map((post) => <PostCard post={post} />)}
+				</div>
+			</section>
+
+			<section class="topics panel">
+				<div>
+					<span class="eyebrow">栏目规划</span>
+					<h2>后续可以围绕这些主题写</h2>
+				</div>
+				<ul>
+					{topics.map((topic) => <li>{topic}</li>)}
+				</ul>
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+		gap: 1rem;
+		align-items: stretch;
+		margin-bottom: 2rem;
+	}
+
+	.hero-copy,
+	.hero-panel {
+		padding: 2rem;
+	}
+
+	.hero-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 1rem;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		background:
+			linear-gradient(135deg, rgba(31, 111, 235, 10%), rgba(22, 163, 74, 7%)),
+			white;
+		box-shadow: var(--shadow);
+	}
+
+	.hero-copy p {
+		max-width: 720px;
+		font-size: 1.05rem;
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 0.5rem;
+	}
+
+	.hero-actions a {
+		border-radius: 8px;
+		padding: 0.7rem 1rem;
+		font-weight: 800;
+		text-decoration: none;
+	}
+
+	.primary {
+		background: var(--accent);
+		color: white;
+	}
+
+	.primary:hover {
+		background: var(--accent-dark);
+		color: white;
+	}
+
+	.secondary {
+		border: 1px solid var(--line);
+		background: white;
+		color: var(--text);
+	}
+
+	.hero-panel ul {
+		display: grid;
+		gap: 0.75rem;
+		margin-top: 1rem;
+		list-style: none;
+	}
+
+	.hero-panel li {
+		border-radius: 8px;
+		background: var(--surface-soft);
+		padding: 0.9rem;
+	}
+
+	.hero-panel strong,
+	.hero-panel span {
+		display: block;
+	}
+
+	.hero-panel span {
+		margin-top: 0.2rem;
+		color: var(--muted);
+		font-size: 0.92rem;
+	}
+
+	.featured-section,
+	main > section {
+		margin-bottom: 2rem;
+	}
+
+	.topics {
+		display: grid;
+		grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+		gap: 1rem;
+		padding: 1.5rem;
+	}
+
+	.topics ul {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.75rem;
+		list-style: none;
+	}
+
+	.topics li {
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		background: var(--surface-soft);
+		padding: 0.75rem;
+		color: var(--text);
+		font-weight: 700;
+	}
+
+	@media (max-width: 900px) {
+		.hero,
+		.topics,
+		.topics ul {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
