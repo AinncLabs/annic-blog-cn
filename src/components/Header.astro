@@ -6,7 +6,9 @@ import HeaderLink from './HeaderLink.astro';
 <header>
 	<nav>
 		<a class="brand" href="/">
-			<span class="brand-mark">麦</span>
+			<span class="brand-mark">
+				<img src="/ainnc-logo-icon.png" width="36" height="36" alt="Ainnc" />
+			</span>
 			<span>{SITE_TITLE}</span>
 		</a>
 		<div class="internal-links">
@@ -35,13 +37,18 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	.brand-mark {
 		display: grid;
-		width: 2rem;
-		height: 2rem;
+		width: 2.25rem;
+		height: 2.25rem;
 		place-items: center;
-		border-radius: 8px;
-		background: var(--accent);
-		color: white;
-		font-size: 1rem;
+		overflow: hidden;
+		border-radius: 10px;
+		background: #081817;
+		box-shadow: 0 8px 22px rgba(0, 201, 170, 28%);
+	}
+	.brand-mark :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 	nav {
 		display: flex;
