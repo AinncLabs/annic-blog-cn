@@ -9,7 +9,29 @@ import { getPostMeta, SITE_COPY } from '../../../i18n';
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const categories = Array.from(new Set(posts.map((post) => getPostMeta(post, 'en').category)));
+const upcomingPosts = [
+	{
+		category: 'Operations Playbook',
+		title: 'Why Spreadsheets Break After 50 Social Accounts',
+		description: 'The hidden cost of tracking logins, content assets, and account ownership in sheets.',
+	},
+	{
+		category: 'Product Capabilities',
+		title: 'Cloud Phones vs. Browsers for Account Safety',
+		description: 'Why device-level isolation matters more than many teams expect.',
+	},
+	{
+		category: 'Global Growth',
+		title: 'Building Scalable Social Operations for Global Brands',
+		description: 'Where brands tend to struggle when entering new markets with localized social operations.',
+	},
+];
+const categories = [
+	'All Articles',
+	...Array.from(
+		new Set([...posts.map((post) => getPostMeta(post, 'en').category), ...upcomingPosts.map((post) => post.category)]),
+	),
+];
 ---
 
 <!doctype html>
@@ -21,23 +43,58 @@ const categories = Array.from(new Set(posts.map((post) => getPostMeta(post, 'en'
 		<Header />
 		<main>
 			<section class="page-head">
-				<span class="eyebrow">Library</span>
-				<h1>Blog</h1>
-				<p>Product updates, tutorials, and operating practices for Ainnc.</p>
+				<span class="eyebrow">From the Ainnc Team</span>
+				<h1>Practical Methods for Scaling Social Account Operations</h1>
+				<p>For agencies, MCNs, and global brand teams managing hundreds or thousands of accounts across TikTok, Instagram, Reddit, and X.</p>
 			</section>
 
-			<section class="category-bar panel">
-				<strong>Categories</strong>
-				<ul class="tag-list">
-					{categories.map((category) => <li>{category}</li>)}
-				</ul>
+			<section class="filter-bar" aria-label="Post category filters">
+				{
+					categories.map((category, index) => (
+						<button class:list={['filter-pill', { selected: index === 0 }]} type="button" data-filter={category}>
+							{category}
+						</button>
+					))
+				}
 			</section>
 
-			<section class="post-grid">
+			<section class="post-grid" id="post-grid">
 				{posts.map((post) => <PostCard post={post} locale="en" />)}
+				{
+					upcomingPosts.map((post) => (
+						<article class="post-card draft-card" data-category={post.category}>
+							<div class="post-body">
+								<div class="post-meta">
+									<span>{post.category}</span>
+									<span>Coming Soon</span>
+								</div>
+								<h2>{post.title}</h2>
+								<p>{post.description}</p>
+								<span class="draft-label">Draft</span>
+							</div>
+						</article>
+					))
+				}
 			</section>
 		</main>
 		<Footer />
+		<script>
+			const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+			const cards = document.querySelectorAll<HTMLElement>('#post-grid > [data-category]');
+
+			filterButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					filterButtons.forEach((item) => item.classList.remove('selected'));
+					button.classList.add('selected');
+					const filter = button.dataset.filter;
+
+					cards.forEach((card) => {
+						const visible = filter === 'All Articles' || card.dataset.category === filter;
+						card.toggleAttribute('hidden', !visible);
+					});
+				});
+			});
+		</script>
 	</body>
 </html>
 
@@ -46,18 +103,62 @@ const categories = Array.from(new Set(posts.map((post) => getPostMeta(post, 'en'
 		display: grid;
 		gap: 0.8rem;
 		margin-bottom: 1.5rem;
+		padding: 2rem;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		background:
+			linear-gradient(135deg, rgba(0, 201, 170, 12%), rgba(0, 69, 76, 6%)),
+			white;
+		box-shadow: var(--shadow);
 	}
 
 	.page-head p {
 		max-width: 720px;
+		font-size: 1.05rem;
 	}
 
-	.category-bar {
+	.filter-bar {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 1rem;
+		gap: 0.65rem;
 		align-items: center;
 		margin-bottom: 1rem;
-		padding: 1rem;
+	}
+
+	.filter-pill {
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: white;
+		padding: 0.55rem 0.9rem;
+		color: var(--muted);
+		font: inherit;
+		font-weight: 800;
+		cursor: pointer;
+	}
+
+	.filter-pill:hover,
+	.filter-pill.selected {
+		border-color: var(--accent-dark);
+		background: #063f3c;
+		color: white;
+	}
+
+	.draft-card {
+		border-style: dashed;
+		background: rgba(255, 255, 255, 0.72);
+	}
+
+	.draft-card h2 {
+		font-size: 1.15rem;
+	}
+
+	.draft-label {
+		width: fit-content;
+		border-radius: 999px;
+		background: #eef2f7;
+		padding: 0.25rem 0.65rem;
+		color: var(--subtle);
+		font-size: 0.82rem;
+		font-weight: 800;
 	}
 </style>

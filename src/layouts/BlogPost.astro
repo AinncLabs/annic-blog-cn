@@ -23,6 +23,14 @@ const {
 } = Astro.props;
 const isEnglish = locale === 'en';
 const tagLabel = isEnglish ? 'Post tags' : '文章标签';
+const blogPath = isEnglish ? '/en/blog/' : '/blog/';
+const backLabel = isEnglish ? 'Back to Blog' : '返回博客列表';
+const ctaTitle = isEnglish ? 'Run Your Social Account Matrix From One Platform' : '用一个平台运营你的整个社媒矩阵';
+const ctaDescription = isEnglish
+	? 'See how Ainnc handles account isolation, proxy IPs, content assets, and bulk publishing for scaled operations.'
+	: '看看 Ainnc 如何在规模化场景下处理账号隔离、代理 IP、素材管理和批量发布。';
+const officialLabel = isEnglish ? 'Visit Official Site' : '访问官网';
+const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
 ---
 
 <html lang={isEnglish ? 'en' : 'zh-CN'}>
@@ -31,8 +39,10 @@ const tagLabel = isEnglish ? 'Post tags' : '文章标签';
 	</head>
 
 	<body>
+		<div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
 		<Header />
 		<main>
+			<a class="back-link" href={blogPath}><span aria-hidden="true">&larr;</span>{backLabel}</a>
 			<article class="article-shell">
 				<header class="article-header">
 					<div class="post-meta">
@@ -65,13 +75,72 @@ const tagLabel = isEnglish ? 'Post tags' : '文章标签';
 				<div class="prose panel">
 					<slot />
 				</div>
+
+				<section class="article-cta">
+					<h2>{ctaTitle}</h2>
+					<p>{ctaDescription}</p>
+					<div class="cta-actions">
+						<a href="https://www.ainnc.com/#hero" target="_blank" rel="noopener noreferrer">
+							{officialLabel}
+						</a>
+						<a class="secondary-cta" href="https://t.me/qccbot2026" target="_blank" rel="noopener noreferrer">
+							{telegramLabel}
+						</a>
+					</div>
+				</section>
 			</article>
 		</main>
+		<button class="back-to-top" type="button" id="back-to-top" aria-label={isEnglish ? 'Back to top' : '返回顶部'}>
+			&uarr;
+		</button>
 		<Footer />
+		<script>
+			const progress = document.getElementById('reading-progress');
+			const backToTop = document.getElementById('back-to-top');
+
+			function updateReadingState() {
+				const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+				const percent = scrollable > 0 ? Math.min(100, (window.scrollY / scrollable) * 100) : 0;
+				if (progress) {
+					progress.style.width = `${percent}%`;
+				}
+				if (backToTop) {
+					backToTop.classList.toggle('show', window.scrollY > 520);
+				}
+			}
+
+			window.addEventListener('scroll', updateReadingState, { passive: true });
+			updateReadingState();
+			backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+		</script>
 	</body>
 </html>
 
 <style>
+	.reading-progress {
+		position: fixed;
+		z-index: 30;
+		top: 0;
+		left: 0;
+		width: 0;
+		height: 3px;
+		background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+	}
+
+	.back-link {
+		display: inline-flex;
+		gap: 0.35rem;
+		align-items: center;
+		margin-bottom: 1rem;
+		color: var(--muted);
+		font-weight: 800;
+		text-decoration: none;
+	}
+
+	.back-link:hover {
+		color: var(--accent-dark);
+	}
+
 	.article-shell {
 		display: grid;
 		gap: 1rem;
@@ -106,9 +175,91 @@ const tagLabel = isEnglish ? 'Post tags' : '文章标签';
 		font-size: 1.04rem;
 	}
 
+	.article-cta {
+		display: grid;
+		gap: 1rem;
+		width: min(780px, 100%);
+		margin: 0 auto;
+		border-radius: 8px;
+		background: linear-gradient(135deg, #04302e, #06544f);
+		padding: 2rem;
+		color: white;
+	}
+
+	.article-cta h2,
+	.article-cta p {
+		color: white;
+	}
+
+	.article-cta p {
+		max-width: 620px;
+		color: #b8eee7;
+	}
+
+	.cta-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.cta-actions a {
+		border-radius: 8px;
+		background: var(--accent);
+		padding: 0.7rem 1rem;
+		color: #032726;
+		font-weight: 900;
+		text-decoration: none;
+	}
+
+	.cta-actions a:hover {
+		background: white;
+		color: #032726;
+	}
+
+	.cta-actions .secondary-cta {
+		border: 1px solid rgba(184, 238, 231, 60%);
+		background: transparent;
+		color: white;
+	}
+
+	.back-to-top {
+		position: fixed;
+		right: 1.25rem;
+		bottom: 1.25rem;
+		z-index: 20;
+		display: grid;
+		width: 2.75rem;
+		height: 2.75rem;
+		place-items: center;
+		border: 0;
+		border-radius: 999px;
+		background: #063f3c;
+		color: white;
+		font: inherit;
+		font-weight: 900;
+		box-shadow: var(--shadow);
+		cursor: pointer;
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			opacity 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.back-to-top.show {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.back-to-top:hover {
+		transform: translateY(-3px);
+		background: var(--accent-dark);
+	}
+
 	@media (max-width: 720px) {
 		.article-header,
-		.prose {
+		.prose,
+		.article-cta {
 			padding: 1rem;
 		}
 	}

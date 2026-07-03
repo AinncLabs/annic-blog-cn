@@ -9,7 +9,27 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const categories = Array.from(new Set(posts.map((post) => post.data.category)));
+const upcomingPosts = [
+	{
+		category: '运营方法论',
+		title: '为什么表格在超过 50 个账号后就会失控',
+		description: '用表格追踪账号、登录信息和内容素材的隐藏成本。',
+	},
+	{
+		category: '产品能力解读',
+		title: '云手机与浏览器，哪个更适合账号安全',
+		description: '为什么设备级隔离比大多数团队想的更重要。',
+	},
+	{
+		category: '出海观察',
+		title: '为全球品牌搭建可规模化的社媒运营体系',
+		description: '品牌进入新市场时，最容易在本地化社媒运营上踩的坑。',
+	},
+];
+const categories = [
+	'全部文章',
+	...Array.from(new Set([...posts.map((post) => post.data.category), ...upcomingPosts.map((post) => post.category)])),
+];
 ---
 
 <!doctype html>
@@ -21,23 +41,58 @@ const categories = Array.from(new Set(posts.map((post) => post.data.category)));
 		<Header />
 		<main>
 			<section class="page-head">
-				<span class="eyebrow">文章库</span>
-				<h1>博客文章</h1>
-				<p>按产品更新、操作教程和运营实践沉淀 Ainnc 麦芽营销的使用方法。</p>
+				<span class="eyebrow">麦芽营销团队出品</span>
+				<h1>规模化运营社媒账号的实战方法</h1>
+				<p>写给需要在 TikTok、Instagram、Reddit 和 X 上管理成百上千个账号的代运营机构、MCN 和出海品牌团队。</p>
 			</section>
 
-			<section class="category-bar panel">
-				<strong>分类</strong>
-				<ul class="tag-list">
-					{categories.map((category) => <li>{category}</li>)}
-				</ul>
+			<section class="filter-bar" aria-label="文章分类筛选">
+				{
+					categories.map((category, index) => (
+						<button class:list={['filter-pill', { selected: index === 0 }]} type="button" data-filter={category}>
+							{category}
+						</button>
+					))
+				}
 			</section>
 
-			<section class="post-grid">
+			<section class="post-grid" id="post-grid">
 				{posts.map((post) => <PostCard post={post} />)}
+				{
+					upcomingPosts.map((post) => (
+						<article class="post-card draft-card" data-category={post.category}>
+							<div class="post-body">
+								<div class="post-meta">
+									<span>{post.category}</span>
+									<span>即将发布</span>
+								</div>
+								<h2>{post.title}</h2>
+								<p>{post.description}</p>
+								<span class="draft-label">草稿</span>
+							</div>
+						</article>
+					))
+				}
 			</section>
 		</main>
 		<Footer />
+		<script>
+			const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+			const cards = document.querySelectorAll<HTMLElement>('#post-grid > [data-category]');
+
+			filterButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					filterButtons.forEach((item) => item.classList.remove('selected'));
+					button.classList.add('selected');
+					const filter = button.dataset.filter;
+
+					cards.forEach((card) => {
+						const visible = filter === '全部文章' || card.dataset.category === filter;
+						card.toggleAttribute('hidden', !visible);
+					});
+				});
+			});
+		</script>
 	</body>
 </html>
 
@@ -46,18 +101,62 @@ const categories = Array.from(new Set(posts.map((post) => post.data.category)));
 		display: grid;
 		gap: 0.8rem;
 		margin-bottom: 1.5rem;
+		padding: 2rem;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		background:
+			linear-gradient(135deg, rgba(0, 201, 170, 12%), rgba(0, 69, 76, 6%)),
+			white;
+		box-shadow: var(--shadow);
 	}
 
 	.page-head p {
 		max-width: 720px;
+		font-size: 1.05rem;
 	}
 
-	.category-bar {
+	.filter-bar {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 1rem;
+		gap: 0.65rem;
 		align-items: center;
 		margin-bottom: 1rem;
-		padding: 1rem;
+	}
+
+	.filter-pill {
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: white;
+		padding: 0.55rem 0.9rem;
+		color: var(--muted);
+		font: inherit;
+		font-weight: 800;
+		cursor: pointer;
+	}
+
+	.filter-pill:hover,
+	.filter-pill.selected {
+		border-color: var(--accent-dark);
+		background: #063f3c;
+		color: white;
+	}
+
+	.draft-card {
+		border-style: dashed;
+		background: rgba(255, 255, 255, 0.72);
+	}
+
+	.draft-card h2 {
+		font-size: 1.15rem;
+	}
+
+	.draft-label {
+		width: fit-content;
+		border-radius: 999px;
+		background: #eef2f7;
+		padding: 0.25rem 0.65rem;
+		color: var(--subtle);
+		font-size: 0.82rem;
+		font-weight: 800;
 	}
 </style>
