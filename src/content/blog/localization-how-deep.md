@@ -4,7 +4,7 @@ description: "翻译解决的是“听得懂”，本地化解决的是“愿意
 pubDate: 2026-08-04
 category: "出海观察"
 tags: ["本地化", "出海品牌", "社媒内容"]
-heroImage: "../../assets/blog-localization-how-deep.webp"
+heroImage: "../../assets/blog-localization-how-deep-cover-v2.webp"
 ---
 
 很多出海团队会把本地化理解成翻译。翻译当然重要，但在社媒运营里，只让用户“看得懂”远远不够。

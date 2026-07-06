@@ -4,7 +4,7 @@ description: "从一堆零散工具，走向账号、素材、任务、数据共
 pubDate: 2026-07-10
 category: "运营方法论"
 tags: ["社媒运营平台", "团队协作", "批量运营"]
-heroImage: "../../assets/blog-real-social-ops-platform.webp"
+heroImage: "../../assets/blog-real-social-ops-platform-cover-v2.webp"
 ---
 
 “社媒运营平台”这个词现在有点被用滥了。发布排期工具叫平台，数据看板叫平台，甚至一个简单的素材共享文件夹也被叫做平台。真正的问题是：当团队的账号数量、内容量、平台数都在往上涨的时候，怎么判断你用的到底是不是一个能撑住规模的平台。

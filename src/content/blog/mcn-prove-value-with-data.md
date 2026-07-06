@@ -4,7 +4,7 @@ description: "签单容易续约难，把执行记录变成可视化的复盘材
 pubDate: 2026-07-14
 category: "运营方法论"
 tags: ["MCN", "代运营", "客户复盘"]
-heroImage: "../../assets/blog-mcn-prove-value-with-data.webp"
+heroImage: "../../assets/blog-mcn-prove-value-with-data-cover-v2.webp"
 ---
 
 代运营机构最常见的压力不是“有没有做事”，而是“客户能不能看见你做了什么”。

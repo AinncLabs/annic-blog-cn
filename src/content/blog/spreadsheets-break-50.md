@@ -4,7 +4,7 @@ description: "用表格追踪账号、登录信息和内容的隐藏成本，以
 pubDate: 2026-07-07
 category: "运营方法论"
 tags: ["表格管理", "账号运营", "运营系统"]
-heroImage: "../../assets/blog-spreadsheets-break-50.webp"
+heroImage: "../../assets/blog-spreadsheets-break-50-cover-v2.webp"
 ---
 
 几乎每一家从零开始做社媒代运营的团队，第一套账号管理系统都是一张表格。它免费、灵活、上手快，前期账号数量不多的时候确实够用。问题是，几乎没有团队会在账号数量还很少的时候意识到，表格从设计的第一天起，就不是为“管理会变化的资产”这件事准备的。

@@ -4,7 +4,7 @@ description: "账号安全的核心逻辑很朴素：真实的独立性、自然
 pubDate: 2026-07-28
 category: "平台专题"
 tags: ["TikTok", "风控", "账号安全"]
-heroImage: "../../assets/blog-tiktok-risk-guide.webp"
+heroImage: "../../assets/blog-tiktok-risk-guide-cover-v2.webp"
 ---
 
 TikTok 批量运营最怕的不是某一个账号出问题，而是账号池出现连锁风险。一个设备、一个 IP、一组重复行为，都可能让多个账号同时变得不稳定。

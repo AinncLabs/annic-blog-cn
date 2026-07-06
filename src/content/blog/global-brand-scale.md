@@ -4,7 +4,7 @@ description: "品牌进入新市场时，最容易在本地化社媒运营上踩
 pubDate: 2026-07-31
 category: "出海观察"
 tags: ["全球品牌", "出海运营", "本地化"]
-heroImage: "../../assets/blog-global-brand-scale.webp"
+heroImage: "../../assets/blog-global-brand-scale-cover-v2.webp"
 ---
 
 全球品牌进入新市场时，社媒运营往往比想象中更复杂。不是把总部内容翻译成当地语言就结束了，而是要让账号、内容、节奏和团队协作都适应新的市场。
