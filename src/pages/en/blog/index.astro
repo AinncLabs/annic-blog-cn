@@ -37,6 +37,7 @@ const categories = [
 		<Header />
 		<main>
 			<section class="page-head">
+				<span class="cursor-glow" aria-hidden="true"></span>
 				<div class="page-head-copy">
 					<span class="section-kicker">From the Ainnc Team</span>
 					<h1>Practical Methods for Scaling Social Account Operations</h1>
@@ -84,12 +85,38 @@ const categories = [
 					});
 				});
 			});
+
+			const heroPanels = document.querySelectorAll<HTMLElement>('.page-head');
+			const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+			if (supportsHover) {
+				heroPanels.forEach((panel) => {
+					panel.addEventListener('pointermove', (event) => {
+						const rect = panel.getBoundingClientRect();
+						panel.style.setProperty('--glow-x', `${event.clientX - rect.left}px`);
+						panel.style.setProperty('--glow-y', `${event.clientY - rect.top}px`);
+						panel.classList.add('is-glowing');
+					});
+
+					panel.addEventListener('pointerenter', () => {
+						panel.classList.add('is-glowing');
+					});
+
+					panel.addEventListener('pointerleave', () => {
+						panel.classList.remove('is-glowing');
+					});
+				});
+			}
 		</script>
 	</body>
 </html>
 
 <style>
 	.page-head {
+		--glow-x: 50%;
+		--glow-y: 50%;
+		position: relative;
+		isolation: isolate;
 		display: grid;
 		grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.92fr);
 		gap: 2rem;
@@ -105,7 +132,30 @@ const categories = [
 		box-shadow: var(--shadow);
 	}
 
+	.cursor-glow {
+		position: absolute;
+		z-index: 0;
+		inset: -12%;
+		background: radial-gradient(
+			circle 260px at var(--glow-x) var(--glow-y),
+			rgba(46, 233, 208, 38%),
+			rgba(0, 201, 170, 16%) 34%,
+			rgba(0, 125, 118, 8%) 48%,
+			transparent 72%
+		);
+		filter: blur(14px);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.28s ease;
+	}
+
+	.page-head.is-glowing .cursor-glow {
+		opacity: 1;
+	}
+
 	.page-head-copy {
+		position: relative;
+		z-index: 1;
 		display: grid;
 		gap: 1rem;
 	}
@@ -153,6 +203,8 @@ const categories = [
 	}
 
 	.tile-grid {
+		position: relative;
+		z-index: 1;
 		display: grid;
 		grid-template-columns: repeat(7, minmax(0, 1fr));
 		gap: 0.55rem;
@@ -216,6 +268,12 @@ const categories = [
 		}
 
 		.tile-grid {
+			display: none;
+		}
+	}
+
+	@media (hover: none), (pointer: coarse) {
+		.cursor-glow {
 			display: none;
 		}
 	}
