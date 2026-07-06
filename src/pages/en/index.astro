@@ -61,13 +61,6 @@ const matrixLabels = new Map([
 						For agencies, MCNs, and global brand teams managing hundreds or thousands of
 						accounts across TikTok, Instagram, Reddit, and X.
 					</p>
-					<div class="hero-actions">
-						<a href="/en/blog/" class="primary">Read Articles</a>
-						<a href="https://www.ainnc.com/#hero" class="dark" target="_blank" rel="noopener noreferrer">
-							Official Site
-						</a>
-						<a href="/en/about/" class="secondary">About Ainnc</a>
-					</div>
 					<div class="hero-stats" aria-label="Blog content overview">
 						<span><strong>{posts.length}</strong>articles</span>
 						<span><strong>4</strong>themes</span>
@@ -265,39 +258,11 @@ const matrixLabels = new Map([
 		font-size: 1.08rem;
 	}
 
-	.hero-actions,
 	.hero-stats {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.75rem;
 		justify-content: center;
-	}
-
-	.hero-actions a {
-		border-radius: 8px;
-		padding: 0.72rem 1.05rem;
-		font-weight: 900;
-		text-decoration: none;
-	}
-
-	.hero-actions .primary {
-		background: var(--accent);
-		color: white;
-	}
-
-	.hero-actions .dark {
-		background: #063f3c;
-		color: white;
-	}
-
-	.hero-actions .secondary {
-		border: 1px solid var(--line);
-		background: white;
-		color: var(--text);
-	}
-
-	.hero-actions a:hover {
-		transform: translateY(-2px);
 	}
 
 	.hero-stats {
