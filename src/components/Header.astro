@@ -50,7 +50,8 @@ const aboutPath = isEnglish ? '/en/about/' : '/about/';
 		top: 0;
 		z-index: 10;
 		border-bottom: 1px solid var(--line);
-		background: white;
+		background: rgba(255, 255, 255, 88%);
+		backdrop-filter: blur(18px);
 		box-shadow: 0 8px 30px rgba(15, 23, 42, 6%);
 	}
 	.brand {
@@ -84,7 +85,7 @@ const aboutPath = isEnglish ? '/en/about/' : '/about/';
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		width: min(1120px, calc(100% - 2rem));
+		width: min(var(--page-max), calc(100% - 2.5rem));
 		min-height: 68px;
 		margin: 0 auto;
 	}

@@ -40,6 +40,16 @@ const matrixLabels = new Map([
 			<section class="home-hero" id="home-hero">
 				<img class="hero-watermark" src="/ainnc-logo-icon.webp" alt="" aria-hidden="true" />
 				<span class="hero-cursor-glow" aria-hidden="true"></span>
+				<div class="hero-rail hero-rail-left" aria-hidden="true">
+					<span>ACCOUNT OPS</span>
+					<strong>309</strong>
+					<small>task samples</small>
+				</div>
+				<div class="hero-rail hero-rail-right" aria-hidden="true">
+					<span>WORKFLOW</span>
+					<strong>4</strong>
+					<small>content paths</small>
+				</div>
 				<div class="matrix-wrap" aria-hidden="true">
 					<div class="matrix-grid">
 						{
@@ -65,6 +75,26 @@ const matrixLabels = new Map([
 						<span><strong>{posts.length}</strong>articles</span>
 						<span><strong>4</strong>themes</span>
 						<span><strong>1</strong>operations layer</span>
+					</div>
+				</div>
+				<div class="hero-ticker" aria-hidden="true">
+					<div>
+						<span>TIKTOK</span>
+						<span>INSTAGRAM</span>
+						<span>REDDIT</span>
+						<span>X</span>
+						<span>CLOUD PHONE</span>
+						<span>PROXY IP</span>
+						<span>ASSET FILES</span>
+						<span>TASK QUEUE</span>
+						<span>TIKTOK</span>
+						<span>INSTAGRAM</span>
+						<span>REDDIT</span>
+						<span>X</span>
+						<span>CLOUD PHONE</span>
+						<span>PROXY IP</span>
+						<span>ASSET FILES</span>
+						<span>TASK QUEUE</span>
 					</div>
 				</div>
 			</section>
@@ -135,11 +165,19 @@ const matrixLabels = new Map([
 			if (hero && supportsHover) {
 				hero.addEventListener('pointermove', (event) => {
 					const rect = hero.getBoundingClientRect();
+					const shiftX = ((event.clientX - rect.left) / rect.width - 0.5) * 22;
+					const shiftY = ((event.clientY - rect.top) / rect.height - 0.5) * 18;
 					hero.style.setProperty('--glow-x', `${event.clientX - rect.left}px`);
 					hero.style.setProperty('--glow-y', `${event.clientY - rect.top}px`);
+					hero.style.setProperty('--shift-x', `${shiftX}px`);
+					hero.style.setProperty('--shift-y', `${shiftY}px`);
 					hero.classList.add('is-glowing');
 				});
-				hero.addEventListener('pointerleave', () => hero.classList.remove('is-glowing'));
+				hero.addEventListener('pointerleave', () => {
+					hero.classList.remove('is-glowing');
+					hero.style.setProperty('--shift-x', '0px');
+					hero.style.setProperty('--shift-y', '0px');
+				});
 			}
 		</script>
 	</body>
@@ -149,31 +187,46 @@ const matrixLabels = new Map([
 	.home-hero {
 		--glow-x: 50%;
 		--glow-y: 50%;
+		--shift-x: 0px;
+		--shift-y: 0px;
 		position: relative;
 		isolation: isolate;
 		display: grid;
-		min-height: 520px;
+		min-height: 640px;
 		place-items: center;
 		overflow: hidden;
-		margin-bottom: 2rem;
+		margin-bottom: 4rem;
 		border: 1px solid var(--line);
 		border-radius: 8px;
 		background:
-			linear-gradient(135deg, rgba(0, 201, 170, 10%), rgba(0, 69, 76, 5%)),
+			linear-gradient(90deg, rgba(255, 255, 255, 76%) 0, rgba(255, 255, 255, 38%) 45%, rgba(255, 255, 255, 76%) 100%),
+			repeating-linear-gradient(90deg, rgba(0, 125, 118, 8%) 0 1px, transparent 1px 96px),
+			linear-gradient(135deg, rgba(0, 201, 170, 16%), rgba(60, 110, 159, 8%) 48%, rgba(0, 69, 76, 5%)),
 			white;
-		box-shadow: var(--shadow);
+		box-shadow: 0 24px 70px rgba(0, 69, 76, 12%);
 		text-align: center;
+	}
+
+	.home-hero::before {
+		content: '';
+		position: absolute;
+		inset: 1rem;
+		z-index: 0;
+		border: 1px solid rgba(0, 201, 170, 16%);
+		border-radius: 8px;
+		pointer-events: none;
 	}
 
 	.hero-watermark {
 		position: absolute;
-		top: -5rem;
-		right: -6rem;
+		top: -7rem;
+		right: -5rem;
 		z-index: 0;
-		width: min(42rem, 68vw);
-		opacity: 0.05;
+		width: min(50rem, 58vw);
+		opacity: 0.07;
 		filter: grayscale(1) brightness(0.45);
-		transform: rotate(-7deg);
+		transform: translate3d(var(--shift-x), var(--shift-y), 0) rotate(-7deg);
+		transition: transform 0.18s ease-out;
 	}
 
 	.hero-cursor-glow {
@@ -194,9 +247,11 @@ const matrixLabels = new Map([
 	.matrix-wrap {
 		position: absolute;
 		z-index: 1;
-		width: min(920px, 92vw);
-		opacity: 0.84;
+		width: min(1260px, 86vw);
+		opacity: 0.78;
 		pointer-events: none;
+		transform: translate3d(var(--shift-x), var(--shift-y), 0);
+		transition: transform 0.18s ease-out;
 	}
 
 	.matrix-grid {
@@ -229,12 +284,57 @@ const matrixLabels = new Map([
 
 	.hero-copy {
 		position: relative;
-		z-index: 2;
+		z-index: 3;
 		display: grid;
 		max-width: 760px;
 		gap: 1rem;
 		padding: clamp(2rem, 7vw, 5rem) 1rem;
 		justify-items: center;
+	}
+
+	.hero-rail {
+		position: absolute;
+		z-index: 3;
+		display: grid;
+		gap: 0.2rem;
+		border-left: 2px solid var(--accent);
+		background: rgba(255, 255, 255, 48%);
+		padding: 0.8rem 0.95rem;
+		text-align: left;
+		backdrop-filter: blur(14px);
+	}
+
+	.hero-rail-left {
+		left: clamp(1.3rem, 5vw, 5rem);
+		top: 28%;
+	}
+
+	.hero-rail-right {
+		right: clamp(1.3rem, 5vw, 5rem);
+		bottom: 25%;
+	}
+
+	.hero-rail span,
+	.hero-ticker span {
+		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	}
+
+	.hero-rail span {
+		color: var(--accent-dark);
+		font-size: 0.7rem;
+		font-weight: 900;
+		letter-spacing: 0.08em;
+	}
+
+	.hero-rail strong {
+		color: var(--text);
+		font-size: clamp(1.8rem, 3vw, 2.7rem);
+		line-height: 1;
+	}
+
+	.hero-rail small {
+		color: var(--muted);
+		font-weight: 800;
 	}
 
 	.section-kicker {
@@ -284,6 +384,29 @@ const matrixLabels = new Map([
 		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 	}
 
+	.hero-ticker {
+		position: absolute;
+		right: 1rem;
+		bottom: 1rem;
+		left: 1rem;
+		z-index: 4;
+		overflow: hidden;
+		border-top: 1px solid rgba(0, 125, 118, 12%);
+		padding-top: 0.75rem;
+		color: rgba(6, 39, 42, 58%);
+		font-size: 0.74rem;
+		font-weight: 900;
+		letter-spacing: 0.08em;
+		white-space: nowrap;
+	}
+
+	.hero-ticker div {
+		display: flex;
+		width: max-content;
+		gap: 2rem;
+		animation: ticker-flow 24s linear infinite;
+	}
+
 	.framework-section,
 	.featured-section,
 	main > section {
@@ -329,10 +452,13 @@ const matrixLabels = new Map([
 		border: 1px solid var(--line);
 		border-top: 3px solid var(--framework-accent);
 		border-radius: 8px;
-		background: white;
-		padding: 1.15rem;
+		background:
+			linear-gradient(135deg, color-mix(in srgb, var(--framework-accent) 9%, white), white 52%),
+			white;
+		padding: 1.3rem;
 		box-shadow: 0 6px 18px rgba(15, 23, 42, 5%);
 		transition:
+			border-color 0.22s ease,
 			box-shadow 0.22s ease,
 			transform 0.22s ease;
 	}
@@ -354,6 +480,7 @@ const matrixLabels = new Map([
 	}
 
 	.framework-card:hover {
+		border-color: color-mix(in srgb, var(--framework-accent) 45%, white);
 		box-shadow: 0 16px 30px -14px color-mix(in srgb, var(--framework-accent) 28%, transparent);
 		transform: translateY(-3px);
 	}
@@ -403,6 +530,18 @@ const matrixLabels = new Map([
 		}
 	}
 
+	@keyframes ticker-flow {
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	@media (max-width: 1180px) {
+		.hero-rail {
+			display: none;
+		}
+	}
+
 	@media (max-width: 900px) {
 		.framework-section .section-header,
 		.featured-section .section-header {
@@ -424,7 +563,9 @@ const matrixLabels = new Map([
 		}
 
 		.matrix-wrap,
-		.hero-watermark {
+		.hero-watermark,
+		.hero-rail,
+		.hero-ticker {
 			display: none;
 		}
 
