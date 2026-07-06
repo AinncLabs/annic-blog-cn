@@ -9,6 +9,10 @@
 	--surface-soft: #f6f9ff;
 	--surface-blue: #e3fbf7;
 	--success: #16a34a;
+	--tone-ops: #00b1b3;
+	--tone-product: #0891b2;
+	--tone-platform: #3c6e9f;
+	--tone-insights: #0f9d74;
 	--shadow: 0 12px 32px rgba(15, 23, 42, 10%);
 }
 
@@ -176,6 +180,8 @@ hr {
 }
 
 .post-card {
+	--card-accent: var(--accent-dark);
+	--card-accent-soft: var(--surface-blue);
 	position: relative;
 	display: flex;
 	min-height: 100%;
@@ -195,6 +201,26 @@ hr {
 	display: none;
 }
 
+.post-card[data-tone='ops'] {
+	--card-accent: var(--tone-ops);
+	--card-accent-soft: #e3fbf7;
+}
+
+.post-card[data-tone='product'] {
+	--card-accent: var(--tone-product);
+	--card-accent-soft: #e1f5fb;
+}
+
+.post-card[data-tone='platform'] {
+	--card-accent: var(--tone-platform);
+	--card-accent-soft: #e7eef6;
+}
+
+.post-card[data-tone='insights'] {
+	--card-accent: var(--tone-insights);
+	--card-accent-soft: #e2f7ee;
+}
+
 .post-card::before,
 .post-card::after {
 	content: '';
@@ -202,7 +228,7 @@ hr {
 	z-index: 1;
 	width: 1rem;
 	height: 1rem;
-	border-color: var(--accent);
+	border-color: var(--card-accent);
 	opacity: 0;
 	transition:
 		opacity 0.2s ease,
@@ -226,8 +252,8 @@ hr {
 }
 
 .post-card:hover {
-	border-color: rgba(0, 125, 118, 65%);
-	box-shadow: 0 20px 42px rgba(0, 125, 118, 16%);
+	border-color: color-mix(in srgb, var(--card-accent) 70%, white);
+	box-shadow: 0 20px 42px color-mix(in srgb, var(--card-accent) 18%, transparent);
 	transform: translateY(-4px);
 }
 
@@ -246,7 +272,7 @@ hr {
 .media-link {
 	display: block;
 	min-height: 100%;
-	background: var(--surface-blue);
+	background: var(--card-accent-soft);
 }
 
 .post-card img {
@@ -275,7 +301,8 @@ hr {
 	gap: 0.45rem;
 	align-items: center;
 	width: fit-content;
-	color: var(--accent-dark);
+	font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	color: var(--card-accent);
 	font-size: 0.75rem;
 	font-weight: 900;
 	letter-spacing: 0.08em;
@@ -313,7 +340,7 @@ hr {
 }
 
 .post-card h2 a:hover {
-	color: var(--accent);
+	color: var(--card-accent);
 }
 
 .post-body p {
@@ -327,9 +354,14 @@ hr {
 	align-items: center;
 	width: fit-content;
 	margin-top: auto;
-	color: var(--accent-dark);
+	color: var(--card-accent);
 	font-weight: 900;
 	text-decoration: none;
+}
+
+.post-card .tag-list li {
+	background: var(--card-accent-soft);
+	color: var(--card-accent);
 }
 
 .read-link span {

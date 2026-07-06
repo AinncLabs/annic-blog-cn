@@ -5,15 +5,20 @@ import BlogPost from '../../../layouts/BlogPost.astro';
 import { getPostMeta } from '../../../i18n';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog', ({ data }) => !data.draft);
-	return posts.map((post) => ({
+	const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	);
+	return posts.map((post, postIndex) => ({
 		params: { slug: post.id },
-		props: post,
+		props: { post, postIndex },
 	}));
 }
-type Props = CollectionEntry<'blog'>;
+type Props = {
+	post: CollectionEntry<'blog'>;
+	postIndex: number;
+};
 
-const post = Astro.props;
+const { post, postIndex } = Astro.props;
 const meta = getPostMeta(post, 'en');
 ---
 
@@ -24,6 +29,7 @@ const meta = getPostMeta(post, 'en');
 	category={meta.category}
 	tags={meta.tags}
 	locale="en"
+	postIndex={postIndex}
 >
 	<EnglishPostBody postId={post.id} />
 </BlogPost>

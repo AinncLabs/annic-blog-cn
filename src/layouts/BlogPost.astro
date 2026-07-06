@@ -5,10 +5,12 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import { getCategoryTone, getPostCode } from '../blogVisuals';
 import type { Locale } from '../i18n';
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	locale?: Locale;
+	postIndex?: number;
 };
 
 const {
@@ -20,6 +22,7 @@ const {
 	category = 'Ainnc',
 	tags = [],
 	locale = 'zh',
+	postIndex = 0,
 } = Astro.props;
 const isEnglish = locale === 'en';
 const tagLabel = isEnglish ? 'Post tags' : '文章标签';
@@ -31,6 +34,8 @@ const ctaDescription = isEnglish
 	: '看看 Ainnc 如何在规模化场景下处理账号隔离、代理 IP、素材管理和批量发布。';
 const officialLabel = isEnglish ? 'Visit Official Site' : '访问官网';
 const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
+const categoryTone = getCategoryTone(category);
+const postCode = getPostCode(category, postIndex);
 ---
 
 <html lang={isEnglish ? 'en' : 'zh-CN'}>
@@ -43,8 +48,13 @@ const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
 		<Header />
 		<main>
 			<a class="back-link" href={blogPath}><span aria-hidden="true">&larr;</span>{backLabel}</a>
-			<article class="article-shell">
+			<article class="article-shell" data-tone={categoryTone}>
 				<header class="article-header">
+					<div class="article-code">
+						<span>ARTICLE</span>
+						<span aria-hidden="true">/</span>
+						<span>{postCode}</span>
+					</div>
 					<div class="post-meta">
 						<span>{category}</span>
 						<span><FormattedDate date={pubDate} locale={locale} /></span>
@@ -112,6 +122,27 @@ const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
 			window.addEventListener('scroll', updateReadingState, { passive: true });
 			updateReadingState();
 			backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+			const revealItems = document.querySelectorAll('.prose > *');
+			if ('IntersectionObserver' in window) {
+				const revealObserver = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((entry) => {
+							if (!entry.isIntersecting) return;
+							entry.target.classList.add('is-visible');
+							revealObserver.unobserve(entry.target);
+						});
+					},
+					{ rootMargin: '0px 0px -10% 0px', threshold: 0.12 },
+				);
+
+				revealItems.forEach((item) => {
+					item.classList.add('reveal-item');
+					revealObserver.observe(item);
+				});
+			} else {
+				revealItems.forEach((item) => item.classList.add('is-visible'));
+			}
 		</script>
 	</body>
 </html>
@@ -142,8 +173,30 @@ const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
 	}
 
 	.article-shell {
+		--article-accent: var(--accent-dark);
+		--article-accent-soft: var(--surface-blue);
 		display: grid;
 		gap: 1rem;
+	}
+
+	.article-shell[data-tone='ops'] {
+		--article-accent: var(--tone-ops);
+		--article-accent-soft: #e3fbf7;
+	}
+
+	.article-shell[data-tone='product'] {
+		--article-accent: var(--tone-product);
+		--article-accent-soft: #e1f5fb;
+	}
+
+	.article-shell[data-tone='platform'] {
+		--article-accent: var(--tone-platform);
+		--article-accent-soft: #e7eef6;
+	}
+
+	.article-shell[data-tone='insights'] {
+		--article-accent: var(--tone-insights);
+		--article-accent-soft: #e2f7ee;
 	}
 
 	.article-header {
@@ -154,6 +207,22 @@ const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
 		background: white;
 		padding: 2rem;
 		box-shadow: var(--shadow);
+	}
+
+	.article-code {
+		display: inline-flex;
+		gap: 0.5rem;
+		align-items: center;
+		width: fit-content;
+		border: 1px solid color-mix(in srgb, var(--article-accent) 26%, white);
+		border-radius: 999px;
+		background: var(--article-accent-soft);
+		padding: 0.28rem 0.7rem;
+		color: var(--article-accent);
+		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		font-size: 0.8rem;
+		font-weight: 900;
+		letter-spacing: 0.08em;
 	}
 
 	.article-header p {
@@ -173,6 +242,38 @@ const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
 		margin: 0 auto;
 		padding: 2rem;
 		font-size: 1.04rem;
+	}
+
+	.prose :global(.reveal-item) {
+		opacity: 0;
+		transform: translateY(14px);
+		transition:
+			opacity 0.55s ease,
+			transform 0.55s ease;
+	}
+
+	.prose :global(.reveal-item.is-visible) {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.prose :global(h2),
+	.prose :global(h3) {
+		position: relative;
+		padding-left: 1.1rem;
+	}
+
+	.prose :global(h2::before),
+	.prose :global(h3::before) {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.55em;
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 2px;
+		background: var(--article-accent);
+		transform: rotate(45deg);
 	}
 
 	.article-cta {
@@ -261,6 +362,14 @@ const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
 		.prose,
 		.article-cta {
 			padding: 1rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.prose :global(.reveal-item) {
+			opacity: 1;
+			transform: none;
+			transition: none;
 		}
 	}
 </style>

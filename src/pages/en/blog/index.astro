@@ -35,6 +35,28 @@ const categories = [
 	</head>
 	<body>
 		<Header />
+		<div class="keyword-ticker" aria-hidden="true">
+			<div class="ticker-track">
+				<span>TIKTOK</span>
+				<span>INSTAGRAM</span>
+				<span>CLOUD PHONE ENVIRONMENTS</span>
+				<span>PROXY IP MANAGEMENT</span>
+				<span>BULK TASKS</span>
+				<span>ASSET LIBRARY</span>
+				<span>REDDIT</span>
+				<span>X</span>
+				<span>ACCOUNT MATRIX</span>
+				<span>TIKTOK</span>
+				<span>INSTAGRAM</span>
+				<span>CLOUD PHONE ENVIRONMENTS</span>
+				<span>PROXY IP MANAGEMENT</span>
+				<span>BULK TASKS</span>
+				<span>ASSET LIBRARY</span>
+				<span>REDDIT</span>
+				<span>X</span>
+				<span>ACCOUNT MATRIX</span>
+			</div>
+		</div>
 		<main>
 			<section class="page-head">
 				<span class="cursor-glow" aria-hidden="true"></span>
@@ -49,7 +71,7 @@ const categories = [
 					</div>
 				</div>
 				<div class="tile-grid" aria-hidden="true">
-					{Array.from({ length: 42 }).map((_, index) => <span class:list={['tile', { bright: index % 8 === 0 || index % 13 === 0 }]} />)}
+					{Array.from({ length: 42 }).map((_, index) => <span class:list={['tile', { bright: index % 8 === 0 || index % 13 === 0 }]} style={`--delay: ${(index % 11) * 0.18}s`} />)}
 				</div>
 			</section>
 
@@ -65,7 +87,7 @@ const categories = [
 			</section>
 
 			<section class="post-grid" id="post-grid">
-				{posts.map((post, index) => <PostCard post={post} featured={index === 0} locale="en" />)}
+				{posts.map((post, index) => <PostCard post={post} index={index} featured={index === 0} locale="en" />)}
 			</section>
 		</main>
 		<Footer />
@@ -112,6 +134,49 @@ const categories = [
 </html>
 
 <style>
+	.keyword-ticker {
+		overflow: hidden;
+		border-bottom: 1px solid rgba(6, 39, 42, 14%);
+		background: #06272a;
+		color: #d8fffa;
+	}
+
+	.ticker-track {
+		display: flex;
+		width: max-content;
+		gap: 2rem;
+		padding: 0.45rem 0;
+		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		font-size: 0.76rem;
+		font-weight: 800;
+		letter-spacing: 0.11em;
+		animation: ticker-slide 34s linear infinite;
+	}
+
+	.ticker-track span {
+		position: relative;
+		white-space: nowrap;
+		opacity: 0.86;
+	}
+
+	.ticker-track span::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		right: -1.15rem;
+		width: 0.28rem;
+		height: 0.28rem;
+		border-radius: 999px;
+		background: var(--accent);
+		transform: translateY(-50%);
+	}
+
+	@keyframes ticker-slide {
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
 	.page-head {
 		--glow-x: 50%;
 		--glow-y: 50%;
@@ -214,11 +279,25 @@ const categories = [
 		aspect-ratio: 1;
 		border-radius: 7px;
 		background: rgba(0, 177, 179, 10%);
+		animation: tile-breathe 4.8s ease-in-out var(--delay) infinite;
 	}
 
 	.tile.bright {
 		background: linear-gradient(135deg, var(--accent), var(--accent-dark));
 		box-shadow: 0 10px 28px rgba(0, 201, 170, 24%);
+	}
+
+	@keyframes tile-breathe {
+		0%,
+		100% {
+			opacity: 0.42;
+			transform: scale(0.94);
+		}
+
+		45% {
+			opacity: 1;
+			transform: scale(1);
+		}
 	}
 
 	.filter-bar {
