@@ -16,10 +16,10 @@ const audiences = [
 	['为什么是基础设施', '账号、代理、素材、任务共用同一套记录，而不是分散在表格、网盘和聊天工具里。规模变大时，系统不会跟着变乱。'],
 ];
 const proofStats = [
-	['3+', '海外社媒运营经验'],
-	['10000+', '托管中的账号环境'],
-	['6', '主流社媒平台支持'],
-	['7x24', '云端自动化运行'],
+	['3', '+', '海外社媒运营经验'],
+	['10000', '+', '托管中的账号环境'],
+	['6', '', '主流社媒平台支持'],
+	['7', 'x24', '云端自动化运行'],
 ];
 ---
 
@@ -49,9 +49,9 @@ const proofStats = [
 					</div>
 					<div class="proof-grid">
 						{
-							proofStats.map(([value, label]) => (
+							proofStats.map(([value, suffix, label]) => (
 								<div class="proof-cell">
-									<strong>{value}</strong>
+									<strong class="count-up" data-count={value} data-suffix={suffix}>0{suffix}</strong>
 									<span>{label}</span>
 								</div>
 							))
@@ -116,6 +116,52 @@ const proofStats = [
 					hero.classList.add('is-glowing');
 				});
 				hero.addEventListener('pointerleave', () => hero.classList.remove('is-glowing'));
+			}
+
+			const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const counters = document.querySelectorAll<HTMLElement>('.count-up');
+
+			const finishCounter = (counter: HTMLElement) => {
+				counter.textContent = `${counter.dataset.count ?? '0'}${counter.dataset.suffix ?? ''}`;
+			};
+
+			const animateCounter = (counter: HTMLElement) => {
+				const target = Number(counter.dataset.count ?? 0);
+				const suffix = counter.dataset.suffix ?? '';
+				const duration = 1400;
+				const start = performance.now();
+
+				const tick = (now: number) => {
+					const progress = Math.min(1, (now - start) / duration);
+					const eased = 1 - Math.pow(1 - progress, 3);
+					counter.textContent = `${Math.round(target * eased)}${suffix}`;
+
+					if (progress < 1) {
+						window.requestAnimationFrame(tick);
+					} else {
+						finishCounter(counter);
+					}
+				};
+
+				window.requestAnimationFrame(tick);
+			};
+
+			if (reducedMotion || !('IntersectionObserver' in window)) {
+				counters.forEach(finishCounter);
+			} else {
+				const counterObserver = new IntersectionObserver(
+					(entries, observer) => {
+						entries.forEach((entry) => {
+							if (!entry.isIntersecting) return;
+							const counter = entry.target as HTMLElement;
+							animateCounter(counter);
+							observer.unobserve(counter);
+						});
+					},
+					{ threshold: 0.45 },
+				);
+
+				counters.forEach((counter) => counterObserver.observe(counter));
 			}
 		</script>
 	</body>

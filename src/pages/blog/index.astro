@@ -99,17 +99,19 @@ const heroLogRows = [
 						<em><span></span>LIVE</em>
 					</div>
 					<div class="ops-log">
-						{
-							heroLogRows.map(([time, device, action, platform, status], index) => (
-								<div class="ops-row" style={`--delay: ${index * 0.16}s`}>
-									<span>{time}</span>
-									<strong>{device}</strong>
-									<span>{action}</span>
-									<b>{platform}</b>
-									<em>{status}</em>
-								</div>
-							))
-						}
+						<div class="ops-log-track">
+							{
+								[...heroLogRows, ...heroLogRows].map(([time, device, action, platform, status], index) => (
+									<div class="ops-row" style={`--delay: ${index * 0.16}s`}>
+										<span>{time}</span>
+										<strong>{device}</strong>
+										<span>{action}</span>
+										<b>{platform}</b>
+										<em>{status}</em>
+									</div>
+								))
+							}
+						</div>
 					</div>
 					<div class="ops-stats" aria-label="博客内容数据">
 						<span><strong>2,855</strong>本周发布内容</span>
@@ -429,11 +431,21 @@ const heroLogRows = [
 
 	.ops-log {
 		overflow: hidden;
+		height: 9.7rem;
 		border-radius: 8px;
 		background:
 			radial-gradient(circle at 28% 16%, rgba(0, 201, 170, 12%), transparent 16rem),
 			rgba(0, 24, 26, 42%);
 		padding: 1rem;
+	}
+
+	.ops-log-track {
+		display: grid;
+		animation: live-log-scroll 11s linear infinite;
+	}
+
+	.ops-log:hover .ops-log-track {
+		animation-play-state: paused;
 	}
 
 	.ops-row {
@@ -501,6 +513,12 @@ const heroLogRows = [
 	@keyframes row-glow {
 		50% {
 			color: rgba(216, 255, 250, 95%);
+		}
+	}
+
+	@keyframes live-log-scroll {
+		to {
+			transform: translateY(-50%);
 		}
 	}
 
@@ -683,6 +701,12 @@ const heroLogRows = [
 	@media (hover: none), (pointer: coarse) {
 		.cursor-glow {
 			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ops-log-track {
+			animation: none;
 		}
 	}
 </style>
