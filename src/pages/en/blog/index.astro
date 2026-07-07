@@ -112,7 +112,7 @@ const heroLogRows = [
 					<div class="ops-log">
 						<div class="ops-log-track">
 							{
-								[...heroLogRows, ...heroLogRows].map(([time, device, action, platform, status], index) => (
+								heroLogRows.map(([time, device, action, platform, status], index) => (
 									<div class="ops-row" style={`--delay: ${index * 0.16}s`}>
 										<span>{time}</span>
 										<strong>{device}</strong>
@@ -125,7 +125,7 @@ const heroLogRows = [
 						</div>
 					</div>
 					<div class="ops-stats" aria-label="Blog content stats">
-						<span><strong>2,855</strong>weekly published items</span>
+						<span><strong data-live-stat="content" data-base="2855">2,855</strong>weekly published items</span>
 						<span><strong>{posts.length}</strong>practical articles</span>
 						<span><strong>4</strong>covered platforms</span>
 					</div>
@@ -243,6 +243,86 @@ const heroLogRows = [
 					}
 				};
 				window.requestAnimationFrame(step);
+			}
+
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const logTrack = document.querySelector<HTMLElement>('.ops-log-track');
+			const liveStat = document.querySelector<HTMLElement>('[data-live-stat="content"]');
+			const liveRows = [
+				['TT-05', 'sync data', 'TikTok', 'done'],
+				['IG-06', 'render asset', 'Instagram', 'done'],
+				['RD-03', 'queue post', 'Reddit', 'running'],
+				['X-08', 'account check', 'X', 'done'],
+				['IP-02', 'proxy switch', 'Proxy', 'done'],
+				['TT-01', 'bulk publish', 'TikTok', 'done'],
+				['IG-04', 'asset ingest', 'Instagram', 'running'],
+			];
+
+			const formatNumber = (value: number) => new Intl.NumberFormat('en-US').format(value);
+			const currentTime = () => new Date().toLocaleTimeString('en-US', { hour12: false });
+
+			const animateNumber = (from: number, to: number) => {
+				if (!liveStat) return;
+				if (reduceMotion) {
+					liveStat.textContent = formatNumber(to);
+					return;
+				}
+
+				const start = performance.now();
+				const duration = 520;
+				liveStat.classList.add('is-ticking');
+
+				const draw = (now: number) => {
+					const progress = Math.min(1, (now - start) / duration);
+					const eased = 1 - Math.pow(1 - progress, 3);
+					liveStat.textContent = formatNumber(Math.round(from + (to - from) * eased));
+					if (progress < 1) {
+						window.requestAnimationFrame(draw);
+					} else {
+						window.setTimeout(() => liveStat.classList.remove('is-ticking'), 120);
+					}
+				};
+
+				window.requestAnimationFrame(draw);
+			};
+
+			if (logTrack && liveStat) {
+				let rowIndex = 0;
+				let statValue = Number(liveStat.dataset.base ?? '2855');
+
+				const createRow = ([device, action, platform, status]: string[]) => {
+					const row = document.createElement('div');
+					row.className = 'ops-row is-new';
+					row.innerHTML = `<span>${currentTime()}</span><strong>${device}</strong><span>${action}</span><b>${platform}</b><em>${status}</em>`;
+					return row;
+				};
+
+				const advanceLog = () => {
+					const firstRow = logTrack.firstElementChild as HTMLElement | null;
+					if (!firstRow || logTrack.classList.contains('is-advancing')) return;
+
+					const nextRow = createRow(liveRows[rowIndex % liveRows.length]);
+					rowIndex += 1;
+					logTrack.appendChild(nextRow);
+					logTrack.style.setProperty('--row-shift', `${firstRow.offsetHeight}px`);
+
+					window.requestAnimationFrame(() => {
+						logTrack.classList.add('is-advancing');
+						firstRow.classList.add('is-leaving');
+					});
+
+					window.setTimeout(() => {
+						firstRow.remove();
+						nextRow.classList.remove('is-new');
+						logTrack.classList.remove('is-advancing');
+						statValue += 1 + (rowIndex % 3);
+						animateNumber(Number(liveStat.textContent?.replace(/,/g, '') ?? statValue), statValue);
+					}, reduceMotion ? 0 : 720);
+				};
+
+				if (!reduceMotion) {
+					window.setInterval(advanceLog, 1750);
+				}
 			}
 		</script>
 	</body>
@@ -455,11 +535,12 @@ const heroLogRows = [
 
 	.ops-log-track {
 		display: grid;
-		animation: live-log-scroll 11s linear infinite;
+		transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+		will-change: transform;
 	}
 
-	.ops-log:hover .ops-log-track {
-		animation-play-state: paused;
+	.ops-log-track.is-advancing {
+		transform: translateY(calc(-1 * var(--row-shift, 2rem)));
 	}
 
 	.ops-row {
@@ -471,11 +552,27 @@ const heroLogRows = [
 		padding: 0.38rem 0;
 		color: rgba(216, 255, 250, 72%);
 		font-size: 0.72rem;
-		animation: row-glow 3.6s ease-in-out var(--delay) infinite;
+		transition:
+			opacity 520ms ease,
+			background 520ms ease,
+			border-color 520ms ease,
+			transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	.ops-row:last-child {
 		border-bottom: 0;
+	}
+
+	.ops-row.is-new {
+		border-bottom-color: rgba(141, 255, 240, 24%);
+		background: linear-gradient(90deg, rgba(46, 233, 208, 16%), transparent 72%);
+		opacity: 0;
+		transform: translateY(0.8rem);
+		animation: row-arrive 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	}
+
+	.ops-row.is-leaving {
+		opacity: 0;
 	}
 
 	.ops-row strong,
@@ -515,6 +612,16 @@ const heroLogRows = [
 		margin-bottom: 0.25rem;
 		color: white;
 		font-size: clamp(1.1rem, 2vw, 1.45rem);
+		transition:
+			color 180ms ease,
+			text-shadow 180ms ease,
+			transform 180ms ease;
+	}
+
+	.ops-stats strong.is-ticking {
+		color: #8dfff0;
+		text-shadow: 0 0 16px rgba(46, 233, 208, 38%);
+		transform: translateY(-1px) scale(1.045);
 	}
 
 	@keyframes live-pulse {
@@ -524,15 +631,21 @@ const heroLogRows = [
 		}
 	}
 
-	@keyframes row-glow {
-		50% {
-			color: rgba(216, 255, 250, 95%);
+	@keyframes row-arrive {
+		from {
+			opacity: 0;
+			transform: translateY(0.8rem);
 		}
-	}
 
-	@keyframes live-log-scroll {
+		58% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
 		to {
-			transform: translateY(-50%);
+			opacity: 1;
+			background: transparent;
+			transform: translateY(0);
 		}
 	}
 
@@ -720,7 +833,14 @@ const heroLogRows = [
 
 	@media (prefers-reduced-motion: reduce) {
 		.ops-log-track {
+			transition: none;
 			animation: none;
+		}
+
+		.ops-row.is-new {
+			animation: none;
+			opacity: 1;
+			transform: none;
 		}
 	}
 </style>
