@@ -316,25 +316,21 @@ const heroLogRows = [
 
 				const advanceLog = () => {
 					const firstRow = logTrack.firstElementChild as HTMLElement | null;
-					if (!firstRow || logTrack.classList.contains('is-advancing')) return;
+					if (!firstRow || logTrack.classList.contains('is-updating')) return;
 
 					const nextRow = createRow(liveRows[rowIndex % liveRows.length]);
 					rowIndex += 1;
 					logTrack.appendChild(nextRow);
-					logTrack.style.setProperty('--row-shift', `${firstRow.offsetHeight}px`);
-
-					window.requestAnimationFrame(() => {
-						logTrack.classList.add('is-advancing');
-						firstRow.classList.add('is-leaving');
-					});
+					logTrack.classList.add('is-updating');
+					window.requestAnimationFrame(() => firstRow.classList.add('is-leaving'));
 
 					window.setTimeout(() => {
 						firstRow.remove();
 						nextRow.classList.remove('is-new');
-						logTrack.classList.remove('is-advancing');
+						logTrack.classList.remove('is-updating');
 						statValue += 1 + (rowIndex % 3);
 						animateNumber(Number(liveStat.textContent?.replace(/,/g, '') ?? statValue), statValue);
-					}, reduceMotion ? 0 : 720);
+					}, reduceMotion ? 0 : 680);
 				};
 
 				if (!reduceMotion) {
@@ -552,12 +548,7 @@ const heroLogRows = [
 
 	.ops-log-track {
 		display: grid;
-		transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
-		will-change: transform;
-	}
-
-	.ops-log-track.is-advancing {
-		transform: translateY(calc(-1 * var(--row-shift, 2rem)));
+		align-content: start;
 	}
 
 	:global(.ops-row) {
@@ -565,7 +556,8 @@ const heroLogRows = [
 		grid-template-columns: 5rem 4.4rem minmax(7rem, 1fr) minmax(5.6rem, 0.75fr) 3rem;
 		align-items: center;
 		gap: 1rem;
-		min-height: 2.24rem;
+		max-height: 2.76rem;
+		overflow: hidden;
 		border-bottom: 1px solid rgba(141, 255, 240, 8%);
 		padding: 0.42rem 0;
 		color: rgba(216, 255, 250, 82%);
@@ -573,10 +565,10 @@ const heroLogRows = [
 		font-weight: 800;
 		line-height: 1;
 		transition:
-			opacity 520ms ease,
-			background 520ms ease,
-			border-color 520ms ease,
-			transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+			max-height 680ms cubic-bezier(0.33, 1, 0.68, 1),
+			opacity 360ms ease,
+			padding 680ms cubic-bezier(0.33, 1, 0.68, 1),
+			border-color 360ms ease;
 	}
 
 	:global(.ops-row:last-child) {
@@ -586,13 +578,19 @@ const heroLogRows = [
 	:global(.ops-row.is-new) {
 		border-bottom-color: rgba(141, 255, 240, 24%);
 		background: linear-gradient(90deg, rgba(46, 233, 208, 16%), transparent 72%);
+		max-height: 0;
 		opacity: 0;
-		transform: translateY(0.8rem);
-		animation: row-arrive 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		padding-top: 0;
+		padding-bottom: 0;
+		animation: row-arrive 680ms cubic-bezier(0.33, 1, 0.68, 1) forwards;
 	}
 
 	:global(.ops-row.is-leaving) {
+		max-height: 0;
 		opacity: 0;
+		border-bottom-color: transparent;
+		padding-top: 0;
+		padding-bottom: 0;
 	}
 
 	:global(.ops-row strong),
@@ -664,19 +662,22 @@ const heroLogRows = [
 
 	@keyframes row-arrive {
 		from {
+			max-height: 0;
 			opacity: 0;
-			transform: translateY(0.8rem);
+			padding-top: 0;
+			padding-bottom: 0;
 		}
 
-		58% {
-			opacity: 1;
-			transform: translateY(0);
+		45% {
+			opacity: 0.72;
 		}
 
 		to {
+			max-height: 2.76rem;
 			opacity: 1;
 			background: transparent;
-			transform: translateY(0);
+			padding-top: 0.42rem;
+			padding-bottom: 0.42rem;
 		}
 	}
 
