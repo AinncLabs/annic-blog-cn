@@ -98,6 +98,249 @@ const EN_POSTS = {
 			},
 		],
 	},
+	'peak-season-scaling': {
+		title: 'Peak Season Is Coming: What to Prepare Before 50 Accounts Become 300',
+		description:
+			'Before expanding an account pool from 50 to 300, teams need capacity planning for devices, proxies, content, and monitoring.',
+		category: 'Operations Playbook',
+		tags: ['Peak Season', 'Account Matrix', 'Operations Playbook'],
+		sections: [
+			{
+				paragraphs: [
+					'Promotions, peak season, and new market launches can all push a team to scale its account pool quickly. Moving from 50 accounts to 300 looks like a number change, but operationally it is a different system.',
+					'If the preparation order is wrong, the team may create the exact chaos it hoped to avoid: accounts waiting for devices, proxies being reused too aggressively, content pipelines falling behind, and abnormal accounts being discovered too late.',
+				],
+			},
+			{
+				heading: 'The Common Mistake: Add Accounts First, Fix Infrastructure Later',
+				paragraphs: [
+					'Many teams start by acquiring or registering more accounts, assuming the rest can be fixed while work is already running. That is risky.',
+					'Devices and proxy IPs are not supporting details. They are the environment accounts live in. If they lag behind the account pool, new accounts start their lifecycle under resource pressure and repeated environment overlap.',
+				],
+			},
+			{
+				heading: 'First: Calculate Device and Proxy Capacity',
+				paragraphs: [
+					'Before importing the new accounts, estimate how many independent device environments and proxy resources the final account pool will need.',
+					'Prepare capacity in batches so every new group of accounts can be assigned a real environment immediately instead of sitting in a queue while the team scrambles for resources.',
+				],
+			},
+			{
+				heading: 'Second: Build the Content Pipeline Early',
+				paragraphs: [
+					'When account volume grows sixfold, content demand usually grows at the same speed. If the team still creates and assigns content account by account, the bottleneck appears fast.',
+					'Reusable assets, grouped file libraries, and planned publishing batches need to exist before the seasonal pressure arrives.',
+				],
+			},
+			{
+				heading: 'Third: Decide How Monitoring Will Work',
+				paragraphs: [
+					'At 50 accounts, someone can still manually check status. At 300 accounts, that approach breaks down.',
+					'Task results, account status, abnormal proxies, and publishing failures need a shared review rhythm so issues are found by the team before clients or managers ask about them.',
+				],
+			},
+			{
+				heading: 'Where Ainnc Helps',
+				paragraphs: [
+					'Ainnc supports batch management of cloud phone environments, proxy IPs, accounts, files, tasks, and usage views.',
+					'That lets teams prepare the operating foundation before the account pool expands, instead of trying to patch the system while peak season is already running.',
+				],
+			},
+		],
+	},
+	'account-first-three-days': {
+		title: 'The First Three Days of a Social Account Matter More Than Teams Think',
+		description:
+			'Why new accounts should not be pushed into publishing immediately, and how teams can manage new, growing, and stable accounts differently.',
+		category: 'Platform Guides',
+		tags: ['Account Warming', 'Account Safety', 'Platform Guides'],
+		sections: [
+			{
+				paragraphs: [
+					'The first few days of a new account often shape its long-term operating stability more than later content strategy does.',
+					'Many teams focus on what to publish while treating brand-new accounts with the same rhythm as mature accounts. That is one of the easiest ways to create avoidable risk in bulk social operations.',
+				],
+			},
+			{
+				heading: 'Newness Is a Risk State',
+				paragraphs: [
+					'A new account has little history. Platforms judge it mainly by what happens next: login behavior, browsing patterns, interaction frequency, publishing rhythm, and environment consistency.',
+					'If a new account quickly starts high-frequency publishing or repeated interactions, that behavior looks very different from a normal user learning a platform.',
+				],
+			},
+			{
+				heading: 'The First Goal Is Not Publishing',
+				paragraphs: [
+					'In the first three days, the account should build a normal usage record: login, browsing, light interaction, and gradual activity.',
+					'This stage is not about output volume. It is about helping the account become recognizable as a normal user before asking it to carry operational work.',
+				],
+			},
+			{
+				heading: 'Treat New Accounts as Their Own Stage',
+				paragraphs: [
+					'A practical framework is to separate accounts into new, growing, and stable stages.',
+					'New accounts focus on warming. Growing accounts can publish at low frequency while continuing interaction. Stable accounts gradually move toward the normal operating rhythm.',
+				],
+			},
+			{
+				heading: 'How Ainnc Supports This Workflow',
+				paragraphs: [
+					'Ainnc lets teams group accounts by lifecycle stage and run warming tasks separately from publishing tasks.',
+					'That separation keeps teams from accidentally pushing new accounts into the same batch as mature accounts, especially when account volume is high.',
+				],
+			},
+		],
+	},
+	'asset-library-reuse': {
+		title: 'An Asset Library Solves Reuse, Not Just Storage',
+		description:
+			'For multi-account operations, an asset library is not a cloud drive. It is the layer that makes videos, images, and documents reusable across tasks.',
+		category: 'Product Capabilities',
+		tags: ['Asset Library', 'File Management', 'Product Capabilities'],
+		sections: [
+			{
+				paragraphs: [
+					'When teams first hear about an asset library, the common reaction is: we already have cloud storage.',
+					'That response is understandable, but storage is not the main problem in bulk social operations. The harder problem is safe, repeatable reuse.',
+				],
+			},
+			{
+				heading: 'Cloud Drives Store Files. Operations Need Files to Be Usable.',
+				paragraphs: [
+					'A cloud drive is good at storing and sharing files. But once a team manages dozens of accounts and publishes many pieces of content each week, finding the right version becomes work by itself.',
+					'Files get downloaded, edited, renamed, and reuploaded until no one is sure whether "final_v2_real_final.mp4" is actually the file that should be used.',
+				],
+			},
+			{
+				heading: 'One Asset Should Support Many Account Tasks',
+				paragraphs: [
+					'A product video may be used across multiple TikTok accounts with different titles and tags, adapted for Instagram, and referenced in Reddit posts.',
+					'If every use requires finding the file, downloading it, and uploading it again, reuse becomes slow and error-prone.',
+				],
+			},
+			{
+				heading: 'Version Confusion Is a Real Risk',
+				paragraphs: [
+					'The cost of version confusion is not only wasted time. Teams can accidentally publish outdated assets, noncompliant copy, or content the client already asked to stop using.',
+					'An asset library turns the current valid file into a system state rather than a memory game across chat messages and local folders.',
+				],
+			},
+			{
+				heading: 'How Ainnc Handles Assets',
+				paragraphs: [
+					'Ainnc supports batch uploading, grouping, and status control for videos, images, and documents.',
+					'Once an asset is uploaded, operators can select it directly inside task parameters. The team works from one managed file record instead of many scattered copies.',
+				],
+			},
+		],
+	},
+	'new-client-first-week': {
+		title: 'What an Agency Should Do in the First Week After Signing a New Client',
+		description:
+			'A practical first-week sequence for importing accounts, binding devices and proxies, checking status, warming accounts, and launching the first publishing batch.',
+		category: 'Product Capabilities',
+		tags: ['Client Onboarding', 'Task Center', 'Product Capabilities'],
+		sections: [
+			{
+				paragraphs: [
+					'Signing a new client is exciting, but many agency problems begin immediately after the contract is signed.',
+					'Accounts are not fully imported, devices and proxies are not assigned, and the client is already asking when the first posts will go live. If the order is wrong in week one, the team may spend the next month explaining avoidable issues.',
+				],
+			},
+			{
+				heading: 'The Scenario: 30 TikTok and Instagram Accounts',
+				paragraphs: [
+					'Imagine a Southeast Asia beauty brand brings 30 accounts: 20 TikTok accounts and 10 Instagram accounts. Some are semi-new and have not been operated consistently.',
+					'The first instinct may be to build the content calendar. But the account foundation should come first.',
+				],
+			},
+			{
+				heading: 'Days 1-2: Import Accounts and Assign Environments',
+				paragraphs: [
+					'Import accounts into the system and group them by client, platform, and market. Avoid starting with a temporary spreadsheet that later becomes the real source of truth by accident.',
+					'At the same time, assign cloud devices and proxy IPs. Every account should have an environment before the team starts publishing.',
+				],
+			},
+			{
+				heading: 'Day 3: Check Account Status Before Content',
+				paragraphs: [
+					'Semi-new accounts may not all be healthy. Some may already have abnormal prompts or login issues caused by previous use.',
+					'Check the account pool first and separate abnormal accounts before bulk tasks begin.',
+				],
+			},
+			{
+				heading: 'Days 4-5: Warm Accounts Before Publishing',
+				paragraphs: [
+					'For accounts with uncertain activity history, warming is safer than aggressive immediate publishing.',
+					'This may feel slower, especially when the client wants fast output, but early account problems usually cost more time than a short preparation window.',
+				],
+			},
+			{
+				heading: 'Days 6-7: Launch the First Controlled Batch',
+				paragraphs: [
+					'Once account status, environments, and assets are clear, the team can start the first publishing batch.',
+					'Keep the first batch moderate, review execution feedback, then gradually move into the regular operating rhythm.',
+				],
+			},
+			{
+				heading: 'How Ainnc Supports the Sequence',
+				paragraphs: [
+					'Ainnc supports batch account import, grouping, device and proxy binding, separate login/warming/publishing tasks, and execution records.',
+					'That gives the team a complete first-week operating view instead of relying on memory, chat updates, and temporary sheets.',
+				],
+			},
+		],
+	},
+	'team-scale-chaos': {
+		title: 'Why Hiring More Operators Can Make Account Management Messier',
+		description:
+			'When teams grow, account handoff, onboarding, and recordkeeping can become more chaotic unless the system grows with the team.',
+		category: 'Operations Playbook',
+		tags: ['Team Workflow', 'Account Management', 'Operations Playbook'],
+		sections: [
+			{
+				paragraphs: [
+					'Many agency leaders run into the same counterintuitive problem: account volume grows, the team hires more people, and account management becomes less clear than before.',
+					'Handoffs fail more often, new employees take longer to onboard, and two operators may accidentally change the same client account in conflicting ways.',
+				],
+			},
+			{
+				heading: 'Hiring Shares Workload, Not Chaos',
+				paragraphs: [
+					'Hiring more operators can reduce the amount of manual work per person. It does not automatically create a shared account system.',
+					'If account status lives in personal spreadsheets, notes apps, chat histories, and memory, every new hire adds another recording style to an already fragmented workflow.',
+				],
+			},
+			{
+				heading: 'Every Operator Has a Personal Method',
+				paragraphs: [
+					'One operator may track accounts in a sheet. Another may keep notes in an app. A third may rely on recent memory and chat messages.',
+					'These habits may work individually, but they break when an account has to move between people because of leave, handoff, or temporary support.',
+				],
+			},
+			{
+				heading: 'Onboarding Gets Slower as the Team Grows',
+				paragraphs: [
+					'Mature teams should onboard faster because the workflow is clear. Fragmented teams onboard slower because new people have to learn everyone else’s private habits.',
+					'The more people and accounts involved, the more oral handoff is repeated instead of being replaced by one shared system.',
+				],
+			},
+			{
+				heading: 'The System Needs to Scale, Not Just Headcount',
+				paragraphs: [
+					'A practical test is simple: how long does it take a new operator to independently manage a group of accounts?',
+					'If the answer depends on shadowing an experienced employee for weeks, the team is relying on personal memory rather than operational records.',
+				],
+			},
+			{
+				heading: 'How Ainnc Fits In',
+				paragraphs: [
+					'Ainnc keeps account information, device binding, proxy binding, and operation records in one system.',
+					'New team members learn the system instead of learning each operator’s private format. As the team grows, the operating record stays consistent.',
+				],
+			},
+		],
+	},
 	'spreadsheets-break-50': {
 		title: 'Why Spreadsheets Break After 50 Social Accounts',
 		description:
