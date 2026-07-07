@@ -21,14 +21,6 @@ const proofStats = [
 	['6', 'major social platforms'],
 	['7x24', 'cloud automation runtime'],
 ];
-const matrixLabels = new Map([
-	[7, 'TT'],
-	[24, 'IG'],
-	[41, 'RD'],
-	[58, 'X'],
-	[75, 'IP'],
-	[92, 'AI'],
-]);
 ---
 
 <!doctype html>
@@ -42,20 +34,6 @@ const matrixLabels = new Map([
 			<section class="about-hero" id="about-hero">
 				<img class="hero-watermark" src="/ainnc-logo-icon.webp" alt="" aria-hidden="true" />
 				<span class="hero-cursor-glow" aria-hidden="true"></span>
-				<div class="matrix-wrap" aria-hidden="true">
-					<div class="matrix-grid">
-						{
-							Array.from({ length: 112 }).map((_, index) => (
-								<span
-									class:list={['matrix-tile', { on: index % 10 === 0 || index % 19 === 0, label: matrixLabels.has(index) }]}
-									style={`--delay: ${(index % 13) * 0.16}s`}
-								>
-									{matrixLabels.get(index)}
-								</span>
-							))
-						}
-					</div>
-				</div>
 				<div class="hero-copy">
 					<span class="section-kicker">ABOUT AINNC</span>
 					<h1>Social Operations Infrastructure for Global Teams</h1>
@@ -188,42 +166,6 @@ const matrixLabels = new Map([
 
 	.about-hero.is-glowing .hero-cursor-glow {
 		opacity: 1;
-	}
-
-	.matrix-wrap {
-		position: absolute;
-		z-index: 1;
-		width: min(920px, 92vw);
-		opacity: 0.78;
-		pointer-events: none;
-	}
-
-	.matrix-grid {
-		display: grid;
-		grid-template-columns: repeat(14, minmax(0, 1fr));
-		gap: 0.5rem;
-	}
-
-	.matrix-tile {
-		display: grid;
-		aspect-ratio: 1;
-		place-items: center;
-		border-radius: 6px;
-		background: rgba(0, 177, 179, 8%);
-		color: transparent;
-		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-		font-size: 0.52rem;
-		font-weight: 900;
-		animation: matrix-pulse 5s ease-in-out var(--delay) infinite;
-	}
-
-	.matrix-tile.on {
-		background: rgba(0, 177, 179, 32%);
-	}
-
-	.matrix-tile.label {
-		background: rgba(0, 177, 179, 18%);
-		color: var(--accent-dark);
 	}
 
 	.hero-copy {
@@ -492,7 +434,6 @@ const matrixLabels = new Map([
 			grid-template-columns: 1fr;
 		}
 
-		.matrix-wrap,
 		.hero-watermark {
 			display: none;
 		}

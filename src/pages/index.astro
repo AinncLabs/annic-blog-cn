@@ -24,22 +24,16 @@ const clusterDevices = [
 	{ id: 'IG-02', platform: 'Instagram', active: false },
 	{ id: 'RD-03', platform: 'Reddit', active: true },
 	{ id: 'X-04', platform: 'X', active: false },
-	{ id: 'IP-05', platform: '代理 IP', active: true },
-	{ id: 'AI-06', platform: '内容生成', active: false },
+	{ id: 'TT-05', platform: 'TikTok', active: true },
+	{ id: 'IG-06', platform: 'Instagram', active: false },
+	{ id: 'RD-07', platform: 'Reddit', active: true },
+	{ id: 'X-08', platform: 'X', active: false },
 ];
 const clusterLogs = [
 	['09:41', 'TikTok', '批量登录', '完成'],
 	['09:46', 'Instagram', '素材同步', '运行中'],
 	['09:53', 'Reddit', '帖子排队', '完成'],
 ];
-const matrixLabels = new Map([
-	[8, 'TT'],
-	[25, 'IG'],
-	[42, 'RD'],
-	[59, 'X'],
-	[76, 'IP'],
-	[93, 'AI'],
-]);
 ---
 
 <!doctype html>
@@ -53,30 +47,6 @@ const matrixLabels = new Map([
 			<section class="home-hero" id="home-hero">
 				<img class="hero-watermark" src="/ainnc-logo-icon.webp" alt="" aria-hidden="true" />
 				<span class="hero-cursor-glow" aria-hidden="true"></span>
-				<div class="hero-rail hero-rail-left" aria-hidden="true">
-					<span>ACCOUNT OPS</span>
-					<strong>309</strong>
-					<small>任务样本</small>
-				</div>
-				<div class="hero-rail hero-rail-right" aria-hidden="true">
-					<span>WORKFLOW</span>
-					<strong>4</strong>
-					<small>栏目路径</small>
-				</div>
-				<div class="matrix-wrap" aria-hidden="true">
-					<div class="matrix-grid">
-						{
-							Array.from({ length: 112 }).map((_, index) => (
-								<span
-									class:list={['matrix-tile', { on: index % 11 === 0 || index % 17 === 0, label: matrixLabels.has(index) }]}
-									style={`--delay: ${(index % 13) * 0.16}s`}
-								>
-									{matrixLabels.get(index)}
-								</span>
-							))
-						}
-					</div>
-				</div>
 				<div class="hero-copy">
 					<span class="section-kicker">麦芽营销团队出品</span>
 					<h1>规模化运营社媒账号的实战方法</h1>
@@ -126,9 +96,9 @@ const matrixLabels = new Map([
 							}
 						</div>
 						<div class="cluster-stats">
-							<span><strong>309</strong>任务样本</span>
-							<span><strong>29</strong>设备环境</span>
-							<span><strong>4</strong>平台路径</span>
+							<span><strong>2,855</strong>本周发布内容</span>
+							<span><strong>4</strong>覆盖平台</span>
+							<span><strong>99.6%</strong>环境在线率</span>
 						</div>
 					</div>
 				</div>
@@ -256,7 +226,6 @@ const matrixLabels = new Map([
 		border-radius: 8px;
 		background:
 			linear-gradient(90deg, rgba(255, 255, 255, 76%) 0, rgba(255, 255, 255, 38%) 45%, rgba(255, 255, 255, 76%) 100%),
-			repeating-linear-gradient(90deg, rgba(0, 125, 118, 8%) 0 1px, transparent 1px 96px),
 			linear-gradient(135deg, rgba(0, 201, 170, 16%), rgba(60, 110, 159, 8%) 48%, rgba(0, 69, 76, 5%)),
 			white;
 		box-shadow: 0 24px 70px rgba(0, 69, 76, 12%);
@@ -300,44 +269,6 @@ const matrixLabels = new Map([
 		opacity: 1;
 	}
 
-	.matrix-wrap {
-		position: absolute;
-		z-index: 1;
-		width: min(1260px, 86vw);
-		opacity: 0.78;
-		pointer-events: none;
-		transform: translate3d(var(--shift-x), var(--shift-y), 0);
-		transition: transform 0.18s ease-out;
-	}
-
-	.matrix-grid {
-		display: grid;
-		grid-template-columns: repeat(14, minmax(0, 1fr));
-		gap: 0.5rem;
-	}
-
-	.matrix-tile {
-		display: grid;
-		aspect-ratio: 1;
-		place-items: center;
-		border-radius: 6px;
-		background: rgba(0, 177, 179, 8%);
-		color: transparent;
-		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-		font-size: 0.52rem;
-		font-weight: 900;
-		animation: matrix-pulse 5s ease-in-out var(--delay) infinite;
-	}
-
-	.matrix-tile.on {
-		background: rgba(0, 177, 179, 32%);
-	}
-
-	.matrix-tile.label {
-		background: rgba(0, 177, 179, 18%);
-		color: var(--accent-dark);
-	}
-
 	.hero-copy {
 		position: relative;
 		z-index: 3;
@@ -348,49 +279,8 @@ const matrixLabels = new Map([
 		justify-items: center;
 	}
 
-	.hero-rail {
-		position: absolute;
-		z-index: 3;
-		display: grid;
-		gap: 0.2rem;
-		border-left: 2px solid var(--accent);
-		background: rgba(255, 255, 255, 48%);
-		padding: 0.8rem 0.95rem;
-		text-align: left;
-		backdrop-filter: blur(14px);
-	}
-
-	.hero-rail-left {
-		left: clamp(1.3rem, 5vw, 5rem);
-		top: 28%;
-	}
-
-	.hero-rail-right {
-		right: clamp(1.3rem, 5vw, 5rem);
-		bottom: 25%;
-	}
-
-	.hero-rail span,
 	.hero-ticker span {
 		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-	}
-
-	.hero-rail span {
-		color: var(--accent-dark);
-		font-size: 0.7rem;
-		font-weight: 900;
-		letter-spacing: 0.08em;
-	}
-
-	.hero-rail strong {
-		color: var(--text);
-		font-size: clamp(1.8rem, 3vw, 2.7rem);
-		line-height: 1;
-	}
-
-	.hero-rail small {
-		color: var(--muted);
-		font-weight: 800;
 	}
 
 	.section-kicker {
@@ -904,12 +794,6 @@ const matrixLabels = new Map([
 		}
 	}
 
-	@media (max-width: 1180px) {
-		.hero-rail {
-			display: none;
-		}
-	}
-
 	@media (max-width: 900px) {
 		.framework-section .section-header,
 		.featured-section .section-header,
@@ -944,9 +828,7 @@ const matrixLabels = new Map([
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 
-		.matrix-wrap,
 		.hero-watermark,
-		.hero-rail,
 		.hero-ticker {
 			display: none;
 		}
