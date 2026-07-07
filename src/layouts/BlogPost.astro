@@ -6,12 +6,10 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { getCategoryTone, getPostCode } from '../blogVisuals';
 import type { Locale } from '../i18n';
-import { getScenarioModule } from '../scenarioModules';
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	locale?: Locale;
 	postIndex?: number;
-	postId?: string;
 };
 
 const {
@@ -23,7 +21,6 @@ const {
 	tags = [],
 	locale = 'zh',
 	postIndex = 0,
-	postId,
 } = Astro.props;
 const isEnglish = locale === 'en';
 const tagLabel = isEnglish ? 'Post tags' : '文章标签';
@@ -37,24 +34,6 @@ const officialLabel = isEnglish ? 'Visit Official Site' : '访问官网';
 const telegramLabel = isEnglish ? 'Contact on Telegram' : 'Telegram 咨询';
 const categoryTone = getCategoryTone(category);
 const postCode = getPostCode(category, postIndex);
-const scenario = getScenarioModule(postId, locale);
-const scenarioTitle = isEnglish ? 'Scenario Reading' : '场景化阅读';
-const scenarioIntro = isEnglish
-	? 'Read this article through the actual work context, the operational problem, and how Ainnc helps.'
-	: '先把这篇文章放进真实工作里看：什么场景、什么问题、Ainnc 能怎么帮。';
-const scenarioItems = isEnglish
-	? [
-			['Scenario', scenario.scene],
-			['Problem', scenario.problem],
-			['Ainnc Provides', scenario.solution],
-			['Result', scenario.outcome],
-		]
-	: [
-			['适用场景', scenario.scene],
-			['典型问题', scenario.problem],
-			['Ainnc 能提供什么', scenario.solution],
-			['预期结果', scenario.outcome],
-		];
 ---
 
 <html lang={isEnglish ? 'en' : 'zh-CN'}>
@@ -98,27 +77,6 @@ const scenarioItems = isEnglish
 						)
 					}
 				</header>
-
-				<section class="scenario-panel panel" aria-labelledby="scenario-title">
-					<div class="scenario-head">
-						<div>
-							<span>{scenarioTitle}</span>
-							<h2 id="scenario-title">{isEnglish ? 'Start From the Use Case' : '先看这篇适合谁读'}</h2>
-						</div>
-						<p>{scenarioIntro}</p>
-					</div>
-					<div class="scenario-grid">
-						{
-							scenarioItems.map(([label, text], index) => (
-								<div class="scenario-card">
-									<span class="scenario-index">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{label}</h3>
-									<p>{text}</p>
-								</div>
-							))
-						}
-					</div>
-				</section>
 
 				<div class="prose panel">
 					<slot />
@@ -270,101 +228,6 @@ const scenarioItems = isEnglish
 		font-size: 1.05rem;
 	}
 
-	.scenario-panel {
-		display: grid;
-		width: min(780px, 100%);
-		gap: 1.25rem;
-		margin: 0 auto;
-		padding: 1.4rem;
-		border-top: 4px solid var(--article-accent);
-		background:
-			linear-gradient(135deg, rgba(255, 255, 255, 94%), rgba(232, 255, 251, 92%)),
-			radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--article-accent) 16%, transparent), transparent 28%);
-	}
-
-	.scenario-head {
-		display: grid;
-		grid-template-columns: minmax(0, 0.85fr) minmax(220px, 1fr);
-		gap: 1rem;
-		align-items: end;
-	}
-
-	.scenario-head span {
-		display: inline-flex;
-		width: fit-content;
-		margin-bottom: 0.45rem;
-		border: 1px solid color-mix(in srgb, var(--article-accent) 32%, white);
-		border-radius: 999px;
-		background: var(--article-accent-soft);
-		padding: 0.25rem 0.6rem;
-		color: var(--article-accent);
-		font-size: 0.78rem;
-		font-weight: 900;
-	}
-
-	.scenario-head h2 {
-		margin: 0;
-		font-size: clamp(1.35rem, 3vw, 2rem);
-	}
-
-	.scenario-head p {
-		margin: 0;
-		color: var(--muted);
-		font-weight: 800;
-		line-height: 1.75;
-	}
-
-	.scenario-grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 0.8rem;
-	}
-
-	.scenario-card {
-		position: relative;
-		min-height: 11rem;
-		border: 1px solid color-mix(in srgb, var(--article-accent) 20%, white);
-		border-radius: 8px;
-		background: rgba(255, 255, 255, 74%);
-		padding: 1rem;
-		overflow: hidden;
-	}
-
-	.scenario-card::after {
-		content: '';
-		position: absolute;
-		right: -1.8rem;
-		bottom: -1.8rem;
-		width: 5rem;
-		height: 5rem;
-		border: 1px solid color-mix(in srgb, var(--article-accent) 24%, transparent);
-		border-radius: 999px;
-	}
-
-	.scenario-index {
-		display: inline-flex;
-		margin-bottom: 0.8rem;
-		border-radius: 999px;
-		background: #052f2d;
-		padding: 0.22rem 0.5rem;
-		color: white;
-		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-		font-size: 0.72rem;
-		font-weight: 900;
-	}
-
-	.scenario-card h3 {
-		margin: 0 0 0.5rem;
-		font-size: 1.02rem;
-	}
-
-	.scenario-card p {
-		margin: 0;
-		color: var(--muted);
-		font-size: 0.95rem;
-		line-height: 1.72;
-	}
-
 	.prose {
 		width: min(780px, 100%);
 		margin: 0 auto;
@@ -487,15 +350,9 @@ const scenarioItems = isEnglish
 
 	@media (max-width: 720px) {
 		.article-header,
-		.scenario-panel,
 		.prose,
 		.article-cta {
 			padding: 1rem;
-		}
-
-		.scenario-head,
-		.scenario-grid {
-			grid-template-columns: 1fr;
 		}
 	}
 
