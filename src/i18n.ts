@@ -341,6 +341,95 @@ const EN_POSTS = {
 			},
 		],
 	},
+	'account-grouping-strategy': {
+		title: 'How Should Teams Group Social Accounts?',
+		description:
+			'How to design account groups around platforms, clients, lifecycle stages, and markets so bulk tasks can select the right accounts directly.',
+		category: 'Operations Playbook',
+		tags: ['Account Grouping', 'Bulk Operations', 'Operations Playbook'],
+		sections: [
+			{
+				paragraphs: [
+					'Once a team manages enough accounts, grouping becomes unavoidable. The mistake is treating groups like labels that make the dashboard look tidy.',
+					'A useful group is not decoration. It exists so the operator can start a bulk task and select the right batch immediately, without manually checking and excluding accounts one by one.',
+				],
+			},
+			{
+				heading: 'Groups Should Serve Operations, Not Neatness',
+				paragraphs: [
+					'The test is simple: when you launch a bulk task, can one group represent the exact accounts you need?',
+					'If the operator still has to filter again, remove exceptions, or ask another teammate which accounts belong in the task, the grouping logic was probably designed from the wrong angle.',
+				],
+			},
+			{
+				heading: 'Common Grouping Dimensions',
+				paragraphs: [
+					'Platform-based grouping is the most direct starting point because TikTok, Instagram, Reddit, and X each have different operating habits and risk patterns.',
+					'Client or project grouping is useful for agencies because reporting, billing, and delivery often happen by client. Lifecycle grouping separates new accounts, growing accounts, and stable accounts so teams do not run the same task on accounts with very different risk levels.',
+					'Market-based grouping helps global teams plan by region and time zone. In practice, most teams combine several of these dimensions instead of relying on only one.',
+				],
+			},
+			{
+				heading: 'Start From the Task, Not the Taxonomy',
+				paragraphs: [
+					'It is easy to list every possible way to categorize accounts. A better question is: what bulk task does the team run most often?',
+					'If the weekly routine is publishing the same content for all accounts under one client, client should probably be the primary grouping dimension. If the weekly routine is warming all accounts on one platform, platform should come first.',
+					'The best grouping system follows the team’s highest-frequency operation, not the most theoretically complete classification model.',
+				],
+			},
+			{
+				heading: 'One Grouping System Usually Has One Primary Dimension',
+				paragraphs: [
+					'In many account systems, one account can belong to only one group at a time. That means groups alone cannot fully represent platform, market, lifecycle stage, and client all at once.',
+					'A practical setup is to choose one primary grouping dimension and let filters handle the rest. For example, group by client, then use platform and status filters to find active TikTok accounts under that client.',
+					'This avoids creating dozens of tiny cross-groups that are hard to maintain and harder for the team to understand.',
+				],
+			},
+			{
+				heading: 'Naming Rules Matter',
+				paragraphs: [
+					'When filters are not enough, group names can carry compressed information. A shared naming rule is better than improvised names like “group 1,” “temporary accounts,” or “pending.”',
+					'For example, a group name like “US-TT-New” tells the team the market, platform, and lifecycle stage at a glance. The value is not formal naming for its own sake. The value is reducing follow-up questions during real operations.',
+				],
+			},
+			{
+				heading: 'A Real Example',
+				paragraphs: [
+					'One client environment had 155 accounts: 100 TikTok accounts in a “TK” group, 4 Instagram accounts in an “ins” group, and 51 accounts still ungrouped.',
+					'The ratio itself tells a story. The team is clearly focusing most resources on TikTok while using Instagram as a smaller test channel. That is a common global growth pattern: go deep on the platform that is already moving before spreading the team thin across every channel.',
+					'The 51 ungrouped accounts are not necessarily a failure. They may be newly imported accounts still under observation before the team decides where they belong.',
+				],
+			},
+			{
+				heading: 'Too Coarse and Too Fine Both Break',
+				paragraphs: [
+					'If hundreds of accounts sit in one or two broad groups, operators still have to manually select accounts during every task. The group exists, but it does not help.',
+					'If the team creates too many tiny groups, the grouping system becomes another thing to manage. A good practical range is usually small enough that teammates can scan the groups and understand what each one means.',
+				],
+			},
+			{
+				heading: 'Environment Standards Still Matter',
+				paragraphs: [
+					'Grouping is only one layer of account management. The accounts behind each group also need consistent cloud environments, device settings, proxy assignments, and target-market context.',
+					'Once the account pool reaches 100 or more, standardization determines whether the team is managing a batch of consistent assets or one hundred special cases.',
+				],
+			},
+			{
+				heading: 'The Real Warning Sign',
+				paragraphs: [
+					'The danger is not simply having no groups. It is having a grouping system that never changes after it is created.',
+					'Clients change, account stages change, platform strategy changes, and the team’s most common tasks change. If the current groups can no longer select the right batch in one step, the grouping system should be updated instead of tolerated.',
+				],
+			},
+			{
+				heading: 'How Ainnc Supports Group Management',
+				paragraphs: [
+					'Ainnc supports custom account groups, bulk import, group adjustment, and group-based task selection inside the task center.',
+					'When groups match the team’s real operating habits, bulk execution becomes much easier. The goal is not a tidy dashboard. The goal is making “select the right accounts” feel almost effortless.',
+				],
+			},
+		],
+	},
 	'spreadsheets-break-50': {
 		title: 'Why Spreadsheets Break After 50 Social Accounts',
 		description:
