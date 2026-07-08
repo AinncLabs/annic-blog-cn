@@ -20,19 +20,20 @@ const frameworks = [
 ];
 const topics = ['Operations Playbooks', 'Platform Guides', 'Product Capabilities', 'Global Growth', 'Task Reviews', 'Tutorials'];
 const clusterDevices = [
-	{ id: 'TT-01', platform: 'TikTok', active: true },
-	{ id: 'IG-02', platform: 'Instagram', active: false },
-	{ id: 'RD-03', platform: 'Reddit', active: true },
-	{ id: 'X-04', platform: 'X', active: false },
-	{ id: 'TT-05', platform: 'TikTok', active: true },
-	{ id: 'IG-06', platform: 'Instagram', active: false },
-	{ id: 'RD-07', platform: 'Reddit', active: true },
-	{ id: 'X-08', platform: 'X', active: false },
+	{ id: 'DE-001', platform: 'TikTok', task: 'standby', active: false },
+	{ id: 'FR-002', platform: 'Instagram', task: 'standby', active: false },
+	{ id: 'UK-003', platform: 'Reddit', task: 'asset sync → Reddit', active: true },
+	{ id: 'US-004', platform: 'X', task: 'data sync → X', active: true },
+	{ id: 'JP-005', platform: 'TikTok', task: 'render video → TikTok', active: true },
+	{ id: 'BR-006', platform: 'Instagram', task: 'standby', active: false },
+	{ id: 'ES-007', platform: 'Reddit', task: 'standby', active: false },
+	{ id: 'IT-008', platform: 'X', task: 'standby', active: false },
 ];
 const clusterLogs = [
-	['09:41', 'TikTok', 'bulk login', 'done'],
-	['09:46', 'Instagram', 'asset sync', 'running'],
-	['09:53', 'Reddit', 'post queue', 'done'],
+	['11:02:25', 'IT-008', 'data sync', 'Instagram', 'done'],
+	['11:02:27', 'BR-006', 'data sync', 'Instagram', 'done'],
+	['11:25:41', 'US-004', 'post draft', 'X', 'done'],
+	['11:25:44', 'JP-005', 'render video', 'TikTok', 'running'],
 ];
 ---
 
@@ -73,33 +74,39 @@ const clusterLogs = [
 										<div
 											class:list={['device-card', { active: device.active }]}
 											style={`--delay: ${index * 0.16}s`}
+											data-device-card
+											data-device-id={device.id}
+											data-index={index}
 										>
 											<div class="device-top">
 												<span class="device-id">{device.id}</span>
 												<span class="device-dot"></span>
 											</div>
-											<p class="device-status">{device.platform} environment sync</p>
-											<div class="device-bar"><span></span></div>
+											<p class="device-status">{device.task}</p>
+											<span class="device-trace"></span>
 										</div>
 									))
 								}
 							</div>
 							<div class="log-panel">
-								{
-									clusterLogs.map(([time, platform, action, status], index) => (
-										<div class="log-line" style={`--delay: ${index * 0.18}s`}>
-											<span class="lt">{time}</span>
-											<span class="ld">{platform}</span>
-											<span class="la">{action}</span>
-											<span class="lc">{status}</span>
-										</div>
-									))
-								}
+								<div class="log-track" data-log-track>
+									{
+										clusterLogs.map(([time, device, action, platform, status], index) => (
+											<div class="log-line" style={`--delay: ${index * 0.18}s`}>
+												<span class="lt">{time}</span>
+												<span class="ld">{device}</span>
+												<span class="la">{action}</span>
+												<span class="lp">{platform}</span>
+												<span class="lc">✓ {status}</span>
+											</div>
+										))
+									}
+								</div>
 							</div>
 						</div>
 						<div class="cluster-stats">
-							<span><strong>2,855</strong>weekly published items</span>
-							<span><strong>4</strong>covered platforms</span>
+							<span><strong data-live-count>2,866</strong>weekly published items</span>
+							<span><strong>12</strong>covered time zones</span>
 							<span><strong>99.6%</strong>environment uptime</span>
 						</div>
 					</div>
@@ -250,6 +257,77 @@ const clusterLogs = [
 					hero.style.setProperty('--shift-y', '0px');
 				});
 			}
+
+			const liveTasks = [
+				['UK-003', 'asset sync', 'Reddit', 'running'],
+				['US-004', 'data sync', 'X', 'done'],
+				['JP-005', 'render video', 'TikTok', 'running'],
+				['BR-006', 'account check', 'Instagram', 'done'],
+				['DE-001', 'queue dispatch', 'TikTok', 'done'],
+				['ES-007', 'comment review', 'Reddit', 'running'],
+				['FR-002', 'asset ingest', 'Instagram', 'done'],
+				['IT-008', 'data sync', 'X', 'done'],
+			];
+			const taskCards = Array.from(document.querySelectorAll<HTMLElement>('[data-device-card]'));
+			const logTrack = document.querySelector<HTMLElement>('[data-log-track]');
+			const liveCount = document.querySelector<HTMLElement>('[data-live-count]');
+			let liveTaskIndex = 0;
+			let publishedCount = 2866;
+			const activeDevices = new Set(['UK-003', 'US-004', 'JP-005']);
+			const taskLabels = new Map(liveTasks.map(([device, action, platform]) => [device, `${action} → ${platform}`]));
+
+			const formatTime = () => new Date().toLocaleTimeString('en-US', { hour12: false });
+			const updateLiveTasks = () => {
+				const [device, action, platform, status] = liveTasks[liveTaskIndex % liveTasks.length];
+				liveTaskIndex += 1;
+				activeDevices.add(device);
+				while (activeDevices.size > 3) {
+					const oldestDevice = activeDevices.values().next().value;
+					if (oldestDevice) {
+						activeDevices.delete(oldestDevice);
+					}
+				}
+
+				taskCards.forEach((card) => {
+					const id = card.dataset.deviceId ?? '';
+					const statusNode = card.querySelector<HTMLElement>('.device-status');
+					const isActive = activeDevices.has(id);
+					card.classList.toggle('active', isActive);
+					card.style.setProperty('--trace-width', `${18 + ((liveTaskIndex + Number(card.dataset.index ?? 0)) % 3) * 12}%`);
+					if (statusNode) {
+						statusNode.textContent = isActive ? taskLabels.get(id) ?? 'processing task' : 'standby';
+					}
+				});
+
+				if (logTrack) {
+					const template = logTrack.querySelector<HTMLElement>('.log-line');
+					const row = template ? (template.cloneNode(true) as HTMLElement) : document.createElement('div');
+					row.className = 'log-line is-new';
+					if (template) {
+						const cells = row.querySelectorAll('span');
+						const values = [formatTime(), device, action, platform, `✓ ${status}`];
+						cells.forEach((cell, index) => {
+							cell.textContent = values[index] ?? '';
+						});
+					} else {
+						row.innerHTML = `<span class="lt">${formatTime()}</span><span class="ld">${device}</span><span class="la">${action}</span><span class="lp">${platform}</span><span class="lc">✓ ${status}</span>`;
+					}
+					logTrack.appendChild(row);
+					if (logTrack.children.length > 4) {
+						const first = logTrack.firstElementChild as HTMLElement | null;
+						first?.classList.add('is-removing');
+						window.setTimeout(() => first?.remove(), 420);
+					}
+					window.setTimeout(() => row.classList.remove('is-new'), 700);
+				}
+
+				if (liveCount) {
+					publishedCount += 1;
+					liveCount.textContent = publishedCount.toLocaleString('en-US');
+				}
+			};
+
+			window.setInterval(updateLiveTasks, 1850);
 
 			document.querySelectorAll<HTMLElement>('.ticker-track').forEach((track) => {
 				requestAnimationFrame(() => {
@@ -440,17 +518,23 @@ const clusterLogs = [
 
 	.cluster-body {
 		display: grid;
-		grid-template-columns: minmax(0, 1.36fr) minmax(18rem, 0.84fr);
+		grid-template-columns: 1fr;
 		gap: 0.78rem;
 		align-items: stretch;
 	}
 
 	.cluster-head,
-	.device-top,
-	.log-line {
+	.device-top {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		gap: 0.75rem;
+	}
+
+	.log-line {
+		display: grid;
+		grid-template-columns: 4.9rem 4.4rem minmax(0, 1fr) 6.1rem 4.5rem;
+		align-items: center;
 		gap: 0.75rem;
 	}
 
@@ -491,11 +575,17 @@ const clusterLogs = [
 		width: 0.45rem;
 		height: 0.45rem;
 		border-radius: 999px;
-		background: var(--accent);
-		box-shadow: 0 0 0 5px rgba(0, 201, 170, 12%);
+		background: rgba(141, 255, 240, 42%);
+		box-shadow: none;
+		transition:
+			background 0.35s ease,
+			box-shadow 0.35s ease,
+			transform 0.35s ease;
 	}
 
 	.live-dot {
+		background: var(--accent);
+		box-shadow: 0 0 0 5px rgba(0, 201, 170, 12%);
 		animation: live-pulse 1.35s ease-in-out infinite;
 	}
 
@@ -506,23 +596,35 @@ const clusterLogs = [
 	}
 
 	.device-card {
+		position: relative;
 		border: 1px solid rgba(255, 255, 255, 8%);
 		border-radius: 8px;
 		background: rgba(255, 255, 255, 6%);
-		padding: 0.68rem;
-		animation: card-breathe 4.8s ease-in-out var(--delay) infinite;
+		padding: 0.75rem;
+		transition:
+			border-color 0.35s ease,
+			background 0.35s ease,
+			box-shadow 0.35s ease,
+			transform 0.35s ease;
 	}
 
 	.device-card.active {
-		border-color: rgba(46, 233, 208, 42%);
-		background: rgba(46, 233, 208, 12%);
+		border-color: rgba(46, 233, 208, 70%);
+		background:
+			radial-gradient(circle at 100% 0, rgba(141, 255, 240, 16%), transparent 42%),
+			rgba(46, 233, 208, 13%);
+		box-shadow:
+			inset 0 0 0 1px rgba(46, 233, 208, 18%),
+			0 0 24px rgba(46, 233, 208, 12%);
 	}
 
 	.device-card.active .device-dot {
-		background: #c8fff7;
+		background: #8dfff0;
 		box-shadow:
-			0 0 0 4px rgba(141, 255, 240, 18%),
-			0 0 18px rgba(141, 255, 240, 82%);
+			0 0 0 5px rgba(141, 255, 240, 18%),
+			0 0 18px rgba(141, 255, 240, 88%);
+		transform: scale(1.12);
+		animation: node-glow 1.6s ease-in-out infinite;
 	}
 
 	.device-id {
@@ -536,39 +638,53 @@ const clusterLogs = [
 		color: rgba(232, 255, 251, 70%);
 		font-size: 0.74rem;
 		font-weight: 800;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
-	.device-bar {
+	.device-trace {
+		display: block;
 		overflow: hidden;
-		height: 0.28rem;
+		width: 100%;
+		height: 0.18rem;
 		margin-top: 0.65rem;
 		border-radius: 999px;
-		background: rgba(255, 255, 255, 10%);
+		background: rgba(255, 255, 255, 8%);
 	}
 
-	.device-bar span {
+	.device-trace::before {
+		content: '';
 		display: block;
-		width: 55%;
+		width: 0%;
 		height: 100%;
 		border-radius: inherit;
-		background: linear-gradient(90deg, var(--accent), #8dfff0);
-		animation: bar-fill 3.8s ease-in-out var(--delay) infinite;
+		background: linear-gradient(90deg, #00c9aa, #8dfff0);
+		opacity: 0;
+		transform-origin: left center;
+		transition:
+			width 0.5s ease,
+			opacity 0.35s ease;
 	}
 
-	.device-card.active .device-bar span {
-		width: 100%;
-		background: linear-gradient(90deg, var(--accent), #c8fff7);
-		animation: none;
+	.device-card.active .device-trace::before {
+		width: var(--trace-width, 38%);
+		opacity: 1;
 	}
 
 	.log-panel {
-		display: grid;
-		align-content: stretch;
-		gap: 0.45rem;
+		overflow: hidden;
 		border: 1px solid rgba(141, 255, 240, 10%);
 		border-radius: 8px;
 		background: rgba(0, 21, 22, 22%);
 		padding: 0.55rem;
+		min-height: 100%;
+		max-height: 13rem;
+	}
+
+	.log-track {
+		display: grid;
+		gap: 0.45rem;
 	}
 
 	.log-line {
@@ -578,7 +694,23 @@ const clusterLogs = [
 		padding: 0.45rem 0.55rem;
 		color: rgba(232, 255, 251, 78%);
 		font-size: 0.72rem;
-		animation: log-glow 4s ease-in-out var(--delay) infinite;
+		transition:
+			border-color 0.35s ease,
+			background 0.35s ease,
+			opacity 0.45s ease,
+			transform 0.45s ease;
+	}
+
+	.log-line.is-new {
+		border-color: rgba(141, 255, 240, 42%);
+		background: rgba(46, 233, 208, 11%);
+		box-shadow: inset 0 0 0 1px rgba(46, 233, 208, 10%);
+		animation: log-enter 0.58s ease both;
+	}
+
+	.log-line.is-removing {
+		opacity: 0;
+		transform: translateY(-0.5rem);
 	}
 
 	.ld,
@@ -589,6 +721,11 @@ const clusterLogs = [
 	.lt,
 	.lc {
 		color: #8dfff0;
+		font-weight: 900;
+	}
+
+	.lp {
+		color: #f9fffd;
 		font-weight: 900;
 	}
 
@@ -895,22 +1032,24 @@ const clusterLogs = [
 		}
 	}
 
-	@keyframes card-breathe {
-		50% {
-			transform: translateY(-2px);
+	@keyframes log-enter {
+		from {
+			opacity: 0;
+			transform: translateY(0.65rem);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
 		}
 	}
 
-	@keyframes bar-fill {
+	@keyframes node-glow {
 		50% {
-			width: 88%;
-		}
-	}
-
-	@keyframes log-glow {
-		50% {
-			border-color: rgba(46, 233, 208, 20%);
-			background: rgba(46, 233, 208, 8%);
+			background: #d9fffb;
+			box-shadow:
+				0 0 0 7px rgba(141, 255, 240, 20%),
+				0 0 26px rgba(141, 255, 240, 95%);
 		}
 	}
 
