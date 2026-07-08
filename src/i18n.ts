@@ -871,6 +871,431 @@ const EN_POSTS = {
 			},
 		],
 	},
+	'tiktok-rate-limit': {
+		title: 'What to Do When a TikTok Account Gets Rate-Limited',
+		description:
+			'A practical checklist for teams managing many TikTok accounts: pause risky tasks, trace recent changes, and reduce linked-account risk.',
+		category: 'Platform Guides',
+		tags: ['TikTok', 'Account Risk', 'Rate Limit'],
+		sections: [
+			{
+				paragraphs: [
+					'There is no one-click way to recover a limited TikTok account. The safer response is to pause actions that may make the problem worse, review recent changes, and watch the account trend over time.',
+					'For teams operating many accounts, the goal is not heroic rescue on one account. The goal is a repeatable diagnosis process.',
+				],
+			},
+			{
+				heading: 'What Counts as a Rate-Limit Signal',
+				paragraphs: [
+					'A rate-limit or traffic restriction usually looks like a sustained drop in views and engagement compared with the account’s normal baseline.',
+					'One weak post is not enough evidence. Teams should look at a period of performance and compare it with the account’s own history.',
+				],
+			},
+			{
+				heading: 'Start by Pausing the Account',
+				paragraphs: [
+					'The first move should not be publishing more content to test the account. Remove the account from bulk publishing tasks and observe it separately.',
+					'This is where account operations systems matter: one account can be isolated without stopping the rest of the batch.',
+				],
+			},
+			{
+				heading: 'Trace Recent Changes',
+				paragraphs: [
+					'Check whether the account recently changed device, proxy, posting frequency, content style, or operating pattern.',
+					'New accounts are usually more sensitive to sudden environment or behavior changes, so lifecycle stage matters when judging risk.',
+				],
+			},
+			{
+				heading: 'How Ainnc Helps',
+				paragraphs: [
+					'Ainnc lets teams remove individual accounts from bulk tasks, record account status changes, and keep cloud phone and proxy environments separated.',
+					'That lowers the chance that one restricted account turns into a wider account-pool problem.',
+				],
+			},
+		],
+	},
+	'device-account-limit': {
+		title: 'How Many Social Accounts Can One Device Safely Hold?',
+		description:
+			'Why device safety is less about a fixed number and more about account behavior, environment sharing, and detectable patterns.',
+		category: 'Platform Guides',
+		tags: ['Device Environment', 'Account Safety', 'Multi-Account Operations'],
+		sections: [
+			{
+				paragraphs: [
+					'No major social platform publishes a reliable number for how many accounts one device can safely run.',
+					'The real risk is not the count alone. It is whether the accounts share behavior patterns that make them look connected.',
+				],
+			},
+			{
+				heading: 'Why There Is No Universal Number',
+				paragraphs: [
+					'Platforms evaluate whether accounts in one environment behave like a coordinated batch: same login timing, same posting rhythm, similar content, or the same network path.',
+					'Two accounts can be risky if they move in sync. More accounts may be less risky if their behavior is naturally separated, though this is never guaranteed.',
+				],
+			},
+			{
+				heading: 'What Actually Changes Risk',
+				paragraphs: [
+					'Teams should watch operating time, publishing rhythm, repeated content, account lifecycle stage, and shared network exits.',
+					'The more valuable the accounts are, the less sense it makes to keep stacking them into one shared environment.',
+				],
+			},
+			{
+				heading: 'A Better Way to Think About It',
+				paragraphs: [
+					'Instead of asking how many accounts one device can hold, ask which accounts deserve isolated environments.',
+					'For scaled teams, cloud environments are often cheaper than the operational loss caused by linked-account risk.',
+				],
+			},
+			{
+				heading: 'How Ainnc Handles This',
+				paragraphs: [
+					'Ainnc gives each account an independent cloud phone environment, so teams do not need to guess the safe number for one local device.',
+				],
+			},
+		],
+	},
+	'cross-border-ecommerce-social-accounts': {
+		title: 'How Cross-Border E-Commerce Teams Manage Overseas Social Accounts',
+		description:
+			'How global commerce teams plan account matrices, local markets, device environments, and bulk execution across overseas social platforms.',
+		category: 'Global Growth',
+		tags: ['Cross-Border E-Commerce', 'Global Social', 'Account Matrix'],
+		sections: [
+			{
+				paragraphs: [
+					'For cross-border e-commerce teams, the hardest part is usually not creating enough accounts. It is keeping those accounts usable after they are created.',
+					'An account matrix only works when registration, environment setup, content production, and ongoing execution are planned together.',
+				],
+			},
+			{
+				heading: 'Why One Official Account Is Often Not Enough',
+				paragraphs: [
+					'Different markets need different content rhythms, languages, product angles, and local signals.',
+					'A single global account can become too generic. Splitting accounts by market or product line gives teams more room to localize.',
+				],
+			},
+			{
+				heading: 'Three Questions Before Scaling Accounts',
+				paragraphs: [
+					'Decide how accounts should be divided: by market, product line, platform, or a combination.',
+					'Plan where each account’s device and network environment will come from, because shared environments concentrate risk.',
+					'Decide who will keep the accounts warm, publishing, and maintained after registration. Account creation is only the beginning.',
+				],
+			},
+			{
+				heading: 'The First Stage After Registration',
+				paragraphs: [
+					'New accounts should not immediately carry heavy commercial publishing tasks.',
+					'A safer approach is a short warming period followed by gradually increasing publishing and interaction intensity.',
+				],
+			},
+			{
+				heading: 'How Ainnc Supports the Workflow',
+				paragraphs: [
+					'Ainnc supports account import, market and platform grouping, cloud phone allocation, proxy assignment, and AI-assisted content generation.',
+					'That gives cross-border teams a more stable operating base than scattered devices and spreadsheets.',
+				],
+			},
+		],
+	},
+	'operations-team-efficiency': {
+		title: 'How Many Accounts Can One Operator Manage?',
+		description:
+			'Why social media operations efficiency depends less on personal effort and more on how much repetitive work the system can absorb.',
+		category: 'Operations Playbook',
+		tags: ['Team Efficiency', 'Agency Operations', 'Bulk Tasks'],
+		sections: [
+			{
+				paragraphs: [
+					'There is no universal answer to how many accounts one operator can manage. The number depends on the operating model.',
+					'Manual work may make 20 accounts feel heavy. With batch execution and shared records, the same person can manage far more.',
+				],
+			},
+			{
+				heading: 'The Question Points in the Wrong Direction',
+				paragraphs: [
+					'Many teams calculate headcount by asking how many accounts one person can carry.',
+					'But the same ten accounts can take a full day with manual work or far less time with batch execution. The variable is the system, not only the operator.',
+				],
+			},
+			{
+				heading: 'A Better Efficiency Split',
+				paragraphs: [
+					'Separate repetitive work from judgment work. Login, warming, publishing, and routine checks should be measured differently from strategy, issue diagnosis, and client communication.',
+					'If repetitive work consumes most of the team’s time, the bottleneck is the operating method.',
+				],
+			},
+			{
+				heading: 'Common Misreadings',
+				paragraphs: [
+					'More accounts do not always require proportionally more people if the repeated work can be handled by a system.',
+					'Low efficiency is not always an employee problem. It is often a workflow problem.',
+				],
+			},
+			{
+				heading: 'How Ainnc Helps',
+				paragraphs: [
+					'Ainnc’s task center lets teams batch login, warming, and publishing work so operators can focus on decisions rather than repetitive clicks.',
+				],
+			},
+		],
+	},
+	'tiktok-account-banned': {
+		title: 'What Scaled Teams Should Do After a TikTok Account Ban',
+		description:
+			'How to limit damage after a TikTok account is banned: check shared environments, decide whether to appeal, and record the lesson.',
+		category: 'Platform Guides',
+		tags: ['TikTok', 'Account Ban', 'Risk Control'],
+		sections: [
+			{
+				paragraphs: [
+					'After an account is banned, the first question should not be how to recover that single account.',
+					'For scaled teams, the more important question is whether other accounts that share its device or proxy environment are also exposed.',
+				],
+			},
+			{
+				heading: 'Check the Blast Radius First',
+				paragraphs: [
+					'If the banned account shared a device or proxy with other accounts, inspect the connected accounts before spending all attention on the banned one.',
+					'Risk management in bulk operations is about controlling spread, not only rescuing one asset.',
+				],
+			},
+			{
+				heading: 'Appeal Based on Account Value',
+				paragraphs: [
+					'Appeals may be worth it for important accounts with strong history or direct business value.',
+					'For low-cost batch accounts, the team may be better off replacing the account and focusing on preventing repeat failures.',
+				],
+			},
+			{
+				heading: 'Review the Cause',
+				paragraphs: [
+					'Look at recent behavior: sudden high-intensity tasks, weak new-account warming, repeated content, or poor environment isolation.',
+					'The review is not about blame. It is about preventing the same pattern across the rest of the account pool.',
+				],
+			},
+			{
+				heading: 'How Ainnc Helps',
+				paragraphs: [
+					'Ainnc separates cloud phone and proxy environments, supports account grouping, and records task history so teams can quickly locate affected accounts and review what happened.',
+				],
+			},
+		],
+	},
+	'overseas-social-tools-checklist': {
+		title: 'What Tools Do Overseas Social Media Teams Need?',
+		description:
+			'A practical tool checklist for scaled overseas social operations: account environments, content production, batch execution, and records.',
+		category: 'Product Capabilities',
+		tags: ['Social Tools', 'Bulk Operations', 'Tool Stack'],
+		sections: [
+			{
+				paragraphs: [
+					'Overseas social media operations need more than a publishing tool.',
+					'A complete workflow has to cover account environments, content production, batch execution, and operational records.',
+				],
+			},
+			{
+				heading: 'Account and Device Environment',
+				paragraphs: [
+					'Bulk accounts need isolated login environments to reduce linked-account risk.',
+					'This layer answers where each account runs and whether accounts are separated from one another.',
+				],
+			},
+			{
+				heading: 'Content Production',
+				paragraphs: [
+					'Teams need copy, asset management, and reusable content workflows, especially when many accounts require differentiated output.',
+				],
+			},
+			{
+				heading: 'Batch Execution and Records',
+				paragraphs: [
+					'At scale, logging in and publishing one account at a time is not realistic. Teams need tasks that can select account groups and run repeated actions in batches.',
+					'After execution, teams also need records showing what succeeded, what failed, and how account status changed.',
+				],
+			},
+			{
+				heading: 'How Ainnc Covers the Stack',
+				paragraphs: [
+					'Ainnc combines cloud phones, proxy IPs, asset management, AI content support, task execution, and task records in one system.',
+				],
+			},
+		],
+	},
+	'cloud-phone-vs-emulator': {
+		title: 'Cloud Phone vs Emulator for Multi-Account Operations',
+		description:
+			'How cloud phones and emulators differ in isolation, cost, scalability, and suitability for social account operations.',
+		category: 'Product Capabilities',
+		tags: ['Cloud Phone', 'Emulator', 'Environment Isolation'],
+		sections: [
+			{
+				paragraphs: [
+					'Cloud phones and emulators both try to solve the same problem: running multiple account environments.',
+					'They differ in how isolation is achieved. Emulators virtualize environments locally, while cloud phones run accounts on remote cloud devices.',
+				],
+			},
+			{
+				heading: 'Where Emulators Fit',
+				paragraphs: [
+					'Emulators are easy to start with and relatively low cost. They can be useful for small tests and early experiments.',
+					'The limitation is that multiple emulator instances still share the same underlying local machine, which can increase association risk as account volume grows.',
+				],
+			},
+			{
+				heading: 'Where Cloud Phones Fit',
+				paragraphs: [
+					'Cloud phones provide stronger device-level separation because each account can run in its own remote environment.',
+					'They cost more than a simple emulator setup, but for larger account pools the risk reduction and scalability often justify the cost.',
+				],
+			},
+			{
+				heading: 'How to Choose',
+				paragraphs: [
+					'Small teams in a testing phase may start with emulators. Teams treating accounts as important business assets should consider cloud phones earlier.',
+					'The cost of one linked-environment incident can be higher than the environment savings.',
+				],
+			},
+			{
+				heading: 'Ainnc’s Approach',
+				paragraphs: [
+					'Ainnc provides independent cloud phone environments so teams can scale from dozens to hundreds or thousands of accounts without sharing one local base environment.',
+				],
+			},
+		],
+	},
+	'multi-platform-device-management': {
+		title: 'Can One Device Hold TikTok and Instagram Accounts Together?',
+		description:
+			'Technically yes, but scaled teams need to think about platform mix, device isolation, troubleshooting, and operational complexity.',
+		category: 'Product Capabilities',
+		tags: ['Multi-Platform', 'Device Environment', 'TikTok', 'Instagram'],
+		sections: [
+			{
+				paragraphs: [
+					'One device can technically log in to different platforms such as TikTok and Instagram.',
+					'The operational question is whether it should. As account volume grows, mixing platforms and accounts in one environment makes troubleshooting and risk control harder.',
+				],
+			},
+			{
+				heading: 'Possible Does Not Mean Practical',
+				paragraphs: [
+					'The apps themselves do not conflict. The problem appears when one device carries several accounts across several platforms and something goes wrong.',
+					'The team then has to determine which account, platform, behavior, or environment created the issue.',
+				],
+			},
+			{
+				heading: 'When Sharing May Be Acceptable',
+				paragraphs: [
+					'For a small test, low-value accounts, and limited activity, shared devices may be acceptable as a temporary setup.',
+				],
+			},
+			{
+				heading: 'When to Separate Environments',
+				paragraphs: [
+					'Once accounts become important to the business or require frequent batch tasks, separating environments by account or platform usually becomes safer and easier to manage.',
+				],
+			},
+			{
+				heading: 'How Ainnc Handles Multi-Platform Work',
+				paragraphs: [
+					'Ainnc supports TikTok, Instagram, Reddit, and X in one backend while still letting each account use its own cloud phone environment.',
+				],
+			},
+		],
+	},
+	'agency-pricing-models': {
+		title: 'How Should Social Media Agencies Price Their Services?',
+		description:
+			'How agencies can think about account-based pricing, performance pricing, hybrid retainers, and the role of execution proof.',
+		category: 'Operations Playbook',
+		tags: ['Agency Pricing', 'Service Model', 'Execution Data'],
+		sections: [
+			{
+				paragraphs: [
+					'There is no single best pricing model for social media agencies.',
+					'Charging by account count protects execution cost. Charging by results is easier for clients to understand, but shifts more risk to the agency. Mature teams often combine both.',
+				],
+			},
+			{
+				heading: 'Pricing by Account Count',
+				paragraphs: [
+					'This model connects price to execution cost: more accounts usually mean more devices, proxies, content, monitoring, and task volume.',
+					'The risk is that clients may focus too much on how many accounts they get, instead of whether the work produces real outcomes.',
+				],
+			},
+			{
+				heading: 'Pricing by Results',
+				paragraphs: [
+					'Performance pricing can be persuasive because clients want visible growth.',
+					'But social performance depends on platform algorithms, content quality, account history, and market conditions, so pure performance pricing can create cash-flow and risk pressure.',
+				],
+			},
+			{
+				heading: 'A Practical Hybrid',
+				paragraphs: [
+					'A base service fee can cover account management and execution costs, while an incentive layer rewards stronger results.',
+					'This gives the agency operational stability and gives the client a sense that the team is aligned with outcomes.',
+				],
+			},
+			{
+				heading: 'How Ainnc Helps Prove Value',
+				paragraphs: [
+					'Ainnc’s task records and usage dashboard help agencies show real execution data: task volume, publishing frequency, success rates, and operational history.',
+				],
+			},
+		],
+	},
+	'legacy-account-audit': {
+		title: 'How to Audit Old Social Accounts Before Taking Them Over',
+		description:
+			'Why teams should inspect login status, recent trends, operating history, and low-intensity test results before using inherited accounts.',
+		category: 'Operations Playbook',
+		tags: ['Legacy Accounts', 'Account Audit', 'Account Management'],
+		sections: [
+			{
+				paragraphs: [
+					'When taking over a batch of old accounts, follower count and old high-performing posts are not enough to judge whether the accounts are usable.',
+					'The team needs to understand current login status, recent abnormal signals, and whether past operations were stable.',
+				],
+			},
+			{
+				heading: 'Check Login Status First',
+				paragraphs: [
+					'Confirm whether each account can log in normally and whether verification or restriction prompts appear.',
+					'If login itself is unstable, deeper content or growth analysis is secondary.',
+				],
+			},
+			{
+				heading: 'Look at Recent Trends',
+				paragraphs: [
+					'Old peak performance does not prove current health. Teams should inspect the recent trend before takeover: stable, declining, or already abnormal.',
+				],
+			},
+			{
+				heading: 'Understand Previous Operations',
+				paragraphs: [
+					'Try to learn whether the accounts frequently changed devices, used abnormal high-frequency actions, or relied on questionable content sources.',
+					'An account can look normal today while still carrying risk from earlier operations.',
+				],
+			},
+			{
+				heading: 'Test Before Full Deployment',
+				paragraphs: [
+					'Even if the first checks look fine, start with low-intensity tasks and watch feedback before adding the accounts to formal batch operations.',
+				],
+			},
+			{
+				heading: 'How Ainnc Helps',
+				paragraphs: [
+					'Ainnc can record login status and operation history, and the task center can run batch login checks to help teams complete the first audit faster.',
+				],
+			},
+		],
+	},
 } as const;
 
 export function isEnglishPath(pathname: string) {
