@@ -66,34 +66,36 @@ const clusterLogs = [
 							<span class="cluster-title">云端账号集群 · 实时任务</span>
 							<span class="live-pill"><span class="live-dot"></span>RUNNING</span>
 						</div>
-						<div class="device-grid">
-							{
-								clusterDevices.map((device, index) => (
-									<div
-										class:list={['device-card', { active: device.active }]}
-										style={`--delay: ${index * 0.16}s`}
-									>
-										<div class="device-top">
-											<span class="device-id">{device.id}</span>
-											<span class="device-dot"></span>
+						<div class="cluster-body">
+							<div class="device-grid">
+								{
+									clusterDevices.map((device, index) => (
+										<div
+											class:list={['device-card', { active: device.active }]}
+											style={`--delay: ${index * 0.16}s`}
+										>
+											<div class="device-top">
+												<span class="device-id">{device.id}</span>
+												<span class="device-dot"></span>
+											</div>
+											<p class="device-status">{device.platform} 环境同步</p>
+											<div class="device-bar"><span></span></div>
 										</div>
-										<p class="device-status">{device.platform} 环境同步</p>
-										<div class="device-bar"><span></span></div>
-									</div>
-								))
-							}
-						</div>
-						<div class="log-panel">
-							{
-								clusterLogs.map(([time, platform, action, status], index) => (
-									<div class="log-line" style={`--delay: ${index * 0.18}s`}>
-										<span class="lt">{time}</span>
-										<span class="ld">{platform}</span>
-										<span class="la">{action}</span>
-										<span class="lc">{status}</span>
-									</div>
-								))
-							}
+									))
+								}
+							</div>
+							<div class="log-panel">
+								{
+									clusterLogs.map(([time, platform, action, status], index) => (
+										<div class="log-line" style={`--delay: ${index * 0.18}s`}>
+											<span class="lt">{time}</span>
+											<span class="ld">{platform}</span>
+											<span class="la">{action}</span>
+											<span class="lc">{status}</span>
+										</div>
+									))
+								}
+							</div>
 						</div>
 						<div class="cluster-stats">
 							<span><strong>2,855</strong>本周发布内容</span>
@@ -104,18 +106,62 @@ const clusterLogs = [
 				</div>
 				<div class="hero-ticker" aria-hidden="true">
 					<div>
-						<span>TIKTOK</span>
-						<span>INSTAGRAM</span>
-						<span>REDDIT</span>
-						<span>X</span>
+						<span class="ticker-icon" data-platform="tiktok">
+							<svg viewBox="0 0 24 24" focusable="false">
+								<path d="M14.5 4v10.1a4.3 4.3 0 1 1-3.2-4.2v3.1a1.5 1.5 0 1 0 1 1.4V4h2.2c.3 2.1 1.7 3.8 3.8 4.3v3.1a7 7 0 0 1-3.8-1.3z" />
+							</svg>
+						</span>
+						<span class="ticker-icon" data-platform="instagram">
+							<svg viewBox="0 0 24 24" focusable="false">
+								<rect x="5" y="5" width="14" height="14" rx="4" />
+								<circle cx="12" cy="12" r="3.2" />
+								<circle cx="16.6" cy="7.4" r="1" />
+							</svg>
+						</span>
+						<span class="ticker-icon" data-platform="reddit">
+							<svg viewBox="0 0 24 24" focusable="false">
+								<path d="M8 12.2a5.9 5.9 0 0 1 8 0 3.1 3.1 0 0 1 2.3-.8 2.2 2.2 0 0 1 .6 4.2c-.3 3-3.2 5.3-6.9 5.3s-6.6-2.3-6.9-5.3a2.2 2.2 0 0 1 .6-4.2 3.1 3.1 0 0 1 2.3.8z" />
+								<path d="M12.7 7.3h3.1l.5-2.2 2.6.6" />
+								<circle cx="9.6" cy="15.3" r=".8" />
+								<circle cx="14.4" cy="15.3" r=".8" />
+								<path d="M10.1 17.4a4.6 4.6 0 0 0 3.8 0" />
+							</svg>
+						</span>
+						<span class="ticker-icon" data-platform="x">
+							<svg viewBox="0 0 24 24" focusable="false">
+								<path d="M5 5l14 14M19 5 5 19" />
+							</svg>
+						</span>
 						<span>云手机环境</span>
 						<span>代理 IP 管理</span>
 						<span>素材文件</span>
 						<span>任务队列</span>
-						<span>TIKTOK</span>
-						<span>INSTAGRAM</span>
-						<span>REDDIT</span>
-						<span>X</span>
+						<span class="ticker-icon" data-platform="tiktok">
+							<svg viewBox="0 0 24 24" focusable="false">
+								<path d="M14.5 4v10.1a4.3 4.3 0 1 1-3.2-4.2v3.1a1.5 1.5 0 1 0 1 1.4V4h2.2c.3 2.1 1.7 3.8 3.8 4.3v3.1a7 7 0 0 1-3.8-1.3z" />
+							</svg>
+						</span>
+						<span class="ticker-icon" data-platform="instagram">
+							<svg viewBox="0 0 24 24" focusable="false">
+								<rect x="5" y="5" width="14" height="14" rx="4" />
+								<circle cx="12" cy="12" r="3.2" />
+								<circle cx="16.6" cy="7.4" r="1" />
+							</svg>
+						</span>
+						<span class="ticker-icon" data-platform="reddit">
+							<svg viewBox="0 0 24 24" focusable="false">
+								<path d="M8 12.2a5.9 5.9 0 0 1 8 0 3.1 3.1 0 0 1 2.3-.8 2.2 2.2 0 0 1 .6 4.2c-.3 3-3.2 5.3-6.9 5.3s-6.6-2.3-6.9-5.3a2.2 2.2 0 0 1 .6-4.2 3.1 3.1 0 0 1 2.3.8z" />
+								<path d="M12.7 7.3h3.1l.5-2.2 2.6.6" />
+								<circle cx="9.6" cy="15.3" r=".8" />
+								<circle cx="14.4" cy="15.3" r=".8" />
+								<path d="M10.1 17.4a4.6 4.6 0 0 0 3.8 0" />
+							</svg>
+						</span>
+						<span class="ticker-icon" data-platform="x">
+							<svg viewBox="0 0 24 24" focusable="false">
+								<path d="M5 5l14 14M19 5 5 19" />
+							</svg>
+						</span>
 						<span>云手机环境</span>
 						<span>代理 IP 管理</span>
 						<span>素材文件</span>
@@ -280,7 +326,38 @@ const clusterLogs = [
 	}
 
 	.hero-ticker span {
+		display: inline-flex;
+		align-items: center;
 		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	}
+
+	.hero-ticker .ticker-icon {
+		justify-content: center;
+		width: 1.72rem;
+		height: 1.72rem;
+		border: 1px solid rgba(0, 201, 170, 20%);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 62%);
+		color: rgba(0, 125, 118, 76%);
+		box-shadow: 0 8px 18px rgba(0, 125, 118, 8%);
+	}
+
+	.ticker-icon svg {
+		width: 1rem;
+		height: 1rem;
+	}
+
+	.ticker-icon svg :where(path, rect, circle) {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.ticker-icon[data-platform='tiktok'] svg path {
+		fill: currentColor;
+		stroke: none;
 	}
 
 	.section-kicker {
@@ -333,7 +410,7 @@ const clusterLogs = [
 	.cluster-wrap {
 		position: relative;
 		z-index: 4;
-		width: min(860px, calc(100% - 2rem));
+		width: min(960px, calc(100% - 2rem));
 		margin-bottom: 3.25rem;
 		transform: translate3d(calc(var(--shift-x) * 0.25), calc(var(--shift-y) * 0.25), 0);
 		transition: transform 0.18s ease-out;
@@ -352,9 +429,15 @@ const clusterLogs = [
 		backdrop-filter: blur(18px);
 	}
 
+	.cluster-body {
+		display: grid;
+		grid-template-columns: minmax(0, 1.36fr) minmax(18rem, 0.84fr);
+		gap: 0.78rem;
+		align-items: stretch;
+	}
+
 	.cluster-head,
 	.device-top,
-	.cluster-stats,
 	.log-line {
 		display: flex;
 		align-items: center;
@@ -410,14 +493,14 @@ const clusterLogs = [
 	.device-grid {
 		display: grid;
 		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 0.65rem;
+		gap: 0.55rem;
 	}
 
 	.device-card {
 		border: 1px solid rgba(255, 255, 255, 8%);
 		border-radius: 8px;
 		background: rgba(255, 255, 255, 6%);
-		padding: 0.75rem;
+		padding: 0.68rem;
 		animation: card-breathe 4.8s ease-in-out var(--delay) infinite;
 	}
 
@@ -471,8 +554,12 @@ const clusterLogs = [
 
 	.log-panel {
 		display: grid;
-		gap: 0.4rem;
-		margin-top: 0.8rem;
+		align-content: stretch;
+		gap: 0.45rem;
+		border: 1px solid rgba(141, 255, 240, 10%);
+		border-radius: 8px;
+		background: rgba(0, 21, 22, 22%);
+		padding: 0.55rem;
 	}
 
 	.log-line {
@@ -497,19 +584,29 @@ const clusterLogs = [
 	}
 
 	.cluster-stats {
-		margin-top: 0.85rem;
-		border-top: 1px solid rgba(255, 255, 255, 8%);
-		padding-top: 0.8rem;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.65rem;
+		margin-top: 0.78rem;
 		color: rgba(232, 255, 251, 70%);
 		font-size: 0.74rem;
 		font-weight: 800;
 	}
 
+	.cluster-stats span {
+		display: grid;
+		gap: 0.28rem;
+		border: 1px solid rgba(141, 255, 240, 10%);
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 6%);
+		padding: 0.68rem 0.75rem;
+	}
+
 	.cluster-stats strong {
-		margin-right: 0.25rem;
 		color: white;
 		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-		font-size: 1rem;
+		font-size: 1.08rem;
+		line-height: 1;
 	}
 
 	.hero-ticker {
@@ -531,8 +628,8 @@ const clusterLogs = [
 	.hero-ticker div {
 		display: flex;
 		width: max-content;
-		gap: 2rem;
-		animation: ticker-flow 24s linear infinite;
+		gap: 1.6rem;
+		animation: ticker-flow 22s linear infinite;
 	}
 
 	.framework-section,
@@ -833,8 +930,12 @@ const clusterLogs = [
 		}
 
 		.cluster-wrap {
-			width: min(100%, 32rem);
+			width: min(100%, 40rem);
 			margin-bottom: 1.5rem;
+		}
+
+		.cluster-body {
+			grid-template-columns: 1fr;
 		}
 
 		.device-grid {
