@@ -426,6 +426,13 @@ const clusterLogs = [
 		background: rgba(46, 233, 208, 12%);
 	}
 
+	.device-card.active .device-dot {
+		background: #c8fff7;
+		box-shadow:
+			0 0 0 4px rgba(141, 255, 240, 18%),
+			0 0 18px rgba(141, 255, 240, 82%);
+	}
+
 	.device-id {
 		color: #e8fffb;
 		font-size: 0.72rem;
@@ -454,6 +461,12 @@ const clusterLogs = [
 		border-radius: inherit;
 		background: linear-gradient(90deg, var(--accent), #8dfff0);
 		animation: bar-fill 3.8s ease-in-out var(--delay) infinite;
+	}
+
+	.device-card.active .device-bar span {
+		width: 100%;
+		background: linear-gradient(90deg, var(--accent), #c8fff7);
+		animation: none;
 	}
 
 	.log-panel {
