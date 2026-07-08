@@ -63,6 +63,6 @@ const { post, postIndex } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogPost {...post.data} postIndex={postIndex}>
+<BlogPost {...post.data} postId={post.id} postIndex={postIndex}>
 	<Content />
 </BlogPost>

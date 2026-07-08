@@ -36,15 +36,15 @@ const postCode = getPostCode(meta.category, index);
 		</div>
 		<h2><a href={postHref}>{meta.title}</a></h2>
 		<p>{meta.description}</p>
+		<a class="read-link" href={postHref}>{readLabel}<span aria-hidden="true">-&gt;</span></a>
 		{
 			meta.tags.length > 0 && (
-				<ul class="tag-list" aria-label={tagLabel}>
-					{meta.tags.map((tag) => (
-						<li>{tag}</li>
+				<ul class="content-tags card-tags" aria-label={tagLabel}>
+					{meta.tags.slice(0, 6).map((tag) => (
+						<li>#{tag}</li>
 					))}
 				</ul>
 			)
 		}
-		<a class="read-link" href={postHref}>{readLabel}<span aria-hidden="true">-&gt;</span></a>
 	</div>
 </article>

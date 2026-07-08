@@ -1001,43 +1001,44 @@ const EN_POSTS = {
 		],
 	},
 	'operations-team-efficiency': {
-		title: 'How Many Accounts Can One Operator Manage?',
+		title: 'How Many Social Accounts Can One Operator Really Manage?',
 		description:
-			'Why social media operations efficiency depends less on personal effort and more on how much repetitive work the system can absorb.',
+			'Why operator capacity depends less on account count and more on account stage, abnormal status, platform mix, and attention load.',
 		category: 'Operations Playbook',
-		tags: ['Team Efficiency', 'Agency Operations', 'Bulk Tasks'],
+		tags: ['Account Management', 'Team Efficiency', 'Agency Operations', 'Social Operations', 'Scaling'],
 		sections: [
 			{
 				paragraphs: [
-					'There is no universal answer to how many accounts one operator can manage. The number depends on the operating model.',
-					'Manual work may make 20 accounts feel heavy. With batch execution and shared records, the same person can manage far more.',
+					'The common question is: how many accounts can one operator manage? But the more useful question is: how much attention do those accounts consume?',
+					'Fifty mature accounts with stable routines are not the same workload as fifty accounts mixed with new profiles, appeals, device changes, and multi-platform tasks.',
 				],
 			},
 			{
-				heading: 'The Question Points in the Wrong Direction',
+				heading: 'Account Count Alone Misleads Teams',
 				paragraphs: [
-					'Many teams calculate headcount by asking how many accounts one person can carry.',
-					'But the same ten accounts can take a full day with manual work or far less time with batch execution. The variable is the system, not only the operator.',
+					'Agencies often use account count to estimate staffing and pricing. That only works if every account consumes similar attention.',
+					'In reality, a stable account may only need routine checks, while a new or abnormal account can interrupt the operator all day.',
 				],
 			},
 			{
-				heading: 'A Better Efficiency Split',
+				heading: 'Four Variables Decide Real Capacity',
 				paragraphs: [
-					'Separate repetitive work from judgment work. Login, warming, publishing, and routine checks should be measured differently from strategy, issue diagnosis, and client communication.',
-					'If repetitive work consumes most of the team’s time, the bottleneck is the operating method.',
+					'The most useful variables are account stage, account status, platform mix, and content complexity.',
+					'A stable single-platform account with templated content is low-attention. A new account, appealed account, or cross-platform account is high-attention.',
 				],
 			},
 			{
-				heading: 'Common Misreadings',
+				heading: 'Use Attention Units Before Hiring',
 				paragraphs: [
-					'More accounts do not always require proportionally more people if the repeated work can be handled by a system.',
-					'Low efficiency is not always an employee problem. It is often a workflow problem.',
+					'Before hiring more operators, classify accounts into stable, growing, new, and abnormal groups.',
+					'Then assign different inspection rhythms and capacity weights. This gives a clearer headcount estimate than dividing total accounts by a generic target.',
 				],
 			},
 			{
 				heading: 'How Ainnc Helps',
 				paragraphs: [
-					'Ainnc’s task center lets teams batch login, warming, and publishing work so operators can focus on decisions rather than repetitive clicks.',
+					'Ainnc centralizes accounts, cloud phone environments, proxy IPs, files, tasks, and execution records.',
+					'That does not remove human judgment. It removes the scattered routine work that prevents operators from doing judgment work well.',
 				],
 			},
 		],

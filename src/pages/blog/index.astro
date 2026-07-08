@@ -36,6 +36,9 @@ const postOrder = [
 	'multi-platform-device-management',
 	'agency-pricing-models',
 	'legacy-account-audit',
+	'account-device-proxy-guide',
+	'task-files-publishing',
+	'ainnc-start',
 ];
 const posts = (await getCollection('blog', (entry) => !entry.data.draft && postOrder.includes(entry.id))).sort((a, b) => {
 	const aOrder = postOrder.indexOf(a.id);

@@ -72,7 +72,10 @@ const meta = getPostMeta(post, 'en');
 	description={meta.description}
 	category={meta.category}
 	tags={meta.tags}
+	tldr={[]}
+	faq={[]}
 	locale="en"
+	postId={post.id}
 	postIndex={postIndex}
 >
 	<EnglishPostBody postId={post.id} />
