@@ -9,113 +9,57 @@ const chinesePostMatch = currentPath.match(/^\/blog\/([^/]+)\/?$/);
 const hasEnglishVersion = !chinesePostMatch || hasEnglishPost(chinesePostMatch[1]);
 ---
 
-<div class:list={['language-switch', { english: isEnglish }]} aria-label="Language switcher">
-	<div class="language-card">
-		<a class="language-face language-front" href={zhPath} aria-label="切换到中文">中文</a>
-		{
-			hasEnglishVersion ? (
-				<a class="language-face language-back" href={enPath} aria-label="Switch to English">EN</a>
-			) : (
-				<span class="language-face language-back" aria-disabled="true" title="English translation coming soon">EN</span>
-			)
-		}
-	</div>
+<div class="language-switch" aria-label="Language switcher">
+	{
+		isEnglish ? (
+			<a href={zhPath} aria-label="切换到中文"><span>中 / </span><b>EN</b></a>
+		) : hasEnglishVersion ? (
+			<a href={enPath} aria-label="Switch to English"><b>中</b><span> / EN</span></a>
+		) : (
+			<span class="language-disabled" aria-disabled="true" title="English translation coming soon">
+				<b>中</b><span> / EN</span>
+			</span>
+		)
+	}
 </div>
 
 <style>
 	.language-switch {
-		display: inline-block;
-		width: 4.2rem;
-		height: 2.7rem;
-		perspective: 620px;
-	}
-
-	.language-card {
-		position: relative;
-		width: 100%;
-		height: 100%;
-		transform-style: preserve-3d;
-		transition: transform 0.62s cubic-bezier(0.2, 0.85, 0.2, 1);
-	}
-
-	.language-switch:hover .language-card,
-	.language-switch:focus-within .language-card,
-	.language-switch.english .language-card {
-		transform: rotateY(180deg);
-	}
-
-	.language-switch.english:hover .language-card,
-	.language-switch.english:focus-within .language-card {
-		transform: rotateY(0deg);
-	}
-
-	.language-face {
-		position: absolute;
-		inset: 0;
-		z-index: 1;
 		display: inline-flex;
 		align-items: center;
-		justify-content: center;
-		border: 1px solid rgba(0, 174, 176, 28%);
-		border-radius: 8px;
-		background:
-			linear-gradient(180deg, rgba(255, 255, 255, 92%), rgba(242, 255, 252, 88%)),
-			rgba(255, 255, 255, 90%);
-		color: var(--text);
-		font-size: 0.95rem;
-		font-weight: 900;
+	}
+
+	.language-switch a,
+	.language-disabled {
+		color: var(--muted);
+		font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 12.5px;
+		letter-spacing: 0.08em;
+		line-height: 1;
 		text-decoration: none;
 		white-space: nowrap;
-		backface-visibility: hidden;
-		-webkit-backface-visibility: hidden;
-		box-shadow:
-			0 12px 24px rgba(0, 201, 170, 10%),
-			inset 0 1px 0 rgba(255, 255, 255, 96%);
-		transition:
-			border-color 0.18s ease,
-			box-shadow 0.18s ease,
-			color 0.18s ease;
 	}
 
-	.language-front {
-		color: var(--accent);
-	}
-
-	.language-back {
-		transform: rotateY(180deg);
-		background:
-			linear-gradient(180deg, rgba(49, 224, 208, 96%), rgba(0, 201, 170, 94%)),
-			var(--accent);
+	.language-switch b {
 		color: var(--text);
-		box-shadow:
-			0 14px 28px rgba(0, 174, 176, 18%),
-			inset 0 1px 0 rgba(255, 255, 255, 40%),
-			inset 0 -10px 16px rgba(0, 91, 92, 14%);
+		font-weight: 500;
 	}
 
-	.language-face[aria-disabled='true'] {
+	.language-switch a span {
+		transition: color 0.18s ease;
+	}
+
+	.language-switch a:hover span {
+		color: var(--accent-dark);
+	}
+
+	.language-disabled {
 		cursor: not-allowed;
-		opacity: 0.58;
-	}
-
-	.language-switch:hover .language-face,
-	.language-switch:focus-within .language-face {
-		border-color: rgba(0, 201, 170, 58%);
-		box-shadow:
-			0 16px 30px rgba(0, 201, 170, 16%),
-			inset 0 1px 0 rgba(255, 255, 255, 96%);
-	}
-
-	.language-switch:hover .language-back,
-	.language-switch:focus-within .language-back {
-		box-shadow:
-			0 18px 32px rgba(0, 174, 176, 24%),
-			inset 0 1px 0 rgba(255, 255, 255, 42%),
-			inset 0 -10px 16px rgba(0, 91, 92, 12%);
+		opacity: 0.52;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.language-card {
+		.language-switch a span {
 			transition: none;
 		}
 	}

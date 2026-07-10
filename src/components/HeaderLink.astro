@@ -20,32 +20,34 @@ const isActive = exactOnly
 <a href={href} class:list={[className, { active: isActive }]} {...props}>
 	<slot />
 </a>
+
 <style>
 	a {
 		position: relative;
 		display: inline-flex;
 		align-items: center;
-		border-radius: 0;
-		padding: 0.4rem 0.18rem 0.52rem;
+		border-radius: 8px;
+		padding: 8px 14px;
 		color: var(--muted);
-		font-size: 1rem;
-		font-weight: 800;
+		font-size: 14.5px;
+		font-weight: 500;
+		line-height: 1.2;
 		text-decoration: none;
 		white-space: nowrap;
 		transition:
-			color 0.18s ease,
-			transform 0.18s ease;
+			background 0.18s ease,
+			color 0.18s ease;
 	}
 
 	a::after {
 		content: '';
 		position: absolute;
-		right: 0.08rem;
-		bottom: 0.12rem;
-		left: 0.08rem;
-		height: 3px;
-		border-radius: 999px;
-		background: linear-gradient(90deg, #00c9aa, #62f3e1);
+		right: 14px;
+		bottom: 2px;
+		left: 14px;
+		height: 2px;
+		border-radius: 2px;
+		background: linear-gradient(90deg, var(--accent-dark), var(--accent));
 		opacity: 0;
 		transform: scaleX(0.35);
 		transition:
@@ -53,15 +55,24 @@ const isActive = exactOnly
 			transform 0.18s ease;
 	}
 
-	a:hover,
-	a.active {
+	a:hover {
+		background: color-mix(in srgb, var(--text) 5%, transparent);
 		color: var(--text);
-		transform: translateY(-1px);
 	}
 
-	a.active::after,
-	a:hover::after {
+	a.active {
+		color: var(--text);
+	}
+
+	a.active::after {
 		opacity: 1;
 		transform: scaleX(1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		a,
+		a::after {
+			transition: none;
+		}
 	}
 </style>
