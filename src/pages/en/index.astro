@@ -4,9 +4,9 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import PostCard from '../../components/PostCard.astro';
-import { getPostMeta, SITE_COPY } from '../../i18n';
+import { getPostMeta, hasEnglishPost, SITE_COPY } from '../../i18n';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+const posts = (await getCollection('blog', (post) => !post.data.draft && hasEnglishPost(post.id))).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
@@ -423,29 +423,20 @@ const clusterLogs = [
 		position: relative;
 		isolation: isolate;
 		display: grid;
+		box-sizing: border-box;
+		width: 100vw;
 		min-height: 760px;
 		align-content: center;
 		justify-items: center;
 		overflow: hidden;
+		margin-inline: calc(50% - 50vw);
 		margin-bottom: 4rem;
-		border: 1px solid var(--line);
-		border-radius: 8px;
+		padding-inline: clamp(1rem, 3vw, 2rem);
 		background:
-			linear-gradient(90deg, rgba(255, 255, 255, 76%) 0, rgba(255, 255, 255, 38%) 45%, rgba(255, 255, 255, 76%) 100%),
-			linear-gradient(135deg, rgba(0, 201, 170, 16%), rgba(60, 110, 159, 8%) 48%, rgba(0, 69, 76, 5%)),
-			white;
-		box-shadow: 0 24px 70px rgba(0, 69, 76, 12%);
+			radial-gradient(circle at 20% 10%, rgba(46, 233, 208, 8%), transparent 50%),
+			radial-gradient(circle at 80% 40%, rgba(8, 145, 178, 6%), transparent 50%),
+			#fafdfc;
 		text-align: center;
-	}
-
-	.home-hero::before {
-		content: '';
-		position: absolute;
-		inset: 1rem;
-		z-index: 0;
-		border: 1px solid rgba(0, 201, 170, 16%);
-		border-radius: 8px;
-		pointer-events: none;
 	}
 
 	.hero-watermark {
@@ -544,21 +535,19 @@ const clusterLogs = [
 	.hero-stats {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.75rem;
+		gap: 14px;
 		justify-content: center;
-	}
-
-	.hero-stats {
 		margin-top: 0.25rem;
-		color: var(--muted);
+		color: #06272a;
+		font-size: 13px;
 		font-weight: 800;
 	}
 
 	.hero-stats span {
-		border: 1px solid rgba(0, 201, 170, 28%);
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 72%);
-		padding: 0.45rem 0.8rem;
+		border: 1px solid #d7eeea;
+		border-radius: 24px;
+		background: #fff;
+		padding: 10px 22px;
 	}
 
 	.hero-stats strong {
