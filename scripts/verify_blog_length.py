@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Markdown blog depth, structure, density, and obvious manual-style prose."""
+"""Verify blog depth and endings without forcing every article into one template."""
 
 from __future__ import annotations
 
@@ -200,6 +200,125 @@ def tldr_text(content: str) -> str:
     return plain_text(" ".join(lines))
 
 
+def final_block_type(content: str) -> str:
+    """Return the final meaningful Markdown block type for ending validation."""
+    lines = [line.strip() for line in strip_frontmatter(content).splitlines()]
+    lines = [line for line in lines if line and not line.startswith("<!--")]
+    if not lines:
+        return "empty"
+    last = lines[-1]
+    if last.startswith(">"):
+        return "quote"
+    if re.match(r"^(?:[-*+]\s+|\d+[.)]\s+)", last):
+        return "list"
+    if last.startswith("|"):
+        return "table"
+    if last.startswith("```"):
+        return "code"
+    if re.match(r"</(?:figure|table|div)>$", last):
+        return "visual"
+    if last.startswith("#"):
+        return "heading"
+    return "prose"
+
+
+def structure_fingerprint(content: str) -> str:
+    """Describe an article's block skeleton while ignoring its actual wording."""
+    lines = strip_frontmatter(content).splitlines()
+    tokens: list[str] = []
+    index = 0
+
+    while index < len(lines):
+        line = lines[index].strip()
+        if not line:
+            index += 1
+            continue
+
+        if line.startswith("```"):
+            tokens.append("代码")
+            index += 1
+            while index < len(lines) and not lines[index].strip().startswith("```"):
+                index += 1
+            index += 1
+            continue
+
+        if line.startswith(">"):
+            quote_lines: list[str] = []
+            while index < len(lines):
+                quote_line = lines[index].strip()
+                if quote_line.startswith(">"):
+                    quote_lines.append(quote_line)
+                    index += 1
+                    continue
+                if not quote_line:
+                    index += 1
+                    continue
+                break
+            tokens.append("TLDR" if "TL;DR" in " ".join(quote_lines) else "引用")
+            continue
+
+        h2_match = re.match(r"^##\s+(.+)$", line)
+        if h2_match:
+            heading = h2_match.group(1).strip()
+            tokens.append("FAQ" if heading.upper() in FAQ_HEADINGS else "二级标题")
+            index += 1
+            continue
+        if line.startswith("### "):
+            tokens.append("三级标题")
+            index += 1
+            continue
+        if line.startswith("#"):
+            tokens.append("标题")
+            index += 1
+            continue
+
+        if line.startswith("|"):
+            tokens.append("表格")
+            while index < len(lines) and lines[index].strip().startswith("|"):
+                index += 1
+            continue
+
+        if re.match(r"^(?:[-*+]\s+|\d+[.)]\s+)", line):
+            tokens.append("清单")
+            while index < len(lines):
+                item = lines[index].strip()
+                if re.match(r"^(?:[-*+]\s+|\d+[.)]\s+)", item) or not item:
+                    index += 1
+                    continue
+                break
+            continue
+
+        html_match = re.match(r"<(figure|table|div)\b", line)
+        if html_match:
+            tag = html_match.group(1)
+            tokens.append("可视化")
+            index += 1
+            while index < len(lines) and f"</{tag}>" not in lines[index]:
+                index += 1
+            index += 1
+            continue
+
+        tokens.append("正文")
+        index += 1
+        while index < len(lines):
+            next_line = lines[index].strip()
+            if not next_line:
+                break
+            if re.match(
+                r"^(?:>|#{1,6}\s|```|\||[-*+]\s+|\d+[.)]\s+|<(?:figure|table|div)\b)",
+                next_line,
+            ):
+                break
+            index += 1
+
+    return " → ".join(tokens)
+
+
+def publication_date(content: str) -> str:
+    match = re.search(r'(?m)^pubDate:\s*["\']?([^"\'\s]+)', content)
+    return match.group(1) if match else "0000-00-00"
+
+
 def action_list_count(content: str) -> int:
     content = strip_frontmatter(content)
     faq_match = re.search(r"(?mi)^##\s+(?:FAQ|常见问题)\s*$", content)
@@ -255,9 +374,7 @@ def h2_sections(content: str) -> list[tuple[str, str]]:
 def check_structure(content: str) -> list[str]:
     issues: list[str] = []
     tldr = tldr_text(content)
-    if not tldr or "TL;DR" not in tldr:
-        issues.append("缺少 TL;DR 引用块")
-    else:
+    if "TL;DR" in tldr:
         tldr_sentences = sentence_split(tldr.replace("TL;DR", ""))
         if not 2 <= len(tldr_sentences) <= 4:
             issues.append(f"TL;DR 应为2-4句(当前{len(tldr_sentences)}句)")
@@ -284,6 +401,16 @@ def check_structure(content: str) -> list[str]:
         paragraphs = extract_body_paragraphs(section)
         if not paragraphs:
             issues.append(f"二级标题“{heading}”下缺少展开论述")
+
+    body_paragraphs = extract_body_paragraphs(content)
+    if not body_paragraphs:
+        issues.append("文章缺少完整正文论述")
+
+    ending_type = final_block_type(content)
+    if ending_type != "prose":
+        issues.append(
+            f"文章最后一个内容块是{ending_type}，需要用自然段完成真正收尾"
+        )
 
     sections = h2_sections(content)
     if sections:
@@ -325,8 +452,13 @@ def main() -> int:
 
     failed_articles = 0
     final_heading_counts: Counter[str] = Counter()
+    fingerprint_counts: Counter[str] = Counter()
+    dated_fingerprints: list[tuple[str, Path, str]] = []
     for path in paths:
         content = path.read_text(encoding="utf-8")
+        fingerprint = structure_fingerprint(content)
+        fingerprint_counts[fingerprint] += 1
+        dated_fingerprints.append((publication_date(content), path, fingerprint))
         sections = h2_sections(content)
         if sections:
             final_heading_counts[sections[-1][0]] += 1
@@ -357,8 +489,32 @@ def main() -> int:
         for heading, count in sorted(repeated_endings.items(), key=lambda item: (-item[1], item[0])):
             print(f"  {count} 篇使用“{heading}”")
 
+    overused_structures = {
+        fingerprint: count
+        for fingerprint, count in fingerprint_counts.items()
+        if count >= 7
+    }
+    if overused_structures:
+        print("✗ 同一文章骨架使用过多，结构已经覆盖了内容差异：")
+        for fingerprint, count in sorted(
+            overused_structures.items(), key=lambda item: (-item[1], item[0])
+        ):
+            print(f"  {count} 篇使用：{fingerprint}")
+
+    consecutive_templates: list[tuple[list[Path], str]] = []
+    dated_fingerprints.sort(key=lambda item: (item[0], item[1].name), reverse=True)
+    for start in range(len(dated_fingerprints) - 4):
+        window = dated_fingerprints[start : start + 5]
+        if len({item[2] for item in window}) == 1:
+            consecutive_templates.append(([item[1] for item in window], window[0][2]))
+    if consecutive_templates:
+        print("✗ 按发布日期相邻的5篇文章使用同一骨架：")
+        for window, fingerprint in consecutive_templates:
+            print(f"  {', '.join(path.name for path in window)}")
+            print(f"  骨架：{fingerprint}")
+
     print(f"汇总：检查 {len(paths)} 篇，{len(paths) - failed_articles} 篇通过，{failed_articles} 篇未通过")
-    return 1 if failed_articles or repeated_endings else 0
+    return 1 if failed_articles or repeated_endings or overused_structures or consecutive_templates else 0
 
 
 if __name__ == "__main__":
