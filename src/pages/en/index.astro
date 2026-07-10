@@ -128,70 +128,6 @@ const clusterLogs = [
 						</div>
 					</div>
 				</div>
-				<div class="hero-ticker" aria-hidden="true">
-					<div class="ticker-track">
-						<span class="ticker-icon" data-platform="tiktok">
-							<svg viewBox="0 0 24 24" focusable="false">
-								<path d="M14.5 4v10.1a4.3 4.3 0 1 1-3.2-4.2v3.1a1.5 1.5 0 1 0 1 1.4V4h2.2c.3 2.1 1.7 3.8 3.8 4.3v3.1a7 7 0 0 1-3.8-1.3z" />
-							</svg>
-						</span>
-						<span class="ticker-icon" data-platform="instagram">
-							<svg viewBox="0 0 24 24" focusable="false">
-								<rect x="5" y="5" width="14" height="14" rx="4" />
-								<circle cx="12" cy="12" r="3.2" />
-								<circle cx="16.6" cy="7.4" r="1" />
-							</svg>
-						</span>
-						<span class="ticker-icon" data-platform="reddit">
-							<svg viewBox="0 0 24 24" focusable="false">
-								<path d="M8 12.2a5.9 5.9 0 0 1 8 0 3.1 3.1 0 0 1 2.3-.8 2.2 2.2 0 0 1 .6 4.2c-.3 3-3.2 5.3-6.9 5.3s-6.6-2.3-6.9-5.3a2.2 2.2 0 0 1 .6-4.2 3.1 3.1 0 0 1 2.3.8z" />
-								<path d="M12.7 7.3h3.1l.5-2.2 2.6.6" />
-								<circle cx="9.6" cy="15.3" r=".8" />
-								<circle cx="14.4" cy="15.3" r=".8" />
-								<path d="M10.1 17.4a4.6 4.6 0 0 0 3.8 0" />
-							</svg>
-						</span>
-						<span class="ticker-icon" data-platform="x">
-							<svg viewBox="0 0 24 24" focusable="false">
-								<path d="M5 5l14 14M19 5 5 19" />
-							</svg>
-						</span>
-						<span>CLOUD PHONE</span>
-						<span>PROXY IP</span>
-						<span>ASSET FILES</span>
-						<span>TASK QUEUE</span>
-						<span class="ticker-icon" data-platform="tiktok">
-							<svg viewBox="0 0 24 24" focusable="false">
-								<path d="M14.5 4v10.1a4.3 4.3 0 1 1-3.2-4.2v3.1a1.5 1.5 0 1 0 1 1.4V4h2.2c.3 2.1 1.7 3.8 3.8 4.3v3.1a7 7 0 0 1-3.8-1.3z" />
-							</svg>
-						</span>
-						<span class="ticker-icon" data-platform="instagram">
-							<svg viewBox="0 0 24 24" focusable="false">
-								<rect x="5" y="5" width="14" height="14" rx="4" />
-								<circle cx="12" cy="12" r="3.2" />
-								<circle cx="16.6" cy="7.4" r="1" />
-							</svg>
-						</span>
-						<span class="ticker-icon" data-platform="reddit">
-							<svg viewBox="0 0 24 24" focusable="false">
-								<path d="M8 12.2a5.9 5.9 0 0 1 8 0 3.1 3.1 0 0 1 2.3-.8 2.2 2.2 0 0 1 .6 4.2c-.3 3-3.2 5.3-6.9 5.3s-6.6-2.3-6.9-5.3a2.2 2.2 0 0 1 .6-4.2 3.1 3.1 0 0 1 2.3.8z" />
-								<path d="M12.7 7.3h3.1l.5-2.2 2.6.6" />
-								<circle cx="9.6" cy="15.3" r=".8" />
-								<circle cx="14.4" cy="15.3" r=".8" />
-								<path d="M10.1 17.4a4.6 4.6 0 0 0 3.8 0" />
-							</svg>
-						</span>
-						<span class="ticker-icon" data-platform="x">
-							<svg viewBox="0 0 24 24" focusable="false">
-								<path d="M5 5l14 14M19 5 5 19" />
-							</svg>
-						</span>
-						<span>CLOUD PHONE</span>
-						<span>PROXY IP</span>
-						<span>ASSET FILES</span>
-						<span>TASK QUEUE</span>
-					</div>
-				</div>
 			</section>
 
 			<section class="framework-section">
@@ -402,14 +338,6 @@ const clusterLogs = [
 			};
 			scheduleLiveUpdate();
 
-			document.querySelectorAll<HTMLElement>('.ticker-track').forEach((track) => {
-				requestAnimationFrame(() => {
-					const loopDistance = track.scrollWidth / 2;
-					track.style.setProperty('--ticker-distance', `${loopDistance}px`);
-					const items = Array.from(track.children);
-					items.forEach((item) => track.appendChild(item.cloneNode(true)));
-				});
-			});
 		</script>
 	</body>
 </html>
@@ -474,41 +402,6 @@ const clusterLogs = [
 		gap: 1rem;
 		padding: clamp(2rem, 5vw, 4rem) 1rem 1.25rem;
 		justify-items: center;
-	}
-
-	.hero-ticker span {
-		display: inline-flex;
-		align-items: center;
-		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-	}
-
-	.hero-ticker .ticker-icon {
-		justify-content: center;
-		width: 1.72rem;
-		height: 1.72rem;
-		border: 1px solid rgba(0, 201, 170, 20%);
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 62%);
-		color: rgba(0, 125, 118, 76%);
-		box-shadow: 0 8px 18px rgba(0, 125, 118, 8%);
-	}
-
-	.ticker-icon svg {
-		width: 1rem;
-		height: 1rem;
-	}
-
-	.ticker-icon svg :where(path, rect, circle) {
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 1.8;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-	}
-
-	.ticker-icon[data-platform='tiktok'] svg path {
-		fill: currentColor;
-		stroke: none;
 	}
 
 	.section-kicker {
@@ -921,30 +814,6 @@ const clusterLogs = [
 		line-height: 1;
 	}
 
-	.hero-ticker {
-		position: absolute;
-		right: 1rem;
-		bottom: 1rem;
-		left: 1rem;
-		z-index: 4;
-		overflow: hidden;
-		border-top: 1px solid rgba(0, 125, 118, 12%);
-		padding-top: 0.75rem;
-		color: rgba(6, 39, 42, 58%);
-		font-size: 0.74rem;
-		font-weight: 900;
-		letter-spacing: 0.08em;
-		white-space: nowrap;
-	}
-
-	.hero-ticker .ticker-track {
-		display: flex;
-		width: max-content;
-		gap: 1.6rem;
-		will-change: transform;
-		animation: ticker-flow 24s linear infinite;
-	}
-
 	.framework-section,
 	.featured-section,
 	main > section {
@@ -1223,12 +1092,6 @@ const clusterLogs = [
 		}
 	}
 
-	@keyframes ticker-flow {
-		to {
-			transform: translate3d(calc(-1 * var(--ticker-distance, 50%)), 0, 0);
-		}
-	}
-
 	@keyframes live-pulse {
 		50% {
 			box-shadow: 0 0 0 8px rgba(0, 201, 170, 4%);
@@ -1329,8 +1192,7 @@ const clusterLogs = [
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 
-		.hero-watermark,
-		.hero-ticker {
+		.hero-watermark {
 			display: none;
 		}
 
