@@ -20,12 +20,12 @@ const frameworks = [
 ];
 const topics = ['运营方法论', '平台专题', '产品能力解读', '出海观察', '任务复盘', '操作教程'];
 const clusterDevices = [
-	{ id: 'DE-001', platform: 'TikTok', task: '待机', active: false },
+	{ id: 'DE-001', platform: 'TikTok', task: '队列分发 → TikTok', active: true },
 	{ id: 'FR-002', platform: 'Instagram', task: '待机', active: false },
-	{ id: 'UK-003', platform: 'Reddit', task: '素材同步 → Reddit', active: true },
-	{ id: 'US-004', platform: 'X', task: '同步数据 → X', active: true },
+	{ id: 'UK-003', platform: 'Reddit', task: '待机', active: false },
+	{ id: 'US-004', platform: 'X', task: '待机', active: false },
 	{ id: 'JP-005', platform: 'TikTok', task: '渲染视频 → TikTok', active: true },
-	{ id: 'BR-006', platform: 'Instagram', task: '待机', active: false },
+	{ id: 'BR-006', platform: 'Instagram', task: '账号互检 → Instagram', active: true },
 	{ id: 'ES-007', platform: 'Reddit', task: '待机', active: false },
 	{ id: 'IT-008', platform: 'X', task: '待机', active: false },
 ];
@@ -273,7 +273,7 @@ const clusterLogs = [
 			const liveCount = document.querySelector<HTMLElement>('[data-live-count]');
 			let liveTaskIndex = 0;
 			let publishedCount = 2866;
-			const activeDevices = new Set(['UK-003', 'US-004', 'JP-005']);
+			const activeDevices = new Set(['DE-001', 'JP-005', 'BR-006']);
 			const taskLabels = new Map(liveTasks.map(([device, action, platform]) => [device, `${action} → ${platform}`]));
 			const progressTimers = new Map<HTMLElement, number>();
 
@@ -298,14 +298,6 @@ const clusterLogs = [
 			const updateLiveTasks = () => {
 				const [device, action, platform, status] = liveTasks[liveTaskIndex % liveTasks.length];
 				liveTaskIndex += 1;
-				activeDevices.add(device);
-				while (activeDevices.size > 3) {
-					const oldestDevice = activeDevices.values().next().value;
-					if (oldestDevice) {
-						activeDevices.delete(oldestDevice);
-					}
-				}
-
 				taskCards.forEach((card) => {
 					const id = card.dataset.deviceId ?? '';
 					const statusNode = card.querySelector<HTMLElement>('.device-status');
@@ -539,23 +531,59 @@ const clusterLogs = [
 	.cluster-wrap {
 		position: relative;
 		z-index: 4;
+		isolation: isolate;
 		width: min(960px, calc(100% - 2rem));
 		margin-bottom: 3.25rem;
 		transform: translate3d(calc(var(--shift-x) * 0.25), calc(var(--shift-y) * 0.25), 0);
 		transition: transform 0.18s ease-out;
 	}
 
+	.cluster-wrap::before,
+	.cluster-wrap::after {
+		content: '';
+		position: absolute;
+		z-index: 0;
+		width: 46%;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		filter: blur(58px);
+		opacity: 0.72;
+		pointer-events: none;
+		will-change: transform;
+	}
+
+	.cluster-wrap::before {
+		top: -8%;
+		left: 3%;
+		background: radial-gradient(circle, rgba(37, 230, 214, 78%) 0%, rgba(22, 188, 198, 38%) 38%, transparent 72%);
+		animation: glass-orb-cyan 16s ease-in-out infinite alternate;
+	}
+
+	.cluster-wrap::after {
+		right: 2%;
+		bottom: -12%;
+		background: radial-gradient(circle, rgba(67, 117, 255, 72%) 0%, rgba(75, 89, 218, 38%) 42%, transparent 72%);
+		animation: glass-orb-blue 19s ease-in-out infinite alternate;
+	}
+
 	.cluster-panel {
+		position: relative;
+		z-index: 1;
 		overflow: hidden;
-		border: 1px solid rgba(46, 233, 208, 20%);
+		border: 1px solid rgba(220, 240, 246, 18%);
 		border-radius: 8px;
 		background:
-			linear-gradient(180deg, rgba(4, 36, 38, 92%), rgba(5, 54, 52, 88%)),
-			#06272a;
+			radial-gradient(circle at 18% 12%, rgba(63, 220, 210, 14%), transparent 34%),
+			radial-gradient(circle at 88% 86%, rgba(80, 105, 232, 16%), transparent 38%),
+			linear-gradient(145deg, rgba(8, 31, 39, 62%), rgba(7, 17, 35, 46%));
 		padding: 1.1rem;
-		box-shadow: 0 24px 60px rgba(0, 69, 76, 22%);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 16%),
+			inset 0 -1px 0 rgba(0, 0, 0, 18%),
+			0 28px 70px rgba(2, 15, 32, 38%);
 		text-align: left;
-		backdrop-filter: blur(18px);
+		-webkit-backdrop-filter: blur(26px) saturate(145%);
+		backdrop-filter: blur(26px) saturate(145%);
 	}
 
 	.cluster-body {
@@ -639,10 +667,17 @@ const clusterLogs = [
 
 	.device-card {
 		position: relative;
-		border: 1px solid rgba(255, 255, 255, 8%);
+		overflow: hidden;
+		border: 1px solid rgba(205, 220, 226, 18%);
 		border-radius: 8px;
-		background: rgba(255, 255, 255, 6%);
+		background: linear-gradient(180deg, rgba(255, 255, 255, 10%), rgba(215, 228, 235, 4%));
 		padding: 0.75rem;
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 18%),
+			inset 0 -1px 0 rgba(0, 0, 0, 16%),
+			0 10px 24px rgba(0, 8, 18, 20%);
+		-webkit-backdrop-filter: blur(14px) saturate(112%);
+		backdrop-filter: blur(14px) saturate(112%);
 		transition:
 			border-color 0.35s ease,
 			background 0.35s ease,
@@ -650,21 +685,44 @@ const clusterLogs = [
 			transform 0.35s ease;
 	}
 
+	.device-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 8%;
+		left: 8%;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 58%), transparent);
+		opacity: 0.58;
+		pointer-events: none;
+	}
+
 	.device-card.active {
-		border-color: rgba(46, 233, 208, 70%);
+		border-color: #7f77dd;
 		background:
-			radial-gradient(circle at 100% 0, rgba(141, 255, 240, 16%), transparent 42%),
-			rgba(46, 233, 208, 13%);
+			radial-gradient(circle at 88% 0, rgba(188, 182, 255, 28%), transparent 44%),
+			linear-gradient(155deg, rgba(127, 119, 221, 24%), rgba(20, 28, 52, 16%));
 		box-shadow:
-			inset 0 0 0 1px rgba(46, 233, 208, 18%),
-			0 0 24px rgba(46, 233, 208, 12%);
+			inset 0 1px 0 rgba(255, 255, 255, 42%),
+			inset 0 0 24px rgba(127, 119, 221, 18%),
+			0 0 0 1px rgba(127, 119, 221, 24%),
+			0 0 28px rgba(127, 119, 221, 48%),
+			0 16px 32px rgba(1, 7, 22, 32%);
+		-webkit-backdrop-filter: blur(22px) saturate(150%);
+		backdrop-filter: blur(22px) saturate(150%);
+		transform: translateY(-1px);
+	}
+
+	.device-card.active::before {
+		opacity: 1;
+		background: linear-gradient(90deg, transparent, rgba(235, 232, 255, 88%), transparent);
 	}
 
 	.device-card.active .device-dot {
-		background: #8dfff0;
+		background: #c4bfff;
 		box-shadow:
-			0 0 0 5px rgba(141, 255, 240, 18%),
-			0 0 18px rgba(141, 255, 240, 88%);
+			0 0 0 5px rgba(127, 119, 221, 20%),
+			0 0 20px rgba(151, 141, 244, 92%);
 		transform: scale(1.12);
 		animation: node-glow 1.6s ease-in-out infinite;
 	}
@@ -685,6 +743,15 @@ const clusterLogs = [
 		white-space: nowrap;
 	}
 
+	.device-card.active .device-id {
+		color: #f1efff;
+		text-shadow: 0 0 14px rgba(177, 169, 255, 45%);
+	}
+
+	.device-card.active .device-status {
+		color: rgba(226, 222, 255, 88%);
+	}
+
 	.device-trace {
 		display: block;
 		overflow: hidden;
@@ -701,11 +768,11 @@ const clusterLogs = [
 		width: 100%;
 		height: 100%;
 		border-radius: inherit;
-		background: linear-gradient(90deg, #00c9aa, #8dfff0);
+		background: linear-gradient(90deg, #7f77dd, #bbb5ff);
 		opacity: 0;
 		transform-origin: left center;
 		transform: scaleX(0);
-		box-shadow: 0 0 0 rgba(141, 255, 240, 0%);
+		box-shadow: 0 0 0 rgba(127, 119, 221, 0%);
 		transition: opacity 0.28s ease;
 	}
 
@@ -720,18 +787,23 @@ const clusterLogs = [
 	.device-card.is-complete .device-trace::before {
 		transform: scaleX(1);
 		opacity: 1;
-		box-shadow: 0 0 16px rgba(141, 255, 240, 42%);
+		box-shadow: 0 0 18px rgba(127, 119, 221, 54%);
 	}
 
 	.log-panel {
 		overflow: hidden;
-		border: 1px solid rgba(141, 255, 240, 10%);
+		border: 1px solid rgba(216, 229, 238, 14%);
 		border-radius: 8px;
-		background: rgba(0, 21, 22, 22%);
+		background: linear-gradient(145deg, rgba(255, 255, 255, 7%), rgba(8, 18, 34, 18%));
 		padding: 0.55rem;
 		height: 12.85rem;
 		min-height: 12.85rem;
 		max-height: 12.85rem;
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 13%),
+			0 14px 30px rgba(0, 7, 18, 18%);
+		-webkit-backdrop-filter: blur(18px) saturate(125%);
+		backdrop-filter: blur(18px) saturate(125%);
 	}
 
 	.log-track {
@@ -746,22 +818,29 @@ const clusterLogs = [
 	}
 
 	.log-line {
-		border: 1px solid rgba(255, 255, 255, 7%);
+		border: 1px solid rgba(220, 230, 238, 13%);
 		border-radius: 6px;
-		background: rgba(255, 255, 255, 5%);
+		background: linear-gradient(180deg, rgba(255, 255, 255, 9%), rgba(255, 255, 255, 4%));
 		padding: 0.45rem 0.55rem;
 		color: rgba(232, 255, 251, 78%);
 		font-size: 0.72rem;
 		min-height: 2.45rem;
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 12%),
+			0 7px 16px rgba(0, 7, 18, 14%);
+		-webkit-backdrop-filter: blur(12px);
+		backdrop-filter: blur(12px);
 		transition:
 			border-color 0.35s ease,
 			background 0.35s ease;
 	}
 
 	.log-line:last-child {
-		border-color: rgba(141, 255, 240, 42%);
-		background: rgba(46, 233, 208, 11%);
-		box-shadow: inset 0 0 0 1px rgba(46, 233, 208, 10%);
+		border-color: rgba(127, 119, 221, 58%);
+		background: linear-gradient(180deg, rgba(127, 119, 221, 18%), rgba(127, 119, 221, 8%));
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 20%),
+			0 0 20px rgba(127, 119, 221, 18%);
 	}
 
 	.ld,
@@ -791,12 +870,20 @@ const clusterLogs = [
 	}
 
 	.cluster-stats span {
+		position: relative;
+		overflow: hidden;
 		display: grid;
 		gap: 0.28rem;
-		border: 1px solid rgba(141, 255, 240, 10%);
+		border: 1px solid rgba(216, 229, 238, 16%);
 		border-radius: 8px;
-		background: rgba(255, 255, 255, 6%);
+		background: linear-gradient(155deg, rgba(255, 255, 255, 11%), rgba(184, 207, 222, 4%));
 		padding: 0.68rem 0.75rem;
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 22%),
+			inset 0 -1px 0 rgba(0, 0, 0, 14%),
+			0 12px 26px rgba(0, 7, 18, 20%);
+		-webkit-backdrop-filter: blur(16px) saturate(125%);
+		backdrop-filter: blur(16px) saturate(125%);
 	}
 
 	.cluster-stats strong {
@@ -1083,28 +1170,55 @@ const clusterLogs = [
 		}
 	}
 
+	@keyframes glass-orb-cyan {
+		0% {
+			transform: translate3d(-4%, -3%, 0) scale(0.92);
+		}
+
+		100% {
+			transform: translate3d(28%, 18%, 0) scale(1.12);
+		}
+	}
+
+	@keyframes glass-orb-blue {
+		0% {
+			transform: translate3d(5%, 8%, 0) scale(1.08);
+		}
+
+		100% {
+			transform: translate3d(-30%, -20%, 0) scale(0.9);
+		}
+	}
+
 	@keyframes trace-fill {
 		from {
 			transform: scaleX(0);
-			box-shadow: 0 0 0 rgba(141, 255, 240, 0%);
+			box-shadow: 0 0 0 rgba(127, 119, 221, 0%);
 		}
 
 		72% {
-			box-shadow: 0 0 12px rgba(141, 255, 240, 30%);
+			box-shadow: 0 0 14px rgba(127, 119, 221, 42%);
 		}
 
 		to {
 			transform: scaleX(1);
-			box-shadow: 0 0 16px rgba(141, 255, 240, 42%);
+			box-shadow: 0 0 18px rgba(127, 119, 221, 54%);
 		}
 	}
 
 	@keyframes node-glow {
 		50% {
-			background: #d9fffb;
+			background: #e2dfff;
 			box-shadow:
-				0 0 0 7px rgba(141, 255, 240, 20%),
-				0 0 26px rgba(141, 255, 240, 95%);
+				0 0 0 7px rgba(127, 119, 221, 22%),
+				0 0 28px rgba(151, 141, 244, 96%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cluster-wrap::before,
+		.cluster-wrap::after {
+			animation: none;
 		}
 	}
 
