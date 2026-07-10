@@ -18,12 +18,34 @@ const frameworks = [
 	['product', '产品能力解读', '账号、代理、文件、任务和用量管理'],
 	['insights', '出海观察', '本地化、多市场规模化和品牌出海方法'],
 ];
-const topicDefinitions = ['运营方法论', '产品能力解读', '平台专题', '出海观察', '操作教程', '任务复盘'];
+const topicDefinitions = [
+	'运营方法论',
+	'产品能力解读',
+	'平台专题',
+	'出海观察',
+	'操作教程',
+	'任务复盘',
+	'内容策略',
+	'数据与增长',
+	'团队协作',
+	'商业与交付',
+];
 const topicCounts = posts.reduce<Record<string, number>>((counts, post) => {
 	counts[post.data.category] = (counts[post.data.category] ?? 0) + 1;
 	return counts;
 }, {});
-const topicSizes = ['large', 'medium-primary', 'medium-secondary', 'small-blue', 'small-neutral', 'small-neutral'];
+const topicSizes = [
+	'large',
+	'medium-primary',
+	'medium-secondary',
+	'small-blue',
+	'small-neutral',
+	'small-neutral',
+	'small-blue',
+	'small-neutral',
+	'small-neutral',
+	'small-neutral',
+];
 const topics = topicDefinitions
 	.map((label) => ({ label, count: topicCounts[label] ?? 0 }))
 	.sort((a, b) => b.count - a.count)

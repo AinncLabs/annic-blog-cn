@@ -25,13 +25,28 @@ const topicDefinitions = [
 	{ label: 'Global Growth', category: 'Global Growth' },
 	{ label: 'Tutorials', category: 'Tutorials' },
 	{ label: 'Task Reviews', category: 'Task Reviews' },
+	{ label: 'Content Strategy', category: 'Content Strategy' },
+	{ label: 'Data & Growth', category: 'Data & Growth' },
+	{ label: 'Team Collaboration', category: 'Team Collaboration' },
+	{ label: 'Business & Delivery', category: 'Business & Delivery' },
 ];
 const topicCounts = posts.reduce<Record<string, number>>((counts, post) => {
 	const category = getPostMeta(post, 'en').category;
 	counts[category] = (counts[category] ?? 0) + 1;
 	return counts;
 }, {});
-const topicSizes = ['large', 'medium-primary', 'medium-secondary', 'small-blue', 'small-neutral', 'small-neutral'];
+const topicSizes = [
+	'large',
+	'medium-primary',
+	'medium-secondary',
+	'small-blue',
+	'small-neutral',
+	'small-neutral',
+	'small-blue',
+	'small-neutral',
+	'small-neutral',
+	'small-neutral',
+];
 const topics = topicDefinitions
 	.map((topic) => ({ ...topic, count: topicCounts[topic.category] ?? 0 }))
 	.sort((a, b) => b.count - a.count)

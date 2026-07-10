@@ -65,7 +65,20 @@ const nextCategoryIndex = (category: string) => {
 	categoryCounters[category] = value + 1;
 	return value;
 };
-const categoryOrder = ['运营方法论', '平台专题', '产品能力解读', '出海观察', '操作教程', '运营实践', '产品更新'];
+const categoryOrder = [
+	'运营方法论',
+	'平台专题',
+	'产品能力解读',
+	'出海观察',
+	'内容策略',
+	'数据与增长',
+	'团队协作',
+	'商业与交付',
+	'操作教程',
+	'任务复盘',
+	'运营实践',
+	'产品更新',
+];
 const allCategoryLabels = new Set(posts.map((post) => post.data.category));
 const categories = [
 	'全部文章',
