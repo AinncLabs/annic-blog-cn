@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import re
 import sys
 from pathlib import Path
@@ -13,7 +14,19 @@ MIN_CHARS = 400
 MIN_SENTENCES = 4
 CONCRETE_MARKERS = ("比如", "例如", "举个例子", "具体", "实际上")
 FAQ_HEADINGS = ("FAQ", "常见问题")
-ACTION_HEADING_MARKERS = ("行动", "清单", "建议", "检查", "调整", "下一步", "必须完成", "可以怎么做")
+ACTION_HEADING_MARKERS = (
+    "行动建议",
+    "行动清单",
+    "检查清单",
+    "调整建议",
+    "下一步",
+    "必须完成",
+    "可以怎么做",
+    "上线前",
+    "发布前",
+    "决定前",
+)
+GENERIC_ENDING_HEADINGS = ("结语", "总结", "写在最后", "最后", "最后的话")
 
 
 def sentence_split(text: str) -> list[str]:
@@ -249,19 +262,17 @@ def check_structure(content: str) -> list[str]:
         if not 2 <= len(tldr_sentences) <= 4:
             issues.append(f"TL;DR 应为2-4句(当前{len(tldr_sentences)}句)")
 
-    longest_list = action_list_count(content)
-    if not 3 <= longest_list <= 5:
-        issues.append(f"缺少3-5条行动建议清单(当前最长连续列表{longest_list}条)")
-
     entries = faq_entries(content)
-    if len(entries) < 2:
-        issues.append(f"FAQ 至少需要2个真实问句(当前{len(entries)}个)")
-    for index, (question, answer) in enumerate(entries, start=1):
-        if not question.endswith(("？", "?")):
-            issues.append(f"FAQ问题{index}不是问句")
-        answer_length = len(answer)
-        if not 30 <= answer_length <= 60:
-            issues.append(f"FAQ回答{index}应为30-60字(当前{answer_length}字)")
+    has_faq = re.search(r"(?mi)^##\s+(?:FAQ|常见问题)\s*$", strip_frontmatter(content)) is not None
+    if has_faq:
+        if len(entries) < 2:
+            issues.append(f"已有 FAQ 但不足2个真实问句(当前{len(entries)}个)")
+        for index, (question, answer) in enumerate(entries, start=1):
+            if not question.endswith(("？", "?")):
+                issues.append(f"FAQ问题{index}不是问句")
+            answer_length = len(answer)
+            if not 30 <= answer_length <= 60:
+                issues.append(f"FAQ回答{index}应为30-60字(当前{answer_length}字)")
 
     for heading, section in h2_sections(content):
         if heading.upper() in FAQ_HEADINGS:
@@ -273,6 +284,18 @@ def check_structure(content: str) -> list[str]:
         paragraphs = extract_body_paragraphs(section)
         if not paragraphs:
             issues.append(f"二级标题“{heading}”下缺少展开论述")
+
+    sections = h2_sections(content)
+    if sections:
+        final_heading, final_section = sections[-1]
+        if final_heading.upper() in FAQ_HEADINGS or any(
+            marker in final_heading for marker in ACTION_HEADING_MARKERS
+        ):
+            issues.append("文章不能以 FAQ 或行动清单匆匆结束，需要补一个回扣核心观点的自然收尾")
+        if final_heading.strip() in GENERIC_ENDING_HEADINGS:
+            issues.append(f"结尾标题“{final_heading}”过于模板化，需要改成与本文观点直接相关的标题")
+        if not extract_body_paragraphs(final_section):
+            issues.append("最后一个二级标题下需要有完整的收尾论述")
     return issues
 
 
@@ -301,8 +324,12 @@ def main() -> int:
         return 2
 
     failed_articles = 0
+    final_heading_counts: Counter[str] = Counter()
     for path in paths:
         content = path.read_text(encoding="utf-8")
+        sections = h2_sections(content)
+        if sections:
+            final_heading_counts[sections[-1][0]] += 1
         failures = check_article(path)
         structure_issues = check_structure(content)
         if not failures and not structure_issues:
@@ -322,8 +349,16 @@ def main() -> int:
         for issue in structure_issues:
             print(f"  结构: {issue}")
 
+    repeated_endings = {
+        heading: count for heading, count in final_heading_counts.items() if count >= 4
+    }
+    if repeated_endings:
+        print("✗ 全库结尾标题重复过多，疑似再次套用统一收尾模板：")
+        for heading, count in sorted(repeated_endings.items(), key=lambda item: (-item[1], item[0])):
+            print(f"  {count} 篇使用“{heading}”")
+
     print(f"汇总：检查 {len(paths)} 篇，{len(paths) - failed_articles} 篇通过，{failed_articles} 篇未通过")
-    return 1 if failed_articles else 0
+    return 1 if failed_articles or repeated_endings else 0
 
 
 if __name__ == "__main__":

@@ -722,7 +722,7 @@ const displayUpdatedDate = updatedDate ?? pubDate;
 
 	.prose :global(.signal-grid) {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 		gap: 0.75rem;
 	}
 
@@ -748,9 +748,27 @@ const displayUpdatedDate = updatedDate ?? pubDate;
 
 	.prose :global(.workflow-steps) {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 		gap: 0.75rem;
 		counter-reset: step;
+	}
+
+	.prose :global(pre) {
+		margin: 1.5rem 0 1.8rem;
+		border: 1px solid color-mix(in srgb, var(--article-accent) 38%, #163a3d);
+		background: linear-gradient(145deg, #082f2d, #102d34);
+		box-shadow: 0 20px 45px rgba(4, 47, 45, 14%);
+	}
+
+	.prose :global(pre code) {
+		display: block;
+		border: 0;
+		background: transparent;
+		padding: 0;
+		color: #d7fff8;
+		font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		font-size: 0.86rem;
+		line-height: 1.7;
 	}
 
 	.prose :global(.workflow-steps div) {
