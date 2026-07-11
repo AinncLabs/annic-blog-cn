@@ -16,6 +16,7 @@ const blog = defineCollection({
 			category: z.string(),
 			tags: z.array(z.string()).default([]),
 			tldr: z.array(z.string()).default([]),
+			faqIntent: z.string().min(12).optional(),
 			faq: z
 				.array(
 					z.object({

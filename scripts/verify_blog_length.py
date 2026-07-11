@@ -12,6 +12,7 @@ from pathlib import Path
 
 MIN_CHARS = 400
 MIN_SENTENCES = 4
+MAX_FAQ_SHARE = 0.15
 CONCRETE_MARKERS = ("比如", "例如", "举个例子", "具体", "实际上")
 FAQ_HEADINGS = ("FAQ", "常见问题")
 ACTION_HEADING_MARKERS = (
@@ -71,6 +72,33 @@ def strip_frontmatter(content: str) -> str:
         return content
     match = re.match(r"\A---\s*\n.*?\n---\s*(?:\n|\Z)", content, flags=re.S)
     return content[match.end() :] if match else content
+
+
+def frontmatter_text(content: str) -> str:
+    if not content.startswith("---"):
+        return ""
+    match = re.match(r"\A---\s*\n(.*?)\n---\s*(?:\n|\Z)", content, flags=re.S)
+    return match.group(1) if match else ""
+
+
+def frontmatter_value(content: str, key: str) -> str:
+    match = re.search(
+        rf'(?m)^{re.escape(key)}:\s*["\']?(.+?)["\']?\s*$',
+        frontmatter_text(content),
+    )
+    return match.group(1).strip() if match else ""
+
+
+def frontmatter_faq_count(content: str) -> int:
+    frontmatter = frontmatter_text(content)
+    match = re.search(r"(?m)^faq:\s*$", frontmatter)
+    if not match:
+        return 0
+    section = frontmatter[match.end() :]
+    next_key = re.search(r"(?m)^[A-Za-z][A-Za-z0-9_-]*:\s*", section)
+    if next_key:
+        section = section[: next_key.start()]
+    return len(re.findall(r"(?m)^\s*-\s+question:\s*", section))
 
 
 def plain_text(markdown: str) -> str:
@@ -380,8 +408,15 @@ def check_structure(content: str) -> list[str]:
             issues.append(f"TL;DR 应为2-4句(当前{len(tldr_sentences)}句)")
 
     entries = faq_entries(content)
-    has_faq = re.search(r"(?mi)^##\s+(?:FAQ|常见问题)\s*$", strip_frontmatter(content)) is not None
-    if has_faq:
+    has_markdown_faq = re.search(r"(?mi)^##\s+(?:FAQ|常见问题)\s*$", strip_frontmatter(content)) is not None
+    frontmatter_faq_items = frontmatter_faq_count(content)
+    has_faq = has_markdown_faq or frontmatter_faq_items > 0
+    faq_intent = frontmatter_value(content, "faqIntent")
+    if has_faq and len(faq_intent) < 12:
+        issues.append("FAQ 缺少 faqIntent 保留理由；只有真实搜索问题或关键边界补充才允许保留")
+    if faq_intent and not has_faq:
+        issues.append("存在 faqIntent 但文章没有 FAQ，请删除失效的保留理由")
+    if has_markdown_faq:
         if len(entries) < 2:
             issues.append(f"已有 FAQ 但不足2个真实问句(当前{len(entries)}个)")
         for index, (question, answer) in enumerate(entries, start=1):
@@ -390,6 +425,8 @@ def check_structure(content: str) -> list[str]:
             answer_length = len(answer)
             if not 30 <= answer_length <= 60:
                 issues.append(f"FAQ回答{index}应为30-60字(当前{answer_length}字)")
+    if frontmatter_faq_items and frontmatter_faq_items < 2:
+        issues.append(f"frontmatter FAQ 不足2个真实问句(当前{frontmatter_faq_items}个)")
 
     for heading, section in h2_sections(content):
         if heading.upper() in FAQ_HEADINGS:
@@ -454,8 +491,11 @@ def main() -> int:
     final_heading_counts: Counter[str] = Counter()
     fingerprint_counts: Counter[str] = Counter()
     dated_fingerprints: list[tuple[str, Path, str]] = []
+    faq_article_paths: list[Path] = []
     for path in paths:
         content = path.read_text(encoding="utf-8")
+        if faq_entries(content) or frontmatter_faq_count(content):
+            faq_article_paths.append(path)
         fingerprint = structure_fingerprint(content)
         fingerprint_counts[fingerprint] += 1
         dated_fingerprints.append((publication_date(content), path, fingerprint))
@@ -513,8 +553,17 @@ def main() -> int:
             print(f"  {', '.join(path.name for path in window)}")
             print(f"  骨架：{fingerprint}")
 
+    faq_limit = max(2, int(len(paths) * MAX_FAQ_SHARE))
+    faq_overuse = len(faq_article_paths) > faq_limit
+    if faq_overuse:
+        print(
+            f"✗ FAQ 使用过多：{len(faq_article_paths)}/{len(paths)} 篇，"
+            f"当前上限为 {faq_limit} 篇（{MAX_FAQ_SHARE:.0%}）"
+        )
+        print("  FAQ 只能用于真实搜索意图或正文难以自然展开的关键边界，不能作为文章默认模块。")
+
     print(f"汇总：检查 {len(paths)} 篇，{len(paths) - failed_articles} 篇通过，{failed_articles} 篇未通过")
-    return 1 if failed_articles or repeated_endings or overused_structures or consecutive_templates else 0
+    return 1 if failed_articles or repeated_endings or overused_structures or consecutive_templates or faq_overuse else 0
 
 
 if __name__ == "__main__":

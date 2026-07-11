@@ -5,6 +5,7 @@ pubDate: 2026-07-10
 updatedDate: 2026-07-10
 category: "平台专题"
 tags: ["TikTok", "Instagram Reels", "内容复用"]
+faqIntent: "承接跨平台视频复用的直接搜索，并回答是否必须整条重剪这一独立执行问题。"
 ---
 > **TL;DR** —— TikTok 和 Instagram Reels 可以使用同一份原始素材，但不应该把同一个成品文件原样发布。两个平台的用户关系、开头预期、字幕节奏、主页作用和互动方式不同。复用素材是效率，复用全部表达则是在忽略平台语境。
 

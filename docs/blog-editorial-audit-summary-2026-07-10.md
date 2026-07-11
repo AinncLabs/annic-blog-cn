@@ -2,6 +2,8 @@
 
 > 后续规则更新：本文件记录的是早期修正过程，其中“补齐所有 TL;DR/FAQ/清单”的做法已被废止。当前有效的结构规则以 `docs/blog-content-guidelines.md` 和 `docs/blog-no-template-ending-audit-2026-07-10.md` 为准：这些模块全部按内容需要选择，文章只强制内容密度与真实收尾。
 
+> 2026-07-11 FAQ 专项复查：实际 FAQ 覆盖从 28/71 收缩到 8/71，保留项均增加 `faqIntent`；详见 `docs/blog-faq-audit-2026-07-11.md`。
+
 ## 汇总
 
 - 检查范围：`src/content/blog` 内 70 篇 Markdown 源文章，包含已发布与项目中可发现的全部文章；未发现独立维护的 HTML 文章源文件，`dist` 中 HTML 均由这些 Markdown 构建生成。
