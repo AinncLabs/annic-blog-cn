@@ -494,8 +494,8 @@ const clusterLogs = [
 		position: relative;
 		z-index: 3;
 		display: grid;
-		max-width: 720px;
-		gap: 1rem;
+		max-width: 900px;
+		gap: 1.15rem;
 		padding: clamp(2rem, 5vw, 4rem) 1rem 1.25rem;
 		justify-items: center;
 	}
@@ -527,9 +527,13 @@ const clusterLogs = [
 	}
 
 	.hero-copy h1 {
+		max-width: 900px;
 		color: #06272a;
-		font-size: clamp(2.35rem, 4vw, 46px);
+		font-size: clamp(2.75rem, 4.4vw, 58px);
 		font-weight: 900;
+		letter-spacing: -0.045em;
+		line-height: 1.08;
+		text-wrap: balance;
 	}
 
 	.hero-title-accent {
@@ -543,8 +547,9 @@ const clusterLogs = [
 	}
 
 	.hero-copy p {
-		max-width: 620px;
-		font-size: 1.08rem;
+		max-width: 700px;
+		font-size: clamp(1.05rem, 1.3vw, 1.18rem);
+		line-height: 1.75;
 	}
 
 	.hero-stats {
@@ -1560,6 +1565,14 @@ const clusterLogs = [
 	}
 
 	@media (max-width: 900px) {
+		.hero-copy {
+			max-width: 760px;
+		}
+
+		.hero-copy h1 {
+			font-size: clamp(2.5rem, 6.8vw, 52px);
+		}
+
 		.cluster-wrap {
 			width: min(100%, 40rem);
 			margin-bottom: 1.5rem;
@@ -1595,6 +1608,22 @@ const clusterLogs = [
 	}
 
 	@media (max-width: 520px) {
+		.hero-copy {
+			gap: 1rem;
+			padding-inline: 0;
+		}
+
+		.hero-copy h1 {
+			font-size: clamp(2.2rem, 10vw, 42px);
+			letter-spacing: -0.035em;
+			line-height: 1.12;
+		}
+
+		.hero-copy p {
+			font-size: 1rem;
+			line-height: 1.65;
+		}
+
 		.console-wrap {
 			width: calc(100% - 2rem);
 		}
