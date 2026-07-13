@@ -249,9 +249,9 @@ const clusterLogs = [
 								<span class="content-track-code">TRK-07+</span>
 								<span class="content-track-name">
 									<strong>查看全部栏目</strong>
-									<small>{remainingTrackLabels.join(' · ')}</small>
+									<small>另有 {remainingTrackLabels.length} 个：{remainingTrackLabels.join(' · ')}</small>
 								</span>
-								<span class="content-track-count">{String(remainingTrackLabels.length).padStart(2, '0')} 栏</span>
+								<span class="content-track-count">共 {String(categoryCount).padStart(2, '0')} 栏</span>
 								<span class="content-track-arrow">
 									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
 								</span>
