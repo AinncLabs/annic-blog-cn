@@ -1,0 +1,25 @@
+# Ainnc 麦芽营销内容中心
+
+> Ainnc 面向代运营机构、MCN、跨境电商与全球品牌团队，提供社媒账号、云端环境、代理 IP、素材和批量任务管理能力。内容中心讨论 TikTok、Instagram、Reddit 与 X 的规模化运营方法、平台差异、团队协作和交付边界。
+
+## 主要入口
+
+- [中文首页](https://blog.ainnc.com/)
+- [中文博客文章](https://blog.ainnc.com/blog/)
+- [关于 Ainnc](https://blog.ainnc.com/about/)
+- [English Home](https://blog.ainnc.com/en/)
+- [English Articles](https://blog.ainnc.com/en/blog/)
+- [Ainnc 官方网站](https://www.ainnc.com/)
+
+## 核心主题
+
+- 规模化社媒账号运营与账号分组
+- 云手机、浏览器环境、模拟器和代理 IP 的选择边界
+- 素材管理、任务执行、异常记录与团队复盘
+- TikTok、Instagram、Reddit、X 的平台差异
+- 代运营合同、客户交付、报价和团队协作
+- GEO、AI 搜索、内容传播与业务增长
+
+## 编辑原则
+
+文章应提供明确观点、适用边界、具体场景和可执行判断。案例数据在使用时需要脱敏；涉及账号限流或封禁时，只讨论通用风险管理，不提供规避平台检测的方法。页面所列作者与更新时间以文章可见内容为准。

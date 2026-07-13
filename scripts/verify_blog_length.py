@@ -8,17 +8,13 @@ from collections import Counter
 import re
 import sys
 from pathlib import Path
+from typing import TextIO
 
 
-MAX_PARAGRAPH_CHARS = 360
-MAX_SENTENCES = 5
+MIN_PARAGRAPH_CHARS = 400
+MIN_SENTENCES = 4
 MAX_FAQ_SHARE = 0.15
-CONTENT_TYPE_RULES = {
-    "guide": {"min_paragraphs": 8, "min_chars": 1400, "min_h2": 3, "min_concrete": 2},
-    "comparison": {"min_paragraphs": 8, "min_chars": 1450, "min_h2": 3, "min_concrete": 2},
-    "analysis": {"min_paragraphs": 7, "min_chars": 1400, "min_h2": 0, "min_concrete": 1},
-    "opinion": {"min_paragraphs": 6, "min_chars": 1300, "min_h2": 0, "min_concrete": 0},
-}
+VALID_CONTENT_TYPES = {"guide", "comparison", "analysis", "opinion"}
 CONCRETE_MARKERS = ("比如", "例如", "举个例子", "具体", "实际上")
 FAQ_HEADINGS = ("FAQ", "常见问题")
 ACTION_HEADING_MARKERS = (
@@ -34,6 +30,22 @@ ACTION_HEADING_MARKERS = (
     "决定前",
 )
 GENERIC_ENDING_HEADINGS = ("结语", "总结", "写在最后", "最后", "最后的话")
+
+
+class Tee:
+    """Write verifier output to the terminal and an optional audit report."""
+
+    def __init__(self, *streams: TextIO) -> None:
+        self.streams = streams
+
+    def write(self, data: str) -> int:
+        for stream in self.streams:
+            stream.write(data)
+        return len(data)
+
+    def flush(self) -> None:
+        for stream in self.streams:
+            stream.flush()
 
 
 def sentence_split(text: str) -> list[str]:
@@ -198,13 +210,15 @@ def check_article(filepath: Path) -> list[dict[str, object]]:
         char_count = len(paragraph)
         sentences = sentence_split(paragraph)
         issues: list[str] = []
-        if char_count > MAX_PARAGRAPH_CHARS:
-            issues.append(f"单段过长({char_count}字)，需要拆成更自然的阅读层次")
-        if len(sentences) > MAX_SENTENCES:
-            issues.append(f"单段句子过多({len(sentences)}句)，需要围绕一个重点重新分段")
+        if char_count < MIN_PARAGRAPH_CHARS:
+            issues.append(f"字数不足({char_count}字)")
+        if len(sentences) < MIN_SENTENCES:
+            issues.append(f"句数不足({len(sentences)}句)")
         duplicate_pairs = repetition_check(sentences)
         if duplicate_pairs:
             issues.append(f"疑似重复句{duplicate_pairs}")
+        if not has_concrete_content(paragraph):
+            issues.append("缺少具体数字/例子/场景词，疑似空话")
         if manual_tone_check(paragraph):
             issues.append("疑似说明书腔，平行罗列句式过多，需要改写成推理叙述")
         if issues:
@@ -415,15 +429,16 @@ def h2_sections(content: str) -> list[tuple[str, str]]:
 def check_structure(content: str) -> list[str]:
     issues: list[str] = []
     content_type = frontmatter_value(content, "contentType")
-    rules = CONTENT_TYPE_RULES.get(content_type)
-    if not rules:
+    if content_type not in VALID_CONTENT_TYPES:
         issues.append("frontmatter 缺少有效 contentType；必须是 guide、comparison、analysis 或 opinion")
 
     tldr = tldr_text(content)
-    if "TL;DR" in tldr:
+    if "TL;DR" not in tldr:
+        issues.append("缺少放在正文开头的 TL;DR 引用块")
+    else:
         tldr_sentences = sentence_split(tldr.replace("TL;DR", ""))
-        if not 1 <= len(tldr_sentences) <= 3:
-            issues.append(f"TL;DR 应为1-3句(当前{len(tldr_sentences)}句)")
+        if not 2 <= len(tldr_sentences) <= 4:
+            issues.append(f"TL;DR 应为2-4句(当前{len(tldr_sentences)}句)")
 
     entries = faq_entries(content)
     has_markdown_faq = re.search(r"(?mi)^##\s+(?:FAQ|常见问题)\s*$", strip_frontmatter(content)) is not None
@@ -460,37 +475,6 @@ def check_structure(content: str) -> list[str]:
     body_paragraphs = extract_body_paragraphs(content)
     if not body_paragraphs:
         issues.append("文章缺少完整正文论述")
-    elif rules:
-        paragraph_count = len(body_paragraphs)
-        total_chars = sum(len(paragraph) for paragraph in body_paragraphs)
-        concrete_count = sum(has_concrete_content(paragraph) for paragraph in body_paragraphs)
-        non_faq_h2_count = sum(
-            heading.upper() not in FAQ_HEADINGS for heading, _ in h2_sections(content)
-        )
-        if paragraph_count < rules["min_paragraphs"]:
-            issues.append(
-                f"{content_type} 文章自然段不足：当前 {paragraph_count} 段，"
-                f"至少需要 {rules['min_paragraphs']} 段"
-            )
-        if total_chars < rules["min_chars"]:
-            issues.append(
-                f"{content_type} 文章正文展开不足：当前 {total_chars} 字，"
-                f"至少需要 {rules['min_chars']} 字"
-            )
-        if non_faq_h2_count < rules["min_h2"]:
-            issues.append(
-                f"{content_type} 文章层次不足：当前 {non_faq_h2_count} 个二级标题，"
-                f"至少需要 {rules['min_h2']} 个"
-            )
-        if concrete_count < rules["min_concrete"]:
-            issues.append(
-                f"{content_type} 文章缺少足够的数字、案例或具体场景："
-                f"当前 {concrete_count} 段，至少需要 {rules['min_concrete']} 段"
-            )
-        if content_type in {"guide", "comparison"} and not has_structured_aid(content):
-            issues.append(
-                f"{content_type} 文章缺少可直接使用的表格、清单、代码示例或流程辅助"
-            )
 
     if re.search(r"(?m)^## 核心判断与执行背景$", strip_frontmatter(content)):
         issues.append("仍在使用通用标题“核心判断与执行背景”，需要改成本文专属标题")
@@ -543,6 +527,7 @@ def article_paths(targets: list[str]) -> list[Path]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("targets", nargs="+", help="Markdown article file or directory")
+    parser.add_argument("--report", help="Also save the raw verifier output to this file")
     args = parser.parse_args()
 
     try:
@@ -550,6 +535,14 @@ def main() -> int:
     except FileNotFoundError as error:
         print(f"✗ {error}")
         return 2
+
+    original_stdout = sys.stdout
+    report_handle: TextIO | None = None
+    if args.report:
+        report_path = Path(args.report)
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_handle = report_path.open("w", encoding="utf-8")
+        sys.stdout = Tee(original_stdout, report_handle)
 
     failed_articles = 0
     final_heading_counts: Counter[str] = Counter()
@@ -627,7 +620,12 @@ def main() -> int:
         print("  FAQ 只能用于真实搜索意图或正文难以自然展开的关键边界，不能作为文章默认模块。")
 
     print(f"汇总：检查 {len(paths)} 篇，{len(paths) - failed_articles} 篇通过，{failed_articles} 篇未通过")
-    return 1 if failed_articles or repeated_endings or overused_structures or consecutive_templates or faq_overuse else 0
+    exit_code = 1 if failed_articles or repeated_endings or overused_structures or consecutive_templates or faq_overuse else 0
+    if report_handle:
+        sys.stdout.flush()
+        sys.stdout = original_stdout
+        report_handle.close()
+    return exit_code
 
 
 if __name__ == "__main__":

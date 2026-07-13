@@ -59,10 +59,38 @@ type Props = {
 	postIndex: number;
 };
 
+function plainMarkdown(text: string) {
+	return text
+		.replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+		.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+		.replace(/<[^>]+>/g, '')
+		.replace(/[`*_~]/g, '')
+		.replace(/\s+/g, ' ')
+		.trim();
+}
+
+function extractMarkdownFaq(body: string) {
+	const heading = body.match(/^##\s+(?:FAQ|常见问题)\s*$/m);
+	if (!heading || heading.index === undefined) return [];
+	const afterHeading = body.slice(heading.index + heading[0].length);
+	const nextSection = afterHeading.search(/^##\s+/m);
+	const section = nextSection === -1 ? afterHeading : afterHeading.slice(0, nextSection);
+	const questions = Array.from(section.matchAll(/^###\s+(.+?)\s*$/gm));
+	return questions.map((question, index) => {
+		const answerStart = (question.index ?? 0) + question[0].length;
+		const answerEnd = index + 1 < questions.length ? questions[index + 1].index ?? section.length : section.length;
+		return {
+			question: plainMarkdown(question[1]),
+			answer: plainMarkdown(section.slice(answerStart, answerEnd).split('\n\n', 1)[0]),
+		};
+	});
+}
+
 const { post, postIndex } = Astro.props;
 const { Content } = await render(post);
+const schemaFaq = extractMarkdownFaq(post.body);
 ---
 
-<BlogPost {...post.data} postId={post.id} postIndex={postIndex}>
+<BlogPost {...post.data} postId={post.id} postIndex={postIndex} {schemaFaq}>
 	<Content />
 </BlogPost>
