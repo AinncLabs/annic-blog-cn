@@ -11,8 +11,11 @@ from pathlib import Path
 from typing import TextIO
 
 
-MIN_PARAGRAPH_CHARS = 400
-MIN_SENTENCES = 4
+MIN_PARAGRAPH_CHARS = 30
+MAX_PARAGRAPH_CHARS = 380
+MAX_SENTENCES = 5
+MIN_ARTICLE_PARAGRAPHS = 6
+MAX_ARTICLE_AVERAGE_PARAGRAPH_CHARS = 280
 MAX_FAQ_SHARE = 0.15
 VALID_CONTENT_TYPES = {"guide", "comparison", "analysis", "opinion"}
 CONCRETE_MARKERS = ("比如", "例如", "举个例子", "具体", "实际上")
@@ -211,14 +214,14 @@ def check_article(filepath: Path) -> list[dict[str, object]]:
         sentences = sentence_split(paragraph)
         issues: list[str] = []
         if char_count < MIN_PARAGRAPH_CHARS:
-            issues.append(f"字数不足({char_count}字)")
-        if len(sentences) < MIN_SENTENCES:
-            issues.append(f"句数不足({len(sentences)}句)")
+            issues.append(f"单段过短({char_count}字)，需要确认是否只是被错误切开")
+        if char_count > MAX_PARAGRAPH_CHARS:
+            issues.append(f"单段过长({char_count}字)，应按场景、转折或结论自然分段")
+        if len(sentences) > MAX_SENTENCES:
+            issues.append(f"单段句子过多({len(sentences)}句)，应围绕一个重点重新分段")
         duplicate_pairs = repetition_check(sentences)
         if duplicate_pairs:
             issues.append(f"疑似重复句{duplicate_pairs}")
-        if not has_concrete_content(paragraph):
-            issues.append("缺少具体数字/例子/场景词，疑似空话")
         if manual_tone_check(paragraph):
             issues.append("疑似说明书腔，平行罗列句式过多，需要改写成推理叙述")
         if issues:
@@ -471,10 +474,31 @@ def check_structure(content: str) -> list[str]:
         paragraphs = extract_body_paragraphs(section)
         if not paragraphs:
             issues.append(f"二级标题“{heading}”下缺少展开论述")
+            continue
+        total_chars = sum(len(paragraph) for paragraph in paragraphs)
+        if total_chars >= 300 and len(paragraphs) < 2:
+            issues.append(
+                f"二级标题“{heading}”下有 {total_chars} 字却只有1个自然段，"
+                "需要按逻辑拆成至少2段"
+            )
+        if not any(has_concrete_content(paragraph) for paragraph in paragraphs):
+            issues.append(f"二级标题“{heading}”下缺少数字、例子或具体场景")
 
     body_paragraphs = extract_body_paragraphs(content)
     if not body_paragraphs:
         issues.append("文章缺少完整正文论述")
+    else:
+        paragraph_count = len(body_paragraphs)
+        average_chars = sum(len(paragraph) for paragraph in body_paragraphs) / paragraph_count
+        if paragraph_count < MIN_ARTICLE_PARAGRAPHS:
+            issues.append(
+                f"文章自然段不足：当前 {paragraph_count} 段，至少需要 {MIN_ARTICLE_PARAGRAPHS} 段"
+            )
+        if average_chars > MAX_ARTICLE_AVERAGE_PARAGRAPH_CHARS:
+            issues.append(
+                f"文章平均段长过高：当前 {average_chars:.0f} 字，"
+                f"应控制在 {MAX_ARTICLE_AVERAGE_PARAGRAPH_CHARS} 字以内"
+            )
 
     if re.search(r"(?m)^## 核心判断与执行背景$", strip_frontmatter(content)):
         issues.append("仍在使用通用标题“核心判断与执行背景”，需要改成本文专属标题")
