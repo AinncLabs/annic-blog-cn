@@ -20,6 +20,19 @@
 - 代运营合同、客户交付、报价和团队协作
 - GEO、AI 搜索、内容传播与业务增长
 
+## 重点指南与决策页面
+
+- [社媒矩阵运营完整指南](https://blog.ainnc.com/blog/social-media-matrix-operations-guide/)
+- [社媒内容运营 SOP 完整指南](https://blog.ainnc.com/blog/social-media-content-operations-sop-guide/)
+- [社媒账号频繁要求验证码排查](https://blog.ainnc.com/blog/social-account-verification-code-troubleshooting/)
+- [批量发布部分失败排查](https://blog.ainnc.com/blog/partial-batch-publishing-failure-troubleshooting/)
+- [社媒内容审批工具选型](https://blog.ainnc.com/blog/social-media-content-approval-tool-selection/)
+- [TikTok 多账号素材管理工具选型](https://blog.ainnc.com/blog/tiktok-multi-account-asset-management-tool/)
+- [跨时区社媒排期表](https://blog.ainnc.com/blog/cross-timezone-social-media-scheduling-template/)
+- [社媒账号资产盘点表](https://blog.ainnc.com/blog/social-account-asset-inventory-checklist/)
+- [社媒运营平台、排期工具与云手机对比](https://blog.ainnc.com/blog/social-media-platform-vs-scheduler-vs-cloud-phone/)
+- [Ainnc 与传统社媒排期工具的区别](https://blog.ainnc.com/blog/ainnc-vs-traditional-social-media-schedulers/)
+
 ## 编辑原则
 
 文章应提供明确观点、适用边界、具体场景和可执行判断。案例数据在使用时需要脱敏；涉及账号限流或封禁时，只讨论通用风险管理，不提供规避平台检测的方法。页面所列作者与更新时间以文章可见内容为准。
