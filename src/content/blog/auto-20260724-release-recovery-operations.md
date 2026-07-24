@@ -25,7 +25,7 @@ briefSecondaryKeywords:
 briefTargetAudience: "新手"
 briefTone: "专业中立"
 briefReadingScenario: "操作查阅"
-briefArticleType: "How-to"
+briefArticleType: "Problem Solving"
 briefTopicCluster: "增长运营工程"
 briefCompetingArticles:
   - "任务异常的快速分组与隔离方法：先跑对了才可稳定放量（release recovery operations）"
@@ -63,7 +63,7 @@ tldr:
 
 一句话结论：先补齐边界定义，再复盘失败路径，最后再谈规模化。
 
-先回答三件事：任务异常的快速分组与隔离方法（2184）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
+先回答三件事：任务异常的快速分组与隔离方法（2310）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
 
 
 
