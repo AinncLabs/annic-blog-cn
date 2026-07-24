@@ -25,7 +25,7 @@ briefSecondaryKeywords:
 briefTargetAudience: "决策者"
 briefTone: "咨询式"
 briefReadingScenario: "决策调研"
-briefArticleType: "Comparison"
+briefArticleType: "Product Related"
 briefTopicCluster: "发布稳定性"
 briefCompetingArticles:
   - "账号风控边界与稳定发布节奏：先跑对了才可稳定放量（publish stability playbook）"
@@ -63,7 +63,7 @@ tldr:
 
 一句话结论：先补齐边界定义，再复盘失败路径，最后再谈规模化。
 
-先回答三件事：账号风控边界与稳定发布节奏（2225）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
+先回答三件事：账号风控边界与稳定发布节奏（2267）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
 
 
 
