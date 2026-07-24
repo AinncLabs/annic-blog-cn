@@ -25,7 +25,7 @@ briefSecondaryKeywords:
 briefTargetAudience: "新手"
 briefTone: "咨询式"
 briefReadingScenario: "决策调研"
-briefArticleType: "Problem Solving"
+briefArticleType: "How-to"
 briefTopicCluster: "增长运营工程"
 briefCompetingArticles:
   - "地域与时区对发布成功率的影响：先跑对了才可稳定放量（geo timezone publishing）"
@@ -63,7 +63,7 @@ tldr:
 
 一句话结论：先补齐边界定义，再复盘失败路径，最后再谈规模化。
 
-先回答三件事：地域与时区对发布成功率的影响（1994）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
+先回答三件事：地域与时区对发布成功率的影响（2078）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
 
 
 
