@@ -25,7 +25,7 @@ briefSecondaryKeywords:
 briefTargetAudience: "运营负责人"
 briefTone: "专业中立"
 briefReadingScenario: "操作查阅"
-briefArticleType: "Comparison"
+briefArticleType: "Product Related"
 briefTopicCluster: "发布稳定性"
 briefCompetingArticles:
   - "发布日志可读化与运营复盘框架（10）: 先跑对了才有长期稳定流量"
@@ -63,7 +63,7 @@ tldr:
 
 一句话结论：先补齐边界定义，再复盘失败路径，最后再谈规模化。
 
-先回答三件事：发布日志可读化与运营复盘框架（2015）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
+先回答三件事：发布日志可读化与运营复盘框架（2057）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
 
 
 
