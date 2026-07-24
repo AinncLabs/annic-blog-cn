@@ -25,7 +25,7 @@ briefSecondaryKeywords:
 briefTargetAudience: "运营负责人"
 briefTone: "口语亲和"
 briefReadingScenario: "泛读了解"
-briefArticleType: "Comparison"
+briefArticleType: "Industry Insight"
 briefTopicCluster: "增长运营工程"
 briefCompetingArticles:
   - "账户与素材质量的协同治理：先跑对了才可稳定放量（account quality governance）"
@@ -63,7 +63,7 @@ tldr:
 
 一句话结论：先补齐边界定义，再复盘失败路径，最后再谈规模化。
 
-先回答三件事：账户与素材质量的协同治理（2226）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
+先回答三件事：账户与素材质量的协同治理（2352）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
 
 
 
