@@ -25,7 +25,7 @@ briefSecondaryKeywords:
 briefTargetAudience: "创作者"
 briefTone: "咨询式"
 briefReadingScenario: "决策调研"
-briefArticleType: "Product Related"
+briefArticleType: "Problem Solving"
 briefTopicCluster: "增长运营工程"
 briefCompetingArticles:
   - "多账号批量发布的任务分发策略（11）: 先跑对了才有长期稳定流量"
@@ -63,7 +63,7 @@ tldr:
 
 一句话结论：先补齐边界定义，再复盘失败路径，最后再谈规模化。
 
-先回答三件事：多账号批量发布的任务分发策略（2058）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
+先回答三件事：多账号批量发布的任务分发策略（2100）适配什么场景、什么样的内容更容易过审核、失败后如何在 24 小时内修正发布通道。
 
 
 
